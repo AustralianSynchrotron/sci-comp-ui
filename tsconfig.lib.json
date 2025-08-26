@@ -1,0 +1,20 @@
+{
+  "extends": "./tsconfig.app.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "outDir": "dist",
+    "declarationDir": "dist",
+    "allowImportingTsExtensions": false,
+    "verbatimModuleSyntax": false,
+    "moduleResolution": "node"
+  },
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "src/**/*.stories.*",
+    "src/**/*.test.*"
+  ]
+}
