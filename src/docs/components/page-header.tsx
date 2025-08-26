@@ -32,7 +32,7 @@ export function PageHeader({ breadcrumbs, pageHeading, pageSubheading }: PageHea
                 <React.Fragment key={crumb.title}>
                   <BreadcrumbItem className={index === 0 ? "hidden md:block" : ""}>
                     {crumb.href ? (
-                      <BreadcrumbItem>{crumb.title}</BreadcrumbItem>
+                      <BreadcrumbLink href={crumb.href}>{crumb.title}</BreadcrumbLink>
                     ) : (
                       <BreadcrumbPage>{crumb.title}</BreadcrumbPage>
                     )}
