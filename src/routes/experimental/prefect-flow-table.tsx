@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../..
 import { DemoContainer } from "@/docs/components/demo-container"
 import { DataTable } from "../../ui/experimental/prefect-flow-table/data-table"
 import { columns } from "../../ui/experimental/prefect-flow-table/columns"
-import flows from "../../ui/experimental/prefect-flow-table/data/flows.json"
+import { flows } from "../../ui/experimental/prefect-flow-table/data/data"
 
 export const Route = createFileRoute('/experimental/prefect-flow-table')({
   component: PrefectFlowTablePage,
