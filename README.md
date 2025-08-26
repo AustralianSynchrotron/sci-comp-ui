@@ -122,7 +122,7 @@ The `__SOURCE__` macro will automatically extract the source code between `/* DE
 
 ### Configuration
 
-The plugin is already configured in `vite.config.ts`. You can customize it with these options:
+The plugin is already configured in `vite.config.ts`. You can customise it with these options:
 
 ```typescript
 packageVersionPlugin({
