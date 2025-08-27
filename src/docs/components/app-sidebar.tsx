@@ -182,6 +182,10 @@ const data = {
           url: "/experimental/beam-blockers-control",
         },
         {
+          title: "File Browser",
+          url: "/experimental/file-browser",
+        },
+        {
           title: "Ophyd Control",
           url: "/experimental/ophyd-control",
         },

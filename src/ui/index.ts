@@ -33,3 +33,6 @@ export { ScrollArea, ScrollBar } from './layout/scroll-area'
 export { Sidebar, SidebarTrigger, SidebarInset, SidebarInput, SidebarHeader, SidebarFooter, SidebarSeparator, SidebarContent, SidebarGroup, SidebarGroupLabel, SidebarGroupAction, SidebarGroupContent, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarMenuAction, SidebarMenuBadge, SidebarMenuSkeleton, SidebarMenuSub, SidebarMenuSubItem, SidebarMenuSubButton } from './layout/sidebar'
 export { Sheet, SheetTrigger, SheetClose, SheetContent, SheetHeader, SheetFooter, SheetTitle, SheetDescription } from './layout/sheet'
 export { Stack, stackVariants } from './layout/stack'
+
+// EXPERIMENTAL COMPONENTS
+export { FileBrowser, type FileTreeItem } from './experimental/file-browser'
