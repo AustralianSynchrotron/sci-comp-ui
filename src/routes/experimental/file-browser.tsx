@@ -180,37 +180,6 @@ function PrefixDemo() {
 
 const prefixDemoSource = __SOURCE__
 
-/* DEMO_START */
-function CustomStylingDemo() {
-  const [selectedFile, setSelectedFile] = useState<string>('')
-
-  return (
-    <div className="space-y-4">
-      <div className="flex items-center gap-2">
-        <span className="text-sm text-muted-foreground">Selected file:</span>
-        {selectedFile ? (
-          <Badge variant="outline" className="font-mono text-xs">
-            {selectedFile}
-          </Badge>
-        ) : (
-          <span className="text-sm text-muted-foreground">None</span>
-        )}
-      </div>
-      
-      <div className="border rounded-md p-4 bg-background">
-        <FileBrowser
-          data={sampleFileTree}
-          onFileSelect={setSelectedFile}
-          className="max-h-96 overflow-y-auto"
-        />
-      </div>
-    </div>
-  )
-}
-/* DEMO_END */
-
-const customStylingSource = __SOURCE__
-
 function FileBrowserPage() {
   return (
     <>
@@ -268,22 +237,6 @@ function FileBrowserPage() {
               <DemoContainer
                 demo={<PrefixDemo />}
                 source={prefixDemoSource}
-              />
-            </CardContent>
-          </Card>
-
-          {/* Custom Styling */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Custom Styling</CardTitle>
-              <CardDescription>
-                Apply custom CSS classes and styling to the file browser
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <DemoContainer
-                demo={<CustomStylingDemo />}
-                source={customStylingSource}
               />
             </CardContent>
           </Card>
