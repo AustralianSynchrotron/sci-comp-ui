@@ -19,6 +19,7 @@ import { Route as LayoutBoxRouteImport } from './routes/layout/box'
 import { Route as LayoutAccordionRouteImport } from './routes/layout/accordion'
 import { Route as ExperimentalUnitsFieldRouteImport } from './routes/experimental/units-field'
 import { Route as ExperimentalTextLogRouteImport } from './routes/experimental/text-log'
+import { Route as ExperimentalStepColumnsRouteImport } from './routes/experimental/step-columns'
 import { Route as ExperimentalPrefectFlowTableRouteImport } from './routes/experimental/prefect-flow-table'
 import { Route as ExperimentalPeriodicTableRouteImport } from './routes/experimental/periodic-table'
 import { Route as ExperimentalOphydControlRouteImport } from './routes/experimental/ophyd-control'
@@ -100,6 +101,11 @@ const ExperimentalUnitsFieldRoute = ExperimentalUnitsFieldRouteImport.update({
 const ExperimentalTextLogRoute = ExperimentalTextLogRouteImport.update({
   id: '/experimental/text-log',
   path: '/experimental/text-log',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ExperimentalStepColumnsRoute = ExperimentalStepColumnsRouteImport.update({
+  id: '/experimental/step-columns',
+  path: '/experimental/step-columns',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ExperimentalPrefectFlowTableRoute =
@@ -302,6 +308,7 @@ export interface FileRoutesByFullPath {
   '/experimental/ophyd-control': typeof ExperimentalOphydControlRoute
   '/experimental/periodic-table': typeof ExperimentalPeriodicTableRoute
   '/experimental/prefect-flow-table': typeof ExperimentalPrefectFlowTableRoute
+  '/experimental/step-columns': typeof ExperimentalStepColumnsRoute
   '/experimental/text-log': typeof ExperimentalTextLogRoute
   '/experimental/units-field': typeof ExperimentalUnitsFieldRoute
   '/layout/accordion': typeof LayoutAccordionRoute
@@ -346,6 +353,7 @@ export interface FileRoutesByTo {
   '/experimental/ophyd-control': typeof ExperimentalOphydControlRoute
   '/experimental/periodic-table': typeof ExperimentalPeriodicTableRoute
   '/experimental/prefect-flow-table': typeof ExperimentalPrefectFlowTableRoute
+  '/experimental/step-columns': typeof ExperimentalStepColumnsRoute
   '/experimental/text-log': typeof ExperimentalTextLogRoute
   '/experimental/units-field': typeof ExperimentalUnitsFieldRoute
   '/layout/accordion': typeof LayoutAccordionRoute
@@ -391,6 +399,7 @@ export interface FileRoutesById {
   '/experimental/ophyd-control': typeof ExperimentalOphydControlRoute
   '/experimental/periodic-table': typeof ExperimentalPeriodicTableRoute
   '/experimental/prefect-flow-table': typeof ExperimentalPrefectFlowTableRoute
+  '/experimental/step-columns': typeof ExperimentalStepColumnsRoute
   '/experimental/text-log': typeof ExperimentalTextLogRoute
   '/experimental/units-field': typeof ExperimentalUnitsFieldRoute
   '/layout/accordion': typeof LayoutAccordionRoute
@@ -437,6 +446,7 @@ export interface FileRouteTypes {
     | '/experimental/ophyd-control'
     | '/experimental/periodic-table'
     | '/experimental/prefect-flow-table'
+    | '/experimental/step-columns'
     | '/experimental/text-log'
     | '/experimental/units-field'
     | '/layout/accordion'
@@ -481,6 +491,7 @@ export interface FileRouteTypes {
     | '/experimental/ophyd-control'
     | '/experimental/periodic-table'
     | '/experimental/prefect-flow-table'
+    | '/experimental/step-columns'
     | '/experimental/text-log'
     | '/experimental/units-field'
     | '/layout/accordion'
@@ -525,6 +536,7 @@ export interface FileRouteTypes {
     | '/experimental/ophyd-control'
     | '/experimental/periodic-table'
     | '/experimental/prefect-flow-table'
+    | '/experimental/step-columns'
     | '/experimental/text-log'
     | '/experimental/units-field'
     | '/layout/accordion'
@@ -570,6 +582,7 @@ export interface RootRouteChildren {
   ExperimentalOphydControlRoute: typeof ExperimentalOphydControlRoute
   ExperimentalPeriodicTableRoute: typeof ExperimentalPeriodicTableRoute
   ExperimentalPrefectFlowTableRoute: typeof ExperimentalPrefectFlowTableRoute
+  ExperimentalStepColumnsRoute: typeof ExperimentalStepColumnsRoute
   ExperimentalTextLogRoute: typeof ExperimentalTextLogRoute
   ExperimentalUnitsFieldRoute: typeof ExperimentalUnitsFieldRoute
   LayoutAccordionRoute: typeof LayoutAccordionRoute
@@ -651,6 +664,13 @@ declare module '@tanstack/react-router' {
       path: '/experimental/text-log'
       fullPath: '/experimental/text-log'
       preLoaderRoute: typeof ExperimentalTextLogRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/experimental/step-columns': {
+      id: '/experimental/step-columns'
+      path: '/experimental/step-columns'
+      fullPath: '/experimental/step-columns'
+      preLoaderRoute: typeof ExperimentalStepColumnsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/experimental/prefect-flow-table': {
@@ -914,6 +934,7 @@ const rootRouteChildren: RootRouteChildren = {
   ExperimentalOphydControlRoute: ExperimentalOphydControlRoute,
   ExperimentalPeriodicTableRoute: ExperimentalPeriodicTableRoute,
   ExperimentalPrefectFlowTableRoute: ExperimentalPrefectFlowTableRoute,
+  ExperimentalStepColumnsRoute: ExperimentalStepColumnsRoute,
   ExperimentalTextLogRoute: ExperimentalTextLogRoute,
   ExperimentalUnitsFieldRoute: ExperimentalUnitsFieldRoute,
   LayoutAccordionRoute: LayoutAccordionRoute,
