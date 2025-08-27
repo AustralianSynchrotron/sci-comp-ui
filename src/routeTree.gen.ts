@@ -22,6 +22,7 @@ import { Route as ExperimentalTextLogRouteImport } from './routes/experimental/t
 import { Route as ExperimentalPrefectFlowTableRouteImport } from './routes/experimental/prefect-flow-table'
 import { Route as ExperimentalPeriodicTableRouteImport } from './routes/experimental/periodic-table'
 import { Route as ExperimentalOphydControlRouteImport } from './routes/experimental/ophyd-control'
+import { Route as ExperimentalGenericScanVisualisationRouteImport } from './routes/experimental/generic-scan-visualisation'
 import { Route as ExperimentalBeamBlockersControlRouteImport } from './routes/experimental/beam-blockers-control'
 import { Route as ElementsTypographyRouteImport } from './routes/elements/typography'
 import { Route as ElementsTooltipRouteImport } from './routes/elements/tooltip'
@@ -117,6 +118,12 @@ const ExperimentalOphydControlRoute =
   ExperimentalOphydControlRouteImport.update({
     id: '/experimental/ophyd-control',
     path: '/experimental/ophyd-control',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ExperimentalGenericScanVisualisationRoute =
+  ExperimentalGenericScanVisualisationRouteImport.update({
+    id: '/experimental/generic-scan-visualisation',
+    path: '/experimental/generic-scan-visualisation',
     getParentRoute: () => rootRouteImport,
   } as any)
 const ExperimentalBeamBlockersControlRoute =
@@ -292,6 +299,7 @@ export interface FileRoutesByFullPath {
   '/elements/tooltip': typeof ElementsTooltipRoute
   '/elements/typography': typeof ElementsTypographyRoute
   '/experimental/beam-blockers-control': typeof ExperimentalBeamBlockersControlRoute
+  '/experimental/generic-scan-visualisation': typeof ExperimentalGenericScanVisualisationRoute
   '/experimental/ophyd-control': typeof ExperimentalOphydControlRoute
   '/experimental/periodic-table': typeof ExperimentalPeriodicTableRoute
   '/experimental/prefect-flow-table': typeof ExperimentalPrefectFlowTableRoute
@@ -335,6 +343,7 @@ export interface FileRoutesByTo {
   '/elements/tooltip': typeof ElementsTooltipRoute
   '/elements/typography': typeof ElementsTypographyRoute
   '/experimental/beam-blockers-control': typeof ExperimentalBeamBlockersControlRoute
+  '/experimental/generic-scan-visualisation': typeof ExperimentalGenericScanVisualisationRoute
   '/experimental/ophyd-control': typeof ExperimentalOphydControlRoute
   '/experimental/periodic-table': typeof ExperimentalPeriodicTableRoute
   '/experimental/prefect-flow-table': typeof ExperimentalPrefectFlowTableRoute
@@ -379,6 +388,7 @@ export interface FileRoutesById {
   '/elements/tooltip': typeof ElementsTooltipRoute
   '/elements/typography': typeof ElementsTypographyRoute
   '/experimental/beam-blockers-control': typeof ExperimentalBeamBlockersControlRoute
+  '/experimental/generic-scan-visualisation': typeof ExperimentalGenericScanVisualisationRoute
   '/experimental/ophyd-control': typeof ExperimentalOphydControlRoute
   '/experimental/periodic-table': typeof ExperimentalPeriodicTableRoute
   '/experimental/prefect-flow-table': typeof ExperimentalPrefectFlowTableRoute
@@ -424,6 +434,7 @@ export interface FileRouteTypes {
     | '/elements/tooltip'
     | '/elements/typography'
     | '/experimental/beam-blockers-control'
+    | '/experimental/generic-scan-visualisation'
     | '/experimental/ophyd-control'
     | '/experimental/periodic-table'
     | '/experimental/prefect-flow-table'
@@ -467,6 +478,7 @@ export interface FileRouteTypes {
     | '/elements/tooltip'
     | '/elements/typography'
     | '/experimental/beam-blockers-control'
+    | '/experimental/generic-scan-visualisation'
     | '/experimental/ophyd-control'
     | '/experimental/periodic-table'
     | '/experimental/prefect-flow-table'
@@ -510,6 +522,7 @@ export interface FileRouteTypes {
     | '/elements/tooltip'
     | '/elements/typography'
     | '/experimental/beam-blockers-control'
+    | '/experimental/generic-scan-visualisation'
     | '/experimental/ophyd-control'
     | '/experimental/periodic-table'
     | '/experimental/prefect-flow-table'
@@ -554,6 +567,7 @@ export interface RootRouteChildren {
   ElementsTooltipRoute: typeof ElementsTooltipRoute
   ElementsTypographyRoute: typeof ElementsTypographyRoute
   ExperimentalBeamBlockersControlRoute: typeof ExperimentalBeamBlockersControlRoute
+  ExperimentalGenericScanVisualisationRoute: typeof ExperimentalGenericScanVisualisationRoute
   ExperimentalOphydControlRoute: typeof ExperimentalOphydControlRoute
   ExperimentalPeriodicTableRoute: typeof ExperimentalPeriodicTableRoute
   ExperimentalPrefectFlowTableRoute: typeof ExperimentalPrefectFlowTableRoute
@@ -659,6 +673,13 @@ declare module '@tanstack/react-router' {
       path: '/experimental/ophyd-control'
       fullPath: '/experimental/ophyd-control'
       preLoaderRoute: typeof ExperimentalOphydControlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/experimental/generic-scan-visualisation': {
+      id: '/experimental/generic-scan-visualisation'
+      path: '/experimental/generic-scan-visualisation'
+      fullPath: '/experimental/generic-scan-visualisation'
+      preLoaderRoute: typeof ExperimentalGenericScanVisualisationRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/experimental/beam-blockers-control': {
@@ -890,6 +911,8 @@ const rootRouteChildren: RootRouteChildren = {
   ElementsTooltipRoute: ElementsTooltipRoute,
   ElementsTypographyRoute: ElementsTypographyRoute,
   ExperimentalBeamBlockersControlRoute: ExperimentalBeamBlockersControlRoute,
+  ExperimentalGenericScanVisualisationRoute:
+    ExperimentalGenericScanVisualisationRoute,
   ExperimentalOphydControlRoute: ExperimentalOphydControlRoute,
   ExperimentalPeriodicTableRoute: ExperimentalPeriodicTableRoute,
   ExperimentalPrefectFlowTableRoute: ExperimentalPrefectFlowTableRoute,
