@@ -141,7 +141,7 @@ export function ScatterTraceChart({
     {
       x: series.points.map(([x]) => x),
       y: series.points.map(([, y]) => y),
-      name: series.name,
+      hoverinfo: "none",
 
       type: "scatter" as const,
       mode: "markers" as const,
@@ -154,10 +154,12 @@ export function ScatterTraceChart({
     {
       x: series.points.map(([x]) => x),
       y: series.points.map(([, y]) => y),
-      name: series.name,
-
       type: "scatter" as const,
       mode: "lines+markers" as const,
+      name: "Acquisition",
+      text: Array(series.points.length)
+        .fill(0)
+        .map((_, i) => `Step ${i}`),
       marker: {
         color: series.color || getCSSVariableAsRGB(defaultColors[0]),
         size: 16,
