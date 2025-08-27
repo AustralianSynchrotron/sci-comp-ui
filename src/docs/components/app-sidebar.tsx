@@ -1,5 +1,5 @@
 import type * as React from "react"
-import {GalleryVerticalEnd } from "lucide-react"
+import { GalleryVerticalEnd } from "lucide-react"
 import { Link, useLocation } from "@tanstack/react-router"
 import { Badge } from "../../ui/elements/badge"
 import {
@@ -201,6 +201,10 @@ const data = {
           title: "Units Field",
           url: "/experimental/units-field",
         },
+        {
+          title: "Nav",
+          url: "/experimental/nav",
+        },
       ],
     },
   ],
@@ -242,7 +246,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                   <SidebarMenuSub className="ml-0 border-l-0 px-1.5">
                     {item.items.map((subItem) => (
                       <SidebarMenuSubItem key={subItem.title}>
-                        <SidebarMenuSubButton asChild isActive={location.pathname === subItem.url}>
+                        <SidebarMenuSubButton
+                          asChild
+                          isActive={location.pathname === subItem.url}
+                        >
                           <Link to={subItem.url}>{subItem.title}</Link>
                         </SidebarMenuSubButton>
                       </SidebarMenuSubItem>
