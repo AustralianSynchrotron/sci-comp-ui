@@ -201,6 +201,10 @@ const data = {
           title: "Units Field",
           url: "/experimental/units-field",
         },
+        {
+          title: "Camera Control",
+          url: "/experimental/camera-control",
+        },
       ],
     },
   ],
