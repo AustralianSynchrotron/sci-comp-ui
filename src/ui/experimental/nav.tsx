@@ -1,5 +1,6 @@
 import { useState } from "react"
-import { Settings } from "lucide-react"
+import { PanelTopOpen as SheetIcon } from "lucide-react"
+
 import { Button } from "../elements/button"
 import { OphydMonitor } from "../components/ophyd-monitor"
 import { BeamBlockerControl, type ShutterConfig } from "./beam-blockers-control"
@@ -84,7 +85,7 @@ export function Nav({ title, description }: NavProps) {
         <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
           <SheetTrigger asChild>
             <Button variant="outline" size="sm">
-              <Settings className="h-4 w-4 mr-2" />
+              <SheetIcon className="h-4 w-4 mr-2" />
               View more
             </Button>
           </SheetTrigger>
