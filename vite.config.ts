@@ -9,34 +9,52 @@ import { embedSourcePlugin } from './src/vite-plugins/embed-source-plugin'
 
 export default defineConfig(({ command, mode }) => {
   const isGitHubPages = mode === 'github-pages'
+  const isDocs = mode === 'docs'
+  const isLibraryBuild = !isGitHubPages && !isDocs
+  
   console.log('isGitHubPages', isGitHubPages)
+  console.log('isDocs', isDocs)
+  console.log('isLibraryBuild', isLibraryBuild)
   console.log('command', command)
   console.log('mode', mode)
   
+  const plugins = [
+    packageVersionPlugin(), // Add our custom plugin first
+    embedSourcePlugin(), // Add source embedding plugin
+  ]
+  
+  // Only include TanStack Router for docs or GitHub Pages builds
+  // IMPORTANT: TanStack Router must come BEFORE React plugin
+  if (isDocs || isGitHubPages) {
+    plugins.push(tanstackRouter({
+      target: 'react',
+      autoCodeSplitting: true,
+      routesDirectory: './src/docs/routes',
+      generatedRouteTree: './src/docs/routeTree.gen.ts'
+    }))
+  }
+  
+  // React plugin must come after TanStack Router
+  plugins.push(react())
+  plugins.push(tailwindcss())
+  
+  // Only include DTS plugin for library builds
+  if (isLibraryBuild) {
+    plugins.push(dts({
+      include: ['src/**/*'],
+      exclude: ['src/**/*.stories.*', 'src/**/*.test.*', 'src/docs/**/*'],
+      insertTypesEntry: true,
+      tsconfigPath: './tsconfig.lib.json'
+    }))
+  }
+  
   return {
     base: isGitHubPages ? '/sci-comp-ui/' : '/',
+    plugins,
     
-    plugins: [
-      packageVersionPlugin(), // Add our custom plugin first
-      embedSourcePlugin(), // Add source embedding plugin
-      tanstackRouter({
-        target: 'react',
-        autoCodeSplitting: true,
-      }),
-      react(),
-      tailwindcss(),
-      // Only include DTS plugin for library builds, not GitHub Pages
-      ...(isGitHubPages ? [] : [dts({
-        include: ['src/**/*'],
-        exclude: ['src/**/*.stories.*', 'src/**/*.test.*'],
-        insertTypesEntry: true,
-        tsconfigPath: './tsconfig.lib.json'
-      })])
-    ],
-    
-    build: isGitHubPages ? {
-      // Standard web app build for GitHub Pages
-      outDir: 'dist',
+    build: isGitHubPages || isDocs ? {
+      // Standard web app build for GitHub Pages and docs
+      outDir: isDocs ? 'docs-dist' : 'dist',
       emptyOutDir: true,
       rollupOptions: {
         output: {

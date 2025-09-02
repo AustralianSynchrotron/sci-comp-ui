@@ -119,7 +119,8 @@ function GettingStartedPage() {
               <p>Import and use components in your React application:</p>
               <CodeBlock 
                 language="tsx"
-                code={`import { Button } from "sci-comp-ui"`}
+                code={`import "sci-comp-ui/styles";
+import { Button } from "sci-comp-ui"`}
               />
               <Button>Example Button</Button>
             </CardContent>

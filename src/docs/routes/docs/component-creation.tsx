@@ -91,6 +91,14 @@ function RouteComponent() {
                       Early development components that need additional testing for utility and bug identification.
                     </p>
                   </li>
+                  <li className="space-y-2">
+                    <h3 className="font-semibold flex items-center gap-2">
+                      Layout <Badge variant="outline">src/ui/layout/</Badge>
+                    </h3>
+                    <p className="text-sm text-muted-foreground">
+                      Structural organization components: grid, stack, box, etc. These are used to layout other components.
+                    </p>
+                  </li>
                 </ul>
             </CardContent>
           </Card>
@@ -148,12 +156,12 @@ function RouteComponent() {
               <div>
                 <h4 className="font-medium mb-2">File Location</h4>
                 <p className="text-sm text-muted-foreground mb-3">
-                  Create documentation in <code className="bg-muted px-1 rounded">src/routes/</code> following the component's location:
+                  Create documentation in <code className="bg-muted px-1 rounded">src/docs/routes/</code> following the component's location:
                 </p>
                 <ul className="text-sm text-muted-foreground space-y-1 ml-4">
-                  <li>• Elements: <code className="bg-muted px-1 rounded">src/routes/elements/</code></li>
-                  <li>• Components: <code className="bg-muted px-1 rounded">src/routes/components/</code></li>
-                  <li>• Experimental: <code className="bg-muted px-1 rounded">src/routes/experimental/</code></li>
+                  <li>• Elements: <code className="bg-muted px-1 rounded">src/docs/routes/elements/</code></li>
+                  <li>• Components: <code className="bg-muted px-1 rounded">src/docs/routes/components/</code></li>
+                  <li>• Experimental: <code className="bg-muted px-1 rounded">src/docs/routes/experimental/</code></li>
                 </ul>
               </div>
             </CardContent>
@@ -168,7 +176,7 @@ function RouteComponent() {
               <ol className="list-decimal list-inside space-y-2 text-sm">
                 <li>Create component file in appropriate <code className="bg-muted px-1 rounded">src/ui/</code> subdirectory</li>
                 <li>Implement component following the structure pattern above</li>
-                <li>Create documentation file in corresponding <code className="bg-muted px-1 rounded">src/routes/</code> directory</li>
+                <li>Create documentation file in corresponding <code className="bg-muted px-1 rounded">src/docs/routes/</code> directory</li>
                 <li>Add route to <code className="bg-muted px-1 rounded">src/docs/components/app-sidebar.tsx</code></li>
                 <li>Create demos with proper markers for source embedding</li>
                 <li>Test component functionality and accessibility</li>
@@ -187,7 +195,7 @@ function RouteComponent() {
                   Review <code className="bg-muted px-1 rounded">src/ui/elements/button.tsx</code> for a complete implementation example.
                 </p>
                 <p className="text-muted-foreground">
-                  See <code className="bg-muted px-1 rounded">src/routes/elements/button.tsx</code> for documentation structure.
+                  See <code className="bg-muted px-1 rounded">src/docs/routes/elements/button.tsx</code> for documentation structure.
                 </p>
               </div>
             </CardContent>

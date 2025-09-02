@@ -141,13 +141,6 @@ module.exports = {
   </div>
 </Card>`} />
               </div>
-
-              <Alert>
-                <AlertTriangle className="h-4 w-4" />
-                <AlertDescription>
-                  The `tw-` prefix ensures Tailwind classes don't conflict with MUI's emotion-generated styles during the migration period.
-                </AlertDescription>
-              </Alert>
             </CardContent>
           </Card>
         </div>

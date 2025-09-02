@@ -3,7 +3,7 @@
 To run the component demo/docs page (spins up page at `main.tsx`), install the dev dependencies, and run dev:
 ```bash
 npm i
-npm run dev
+npm run dev:docs 
 ```
 
 ## Development
