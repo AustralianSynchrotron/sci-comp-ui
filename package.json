@@ -1,7 +1,9 @@
 {
-  "name": "sci-comp-ui",
-  "version": "0.0.1",
+  "name": "@australiansynchrotron/sci-comp-ui",
+  "version": "0.0.2",
   "private": false,
+  "license": "MIT",
+  "author": "Australian Synchrotron",
   "type": "module",
   "exports": {
     ".": {
