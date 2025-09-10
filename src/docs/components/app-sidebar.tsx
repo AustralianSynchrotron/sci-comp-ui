@@ -15,8 +15,31 @@ import {
     SidebarMenuSubItem,
 } from '../../ui/layout/sidebar';
 
+type NavItem = {
+    title: string;
+    url: string;
+    newTab?: boolean;
+    items?: NavItem[];
+};
+
 const data = {
     navMain: [
+        {
+            title: 'Links',
+            url: '/links',
+            items: [
+                {
+                    title: 'GitHub',
+                    url: 'https://github.com/AustralianSynchrotron/sci-comp-ui',
+                    newTab: true,
+                },
+                {
+                    title: 'npm',
+                    url: 'https://www.npmjs.com/package/@australiansynchrotron/sci-comp-ui',
+                    newTab: true,
+                }
+            ],
+        },
         {
             title: 'Docs',
             url: '/docs',
@@ -212,7 +235,7 @@ const data = {
             ],
         },
     ],
-};
+} satisfies { navMain: NavItem[] };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     const location = useLocation();
@@ -254,7 +277,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                                                     asChild
                                                     isActive={location.pathname === subItem.url}
                                                 >
-                                                    <Link to={subItem.url}>{subItem.title}</Link>
+                                                    <Link
+                                                        to={subItem.url}
+                                                        target={subItem.newTab ? '_blank' : undefined}
+                                                        rel={subItem.newTab ? 'noopener noreferrer' : undefined}>{subItem.title}
+                                                    </Link>
                                                 </SidebarMenuSubButton>
                                             </SidebarMenuSubItem>
                                         ))}
