@@ -265,10 +265,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                         {data.navMain.map((item) => (
                             <SidebarMenuItem key={item.title}>
                                 <SidebarMenuButton asChild disabled>
-                                    <Link
-                                        to={item.url}
-
-                                        className="font-medium">
+                                    <Link to={item.url} className="font-medium">
                                         {item.title}
                                     </Link>
                                 </SidebarMenuButton>
