@@ -60,7 +60,7 @@ Reinstall dependencies to refresh everything
 npm install
 ```
 
-##### [A document for yalk and a consumer project with pnpm](./docs/yalc-with-pnpm-guide.md)
+##### [A document for yalc and a consumer project with pnpm](./docs/yalc-with-pnpm-guide.md)
 
 ## Using Vite Plugins for Source Embedding
 
