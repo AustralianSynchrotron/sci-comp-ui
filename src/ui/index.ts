@@ -30,7 +30,7 @@ export { Card, CardHeader, CardFooter, CardTitle, CardAction, CardDescription, C
 export { Grid, gridVariants } from './layout/grid'
 export { Collapsible, CollapsibleTrigger, CollapsibleContent } from './layout/collapsible'
 export { ScrollArea, ScrollBar } from './layout/scroll-area'
-export { Sidebar, SidebarTrigger, SidebarInset, SidebarInput, SidebarHeader, SidebarFooter, SidebarSeparator, SidebarContent, SidebarGroup, SidebarGroupLabel, SidebarGroupAction, SidebarGroupContent, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarMenuAction, SidebarMenuBadge, SidebarMenuSkeleton, SidebarMenuSub, SidebarMenuSubItem, SidebarMenuSubButton, SidebarProvider, SidebarRail } from './layout/sidebar'
+export { Sidebar, SidebarTrigger, SidebarInset, SidebarInput, SidebarHeader, SidebarFooter, SidebarSeparator, SidebarContent, SidebarGroup, SidebarGroupLabel, SidebarGroupAction, SidebarGroupContent, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarMenuAction, SidebarMenuBadge, SidebarMenuSkeleton, SidebarMenuSub, SidebarMenuSubItem, SidebarMenuSubButton, SidebarProvider, SidebarRail, useSidebar } from './layout/sidebar'
 export { Sheet, SheetTrigger, SheetClose, SheetContent, SheetHeader, SheetFooter, SheetTitle, SheetDescription } from './layout/sheet'
 export { Stack, stackVariants } from './layout/stack'
 
