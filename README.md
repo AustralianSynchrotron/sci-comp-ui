@@ -9,10 +9,10 @@ npm run dev:docs
 
 ## Usage
 
-Either add the Radix-UI required CSS variables into your consumer UI's `theme.css` (or respective `index.css`) file, or import the ones included with this package with:
+Either add the Radix-UI required CSS variables into your consumer UI's main `index.css` file, or import the ones included with this package with:
 
 ```js
-import 'sci-comp-ui/styles';
+import '@australiansynchrotron/sci-comp-ui/styles';
 ```
 
 Import the components you want:
