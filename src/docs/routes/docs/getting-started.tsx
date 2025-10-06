@@ -105,7 +105,7 @@ function GettingStartedPage() {
             <CardContent>
               <CodeBlock 
                 language="bash"
-                code={`npm install sci-comp-ui`}
+                code={`npm install @australiansynchrotron/sci-comp-ui`}
               />
             </CardContent>
           </Card>
@@ -119,8 +119,8 @@ function GettingStartedPage() {
               <p>Import and use components in your React application:</p>
               <CodeBlock 
                 language="tsx"
-                code={`import "sci-comp-ui/styles";
-import { Button } from "sci-comp-ui"`}
+                code={`import "@australiansynchrotron/sci-comp-ui/styles";
+import { Button } from "@australiansynchrotron/sci-comp-ui"`}
               />
               <Button>Example Button</Button>
             </CardContent>

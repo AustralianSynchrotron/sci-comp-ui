@@ -38,24 +38,29 @@ cd /path/to/project/mex-web-ui
 
 Remove the old yalc package
 ```bash
-yalc remove sci-comp-ui
+yalc remove @australiansynchrotron/sci-comp-ui
 ```
 
 Clean any caches
 ```bash
 rm -rf node_modules/.cache
-rm -rf .yalc/sci-comp-ui
+rm -rf .yalc/@australiansynchrotronsci-comp-ui
 ```
 
 Add the updated package
 ```bash
 yalc add ../sci-comp-ui
+
+# or
+yalc add @australiansynchrotronsci-comp-ui
 ```
 
 Reinstall dependencies to refresh everything
 ```bash
 npm install
 ```
+
+##### [A document for yalc and a consumer project with pnpm](./docs/yalc-with-pnpm-guide.md)
 
 ## Using Vite Plugins for Source Embedding
 
