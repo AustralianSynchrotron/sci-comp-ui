@@ -1,5 +1,5 @@
-import './styles/globals.css'
+import './styles/index.css';
+import './styles/theme.css';
 
-export * from './ui'
-export { cn } from './lib/utils'
-
+export * from './ui';
+export { cn } from './lib/utils';
