@@ -36,3 +36,4 @@ export { Stack, stackVariants } from './layout/stack'
 
 // EXPERIMENTAL COMPONENTS
 export { FileBrowser, type FileTreeItem } from './experimental/file-browser'
+export { PeriodicTable, type PeriodicTableOutputType, type PeriodicTableProps, } from './experimental/periodic-table'
