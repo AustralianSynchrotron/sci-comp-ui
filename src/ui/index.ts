@@ -1,5 +1,6 @@
 // UI ELEMENTS & COMPONENTS
 export { Alert, AlertTitle, AlertDescription } from './components/alert'
+export { AlertDialog, AlertDialogPortal, AlertDialogOverlay, AlertDialogTrigger, AlertDialogContent, AlertDialogHeader, AlertDialogFooter, AlertDialogTitle, AlertDialogDescription, AlertDialogAction, AlertDialogCancel } from './components/alert-dialog'
 export { Badge, badgeVariants } from './elements/badge'
 export { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink } from './elements/breadcrumb'
 export { Button, buttonVariants } from './elements/button'
