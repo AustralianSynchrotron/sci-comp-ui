@@ -1,5 +1,6 @@
 // UI ELEMENTS & COMPONENTS
 export { Alert, AlertTitle, AlertDescription } from './components/alert'
+export { Badge, badgeVariants } from './elements/badge'
 export { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink } from './elements/breadcrumb'
 export { Button, buttonVariants } from './elements/button'
 export { Calendar } from './components/calendar'
