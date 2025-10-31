@@ -232,6 +232,10 @@ const data = {
                     title: 'Step Columns',
                     url: '/experimental/step-columns',
                 },
+                {
+                    title: 'Camera Control',
+                    url: '/experimental/camera-control',
+                },
             ],
         },
     ],
