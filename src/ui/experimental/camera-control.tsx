@@ -1,65 +1,75 @@
 import * as React from 'react';
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useContext } from "react";
 import { cn } from "../../lib/utils";
+import { ImageContext } from './image-context';
+
 
 interface CameraControlProps {
     className?: string;
-    cameraSource: string; // URL of the camera feed or image
     onMousePositionChange?: (pos: { x: number, y: number, intensity: number } | null) => void;
     onClick?: (pos: { x: number, y: number, intensity: number }) => void;
     showIntensity?: boolean; // Whether to show pixel intensity or RGBA value
-    
+
 }
 
-function CameraControl({ className, cameraSource, onMousePositionChange, onClick, showIntensity = false }: CameraControlProps & { cursorPosition?: { x: number, y: number } | null }) {
+export const CameraControl: React.FC<CameraControlProps> = ({
+    className,
+    onMousePositionChange,
+    onClick,
+    showIntensity = false }) => {
+
+    const image = useContext(ImageContext);
+    const canvasRef = React.useRef<HTMLCanvasElement>(null);
     const [popupPos, setPopupPos] = useState<{ x: number, y: number } | null>(null);
     const [pixelValue, setPixelValue] = useState<string | null>(null);
-    const imgRef = React.useRef<HTMLImageElement>(null);
-    const canvasRef = React.useRef<HTMLCanvasElement>(null);
     const [cursorPosition, setCursorPosition] = useState<{ x: number, y: number } | null>(null);
+    const [frameCount, setFrameCount] = useState<number>(0);
+    const [startTime, setStartTime] = useState<number>(performance.now());
+
 
     // Draw image to canvas when loaded
-    const handleImageLoad = () => {
-        const img = imgRef.current;
-        const canvas = canvasRef.current;
-        if (img && canvas) {
-            canvas.width = img.naturalWidth;
-            canvas.height = img.naturalHeight;
+    useEffect(() => {
+        if (image && canvasRef.current) {
+            const canvas = canvasRef.current;
+            canvas.width = image.width;
+            canvas.height = image.height;
+            canvas.style.width = `${image.width}px`;
+            canvas.style.height = `${image.height}px`;
+
+            setFrameCount(frameCount + 1);
+            const now = performance.now();
+            if (now - startTime >= 1000) {
+              console.log(`FPS: ${frameCount}`);
+              setFrameCount(0);
+              setStartTime(now);
+            }
+
             const ctx = canvas.getContext('2d');
             if (ctx) {
-                ctx.drawImage(img, 0, 0);
+                ctx.drawImage(image, 0, 0);
             }
         }
-    };
+    }, [image])
 
     // Get mouse position and intensity
-    const getMousePixelInfo = (e: React.MouseEvent<HTMLImageElement>) => {
-        const rect = e.currentTarget.getBoundingClientRect();
-        const xDisplay = e.clientX - rect.left;
-        const yDisplay = e.clientY - rect.top;
-        const img = imgRef.current;
-        let x = Math.floor(xDisplay);
-        let y = Math.floor(yDisplay);
-        if (img) {
-            const scaleX = img.naturalWidth / img.width;
-            const scaleY = img.naturalHeight / img.height;
-            x = Math.floor(xDisplay * scaleX);
-            y = Math.floor(yDisplay * scaleY);
-        }
-        let intensity = 0;
+    const getMousePixelInfo = (e: React.MouseEvent<HTMLCanvasElement>) => {
         const canvas = canvasRef.current;
-        if (canvas) {
-            const ctx = canvas.getContext('2d');
-            if (ctx) {
-                const pixel = ctx.getImageData(x, y, 1, 1).data;
-                intensity = Math.round((pixel[0] + pixel[1] + pixel[2]) / 3);
-                return { x, y, intensity, pixel };
-            }
+        if (!canvas) return { x: 0, y: 0, intensity: 0, pixel: [0, 0, 0, 0] };
+
+        const rect = canvas.getBoundingClientRect();
+        const x = Math.floor(e.clientX - rect.left);
+        const y = Math.floor(e.clientY - rect.top);
+
+        const ctx = canvas.getContext('2d');
+        if (ctx) {
+            const pixel = ctx.getImageData(x, y, 1, 1).data;
+            const intensity = Math.round((pixel[0] + pixel[1] + pixel[2]) / 3);
+            return { x, y, intensity, pixel };
         }
-        return { x, y, intensity, pixel: [0, 0, 0, 0] };
+        return { x: 0, y: 0, intensity: 0, pixel: [0, 0, 0, 0] };
     };
 
-    const handleMouseMove = (e: React.MouseEvent<HTMLImageElement>) => {
+    const handleMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
         const info = getMousePixelInfo(e);
         setPopupPos({ x: e.clientX, y: e.clientY });
         if (showIntensity) {
@@ -80,7 +90,7 @@ function CameraControl({ className, cameraSource, onMousePositionChange, onClick
         }
     };
 
-    const handleMouseClick = (e: React.MouseEvent<HTMLImageElement>) => {
+    const handleMouseClick = (e: React.MouseEvent<HTMLCanvasElement>) => {
         const info = getMousePixelInfo(e);
         if (onClick) {
             onClick({ x: info.x, y: info.y, intensity: info.intensity });
@@ -94,25 +104,28 @@ function CameraControl({ className, cameraSource, onMousePositionChange, onClick
 
     return (
         <div className={cn("space-y-4", className)} style={{ position: 'relative', display: 'inline-block' }}>
-            <img
-                ref={imgRef}
-                src={cameraSource}
-                onLoad={handleImageLoad}
+            <canvas
+                ref={canvasRef}
                 onMouseMove={handleMouseMove}
                 onMouseLeave={handleMouseLeave}
                 onClick={handleMouseClick}
-                style={{ cursor: 'crosshair', display: 'block' }}
-                alt="camera"
+                style={{
+                    cursor: 'crosshair',
+                    display: 'block',
+                    border: '1px solid red', // temporary for debugging
+                    width: `${image?.width}px`,
+                    height: `${image?.height}px`,
+                }}
             />
             {/* Overlay cursor */}
-            {cursorPosition && imgRef.current && (
+            {cursorPosition && canvasRef.current && (
                 <div
                     style={{
                         position: 'absolute',
                         left: 0,
                         top: 0,
-                        width: imgRef.current.width,
-                        height: imgRef.current.height,
+                        width: canvasRef.current.width,
+                        height: canvasRef.current.height,
                         pointerEvents: 'none',
                         zIndex: 10,
                     }}
@@ -121,7 +134,7 @@ function CameraControl({ className, cameraSource, onMousePositionChange, onClick
                     <div
                         style={{
                             position: 'absolute',
-                            left: cursorPosition.x / imgRef.current.naturalWidth * imgRef.current.width,
+                            left: cursorPosition.x,
                             top: 0,
                             width: 1,
                             height: '100%',
@@ -133,7 +146,7 @@ function CameraControl({ className, cameraSource, onMousePositionChange, onClick
                         style={{
                             position: 'absolute',
                             left: 0,
-                            top: cursorPosition.y / imgRef.current.naturalHeight * imgRef.current.height,
+                            top: cursorPosition.y,
                             width: '100%',
                             height: 1,
                             background: 'red',
@@ -141,8 +154,6 @@ function CameraControl({ className, cameraSource, onMousePositionChange, onClick
                     />
                 </div>
             )}
-            {/* Hidden canvas for pixel reading */}
-            <canvas ref={canvasRef} style={{ display: 'none' }} />
             {popupPos && (
                 <div
                     style={{
@@ -164,5 +175,3 @@ function CameraControl({ className, cameraSource, onMousePositionChange, onClick
         </div>
     );
 }
-
-export { CameraControl }

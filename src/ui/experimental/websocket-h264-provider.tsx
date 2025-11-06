@@ -1,0 +1,206 @@
+import React, { useState, useEffect, ReactNode } from 'react';
+
+
+import { ImageContext } from './image-context';
+
+
+interface WebsocketH264ProviderProps {
+  children: ReactNode,
+  wsUrl: string;
+}
+
+export const WebsocketH264Provider: React.FC<WebsocketH264ProviderProps> = ({ children, wsUrl }) => {
+
+  const [imageBitmap, setImageBitmap] = useState<ImageBitmap | null>(null);
+  const [currentWidth, setCurrentWidth] = useState<number>(1024);
+  const [currentHeight, setCurrentHeight] = useState<number>(1024);
+
+  useEffect(() => {
+    let ws: WebSocket;
+    let decoder: VideoDecoder | null = null;
+    let configured = false;
+    let sps: Uint8Array | null = null;
+    let pps: Uint8Array | null = null;
+    let nextTs = 0;
+    const frameDurationUs = Math.round(1_000_000 / 50);
+
+    const splitAnnexB = (buf: ArrayBuffer): Uint8Array[] => {
+      const b = new Uint8Array(buf), out: Uint8Array[] = [];
+      let i = 0;
+      const isStart = (i: number) =>
+        (i + 3 < b.length && b[i] === 0 && b[i + 1] === 0 && b[i + 2] === 1) ||
+        (i + 4 < b.length && b[i] === 0 && b[i + 1] === 0 && b[i + 2] === 0 && b[i + 3] === 1);
+      const consumeStart = (i: number) => (b[i + 2] === 1 ? i + 3 : i + 4);
+
+      while (i < b.length - 3 && !isStart(i)) i++;
+      if (i >= b.length - 3) return out;
+      i = consumeStart(i); let start = i;
+      while (i < b.length) {
+        if (isStart(i)) {
+          out.push(b.subarray(start, i));
+          i = consumeStart(i);
+          start = i;
+        } else i++;
+      }
+      if (start < b.length) out.push(b.subarray(start));
+      return out;
+    };
+
+    const nalType = (nal: Uint8Array) => nal[0] & 0x1f;
+    const isKeyframe = (nals: Uint8Array[]) => nals.some(n => nalType(n) === 5);
+
+    const buildAvcC = (spsNal: Uint8Array, ppsNal: Uint8Array): Uint8Array => {
+      const spsLen = spsNal.length, ppsLen = ppsNal.length;
+      const avcc = new Uint8Array(7 + 2 + spsLen + 1 + 2 + ppsLen);
+      let o = 0;
+      avcc[o++] = 1;
+      avcc[o++] = spsNal[1];
+      avcc[o++] = spsNal[2];
+      avcc[o++] = spsNal[3];
+      avcc[o++] = 0xFF;
+      avcc[o++] = 0xE1;
+      avcc[o++] = (spsLen >>> 8) & 0xff; avcc[o++] = spsLen & 0xff; avcc.set(spsNal, o); o += spsLen;
+      avcc[o++] = 1;
+      avcc[o++] = (ppsLen >>> 8) & 0xff; avcc[o++] = ppsLen & 0xff; avcc.set(ppsNal, o); o += ppsLen;
+      return avcc;
+    };
+
+    const codecFromSps = (spsNal: Uint8Array): string => {
+      const hex = (n: number) => n.toString(16).toUpperCase().padStart(2, '0');
+      return `avc1.${hex(spsNal[1])}${hex(spsNal[2])}${hex(spsNal[3])}`;
+    };
+
+    const ensureDecoder = () => {
+      if (decoder) return;
+
+      decoder = new VideoDecoder({
+        output: async frame => {
+          const bitmap = await createImageBitmap(frame);
+          setImageBitmap(bitmap);
+          frame.close();
+        },
+        error: e => console.error("Decoder error:", e)
+      });
+    };
+
+    const tryConfigure = async (): Promise<boolean> => {
+      if (configured || !sps || !pps) return false;
+      ensureDecoder();
+
+      const description = buildAvcC(sps, pps);
+      const codec = codecFromSps(sps);
+      const config: VideoDecoderConfig = {
+        codec,
+        codedWidth: currentWidth,
+        codedHeight: currentHeight,
+        description: description.buffer
+      };
+
+      const support = await VideoDecoder.isConfigSupported(config).catch(() => null);
+      if (!support?.supported) {
+        console.warn("Unsupported config:", config);
+        return false;
+      }
+
+      if (decoder!.state === 'configured') decoder!.reset();
+      decoder!.configure(config);
+      configured = true;
+      return true;
+    };
+
+    const feedChunk = (nals: Uint8Array[]) => {
+      let total = 0;
+      for (const n of nals) total += 4 + n.length;
+      const payload = new Uint8Array(total);
+      let o = 0;
+      for (const n of nals) {
+        const L = n.length;
+        payload[o++] = (L >>> 24) & 0xff;
+        payload[o++] = (L >>> 16) & 0xff;
+        payload[o++] = (L >>> 8) & 0xff;
+        payload[o++] = L & 0xff;
+        payload.set(n, o); o += L;
+      }
+
+      const chunk = new EncodedVideoChunk({
+        type: isKeyframe(nals) ? 'key' : 'delta',
+        timestamp: nextTs,
+        data: payload
+      });
+      nextTs += frameDurationUs;
+      decoder!.decode(chunk);
+    };
+
+    const onAccessUnit = (buf: ArrayBuffer) => {
+      const nals = splitAnnexB(buf);
+      if (!nals.length) return;
+
+      for (const n of nals) {
+        const t = nalType(n);
+        if (t === 7) sps = n.slice();
+        else if (t === 8) pps = n.slice();
+      }
+
+      if (!configured && sps && pps) tryConfigure().then(ok => { if (ok) feedChunk(nals); });
+      else if (configured) feedChunk(nals);
+    };
+
+    const connect = () => {
+      ws = new WebSocket(wsUrl);
+      ws.binaryType = 'arraybuffer';
+
+      ws.onopen = () => {
+        console.log("Connected");
+        configured = false;
+      };
+
+      ws.onmessage = ev => {
+        if (typeof ev.data === 'string') {
+          try {
+            const meta = JSON.parse(ev.data);
+            if (meta.type === 'config') {
+              console.log("meta.width");
+              console.log(meta.width);
+              console.log("meta.height");
+              console.log(meta.height);
+              setCurrentWidth(meta.width);
+              setCurrentHeight(meta.height);
+              configured = false; // force reconfigure
+            }
+          } catch (e) {
+            console.warn("Failed to parse metadata:", e);
+          }
+        } else {
+
+          onAccessUnit(ev.data);
+        }
+      };
+
+      ws.onclose = () => {
+        configured = false;
+        try {
+          decoder?.flush().catch(() => { });
+        } catch { }
+        setTimeout(connect, 3000);
+      };
+
+      ws.onerror = e => {
+        console.error('WebSocket error:', e);
+        try { ws.close(); } catch { }
+      };
+    };
+
+    connect();
+
+    return () => {
+      ws?.close();
+      decoder?.close();
+    };
+  }, [wsUrl]);
+
+  return (
+    <ImageContext.Provider value={imageBitmap}>
+      {children}
+    </ImageContext.Provider>
+  )
+}
