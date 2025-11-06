@@ -16,13 +16,13 @@ function RouteComponent() {
   const [clickPos, setClickPos] = useState<{ x: number, y: number, intensity: number } | null>(null);
   return <div>
     <WebsocketH264Provider wsUrl="ws://localhost:8080/ws">
-    <CameraControl
-      className="border"
-      onMousePositionChange={setMousePos}
-      onClick={setClickPos}
-      showIntensity={true}
+      <CameraControl
+        className="border"
+        onMousePositionChange={setMousePos}
+        onClick={setClickPos}
+        showIntensity={true}
       // cursorPosition={clickPos}
-    />
+      />
     </WebsocketH264Provider>
     <TypographyH1>
       {mousePos ? `Cursor: x=${Math.round(mousePos.x)}, y=${Math.round(mousePos.y)}, intensity=${mousePos.intensity}` : 'Move mouse over image'}
