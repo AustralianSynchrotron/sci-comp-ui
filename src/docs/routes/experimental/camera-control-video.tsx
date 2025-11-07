@@ -15,7 +15,7 @@ function RouteComponent() {
   const [mousePos, setMousePos] = useState<{ x: number, y: number, intensity: number } | null>(null);
   const [clickPos, setClickPos] = useState<{ x: number, y: number, intensity: number } | null>(null);
   return <div>
-    <VideoProvider videoUrl="/drone.mp4">
+    <VideoProvider videoUrl="">
       <CameraControl
         className="border"
         onMousePositionChange={setMousePos}
