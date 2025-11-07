@@ -24,7 +24,8 @@ import { Route as ExperimentalPrefectFlowTableRouteImport } from './routes/exper
 import { Route as ExperimentalPeriodicTableRouteImport } from './routes/experimental/periodic-table'
 import { Route as ExperimentalOphydControlRouteImport } from './routes/experimental/ophyd-control'
 import { Route as ExperimentalFileBrowserRouteImport } from './routes/experimental/file-browser'
-import { Route as ExperimentalCameraControlRouteImport } from './routes/experimental/camera-control'
+import { Route as ExperimentalCameraControlVideoRouteImport } from './routes/experimental/camera-control-video'
+import { Route as ExperimentalCameraControlH264RouteImport } from './routes/experimental/camera-control-h264'
 import { Route as ExperimentalBeamBlockersControlRouteImport } from './routes/experimental/beam-blockers-control'
 import { Route as ElementsTypographyRouteImport } from './routes/elements/typography'
 import { Route as ElementsTooltipRouteImport } from './routes/elements/tooltip'
@@ -132,10 +133,16 @@ const ExperimentalFileBrowserRoute = ExperimentalFileBrowserRouteImport.update({
   path: '/experimental/file-browser',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ExperimentalCameraControlRoute =
-  ExperimentalCameraControlRouteImport.update({
-    id: '/experimental/camera-control',
-    path: '/experimental/camera-control',
+const ExperimentalCameraControlVideoRoute =
+  ExperimentalCameraControlVideoRouteImport.update({
+    id: '/experimental/camera-control-video',
+    path: '/experimental/camera-control-video',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ExperimentalCameraControlH264Route =
+  ExperimentalCameraControlH264RouteImport.update({
+    id: '/experimental/camera-control-h264',
+    path: '/experimental/camera-control-h264',
     getParentRoute: () => rootRouteImport,
   } as any)
 const ExperimentalBeamBlockersControlRoute =
@@ -311,7 +318,8 @@ export interface FileRoutesByFullPath {
   '/elements/tooltip': typeof ElementsTooltipRoute
   '/elements/typography': typeof ElementsTypographyRoute
   '/experimental/beam-blockers-control': typeof ExperimentalBeamBlockersControlRoute
-  '/experimental/camera-control': typeof ExperimentalCameraControlRoute
+  '/experimental/camera-control-h264': typeof ExperimentalCameraControlH264Route
+  '/experimental/camera-control-video': typeof ExperimentalCameraControlVideoRoute
   '/experimental/file-browser': typeof ExperimentalFileBrowserRoute
   '/experimental/ophyd-control': typeof ExperimentalOphydControlRoute
   '/experimental/periodic-table': typeof ExperimentalPeriodicTableRoute
@@ -357,7 +365,8 @@ export interface FileRoutesByTo {
   '/elements/tooltip': typeof ElementsTooltipRoute
   '/elements/typography': typeof ElementsTypographyRoute
   '/experimental/beam-blockers-control': typeof ExperimentalBeamBlockersControlRoute
-  '/experimental/camera-control': typeof ExperimentalCameraControlRoute
+  '/experimental/camera-control-h264': typeof ExperimentalCameraControlH264Route
+  '/experimental/camera-control-video': typeof ExperimentalCameraControlVideoRoute
   '/experimental/file-browser': typeof ExperimentalFileBrowserRoute
   '/experimental/ophyd-control': typeof ExperimentalOphydControlRoute
   '/experimental/periodic-table': typeof ExperimentalPeriodicTableRoute
@@ -404,7 +413,8 @@ export interface FileRoutesById {
   '/elements/tooltip': typeof ElementsTooltipRoute
   '/elements/typography': typeof ElementsTypographyRoute
   '/experimental/beam-blockers-control': typeof ExperimentalBeamBlockersControlRoute
-  '/experimental/camera-control': typeof ExperimentalCameraControlRoute
+  '/experimental/camera-control-h264': typeof ExperimentalCameraControlH264Route
+  '/experimental/camera-control-video': typeof ExperimentalCameraControlVideoRoute
   '/experimental/file-browser': typeof ExperimentalFileBrowserRoute
   '/experimental/ophyd-control': typeof ExperimentalOphydControlRoute
   '/experimental/periodic-table': typeof ExperimentalPeriodicTableRoute
@@ -452,7 +462,8 @@ export interface FileRouteTypes {
     | '/elements/tooltip'
     | '/elements/typography'
     | '/experimental/beam-blockers-control'
-    | '/experimental/camera-control'
+    | '/experimental/camera-control-h264'
+    | '/experimental/camera-control-video'
     | '/experimental/file-browser'
     | '/experimental/ophyd-control'
     | '/experimental/periodic-table'
@@ -498,7 +509,8 @@ export interface FileRouteTypes {
     | '/elements/tooltip'
     | '/elements/typography'
     | '/experimental/beam-blockers-control'
-    | '/experimental/camera-control'
+    | '/experimental/camera-control-h264'
+    | '/experimental/camera-control-video'
     | '/experimental/file-browser'
     | '/experimental/ophyd-control'
     | '/experimental/periodic-table'
@@ -544,7 +556,8 @@ export interface FileRouteTypes {
     | '/elements/tooltip'
     | '/elements/typography'
     | '/experimental/beam-blockers-control'
-    | '/experimental/camera-control'
+    | '/experimental/camera-control-h264'
+    | '/experimental/camera-control-video'
     | '/experimental/file-browser'
     | '/experimental/ophyd-control'
     | '/experimental/periodic-table'
@@ -591,7 +604,8 @@ export interface RootRouteChildren {
   ElementsTooltipRoute: typeof ElementsTooltipRoute
   ElementsTypographyRoute: typeof ElementsTypographyRoute
   ExperimentalBeamBlockersControlRoute: typeof ExperimentalBeamBlockersControlRoute
-  ExperimentalCameraControlRoute: typeof ExperimentalCameraControlRoute
+  ExperimentalCameraControlH264Route: typeof ExperimentalCameraControlH264Route
+  ExperimentalCameraControlVideoRoute: typeof ExperimentalCameraControlVideoRoute
   ExperimentalFileBrowserRoute: typeof ExperimentalFileBrowserRoute
   ExperimentalOphydControlRoute: typeof ExperimentalOphydControlRoute
   ExperimentalPeriodicTableRoute: typeof ExperimentalPeriodicTableRoute
@@ -715,11 +729,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ExperimentalFileBrowserRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/experimental/camera-control': {
-      id: '/experimental/camera-control'
-      path: '/experimental/camera-control'
-      fullPath: '/experimental/camera-control'
-      preLoaderRoute: typeof ExperimentalCameraControlRouteImport
+    '/experimental/camera-control-video': {
+      id: '/experimental/camera-control-video'
+      path: '/experimental/camera-control-video'
+      fullPath: '/experimental/camera-control-video'
+      preLoaderRoute: typeof ExperimentalCameraControlVideoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/experimental/camera-control-h264': {
+      id: '/experimental/camera-control-h264'
+      path: '/experimental/camera-control-h264'
+      fullPath: '/experimental/camera-control-h264'
+      preLoaderRoute: typeof ExperimentalCameraControlH264RouteImport
       parentRoute: typeof rootRouteImport
     }
     '/experimental/beam-blockers-control': {
@@ -951,7 +972,8 @@ const rootRouteChildren: RootRouteChildren = {
   ElementsTooltipRoute: ElementsTooltipRoute,
   ElementsTypographyRoute: ElementsTypographyRoute,
   ExperimentalBeamBlockersControlRoute: ExperimentalBeamBlockersControlRoute,
-  ExperimentalCameraControlRoute: ExperimentalCameraControlRoute,
+  ExperimentalCameraControlH264Route: ExperimentalCameraControlH264Route,
+  ExperimentalCameraControlVideoRoute: ExperimentalCameraControlVideoRoute,
   ExperimentalFileBrowserRoute: ExperimentalFileBrowserRoute,
   ExperimentalOphydControlRoute: ExperimentalOphydControlRoute,
   ExperimentalPeriodicTableRoute: ExperimentalPeriodicTableRoute,

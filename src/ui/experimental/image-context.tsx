@@ -1,3 +1,4 @@
-import React from 'react';
+import { createContext } from "react";
 
-export const ImageContext = React.createContext<ImageBitmap | null> (null);
+export type ImageSource = { video: HTMLVideoElement | null; frameId: number } | ImageBitmap | null;
+export const ImageContext = createContext<ImageSource>(null);

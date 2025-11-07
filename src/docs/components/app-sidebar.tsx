@@ -233,8 +233,12 @@ const data = {
                     url: '/experimental/step-columns',
                 },
                 {
-                    title: 'Camera Control',
-                    url: '/experimental/camera-control',
+                    title: 'Camera Control H264',
+                    url: '/experimental/camera-control-h264',
+                },
+                {
+                    title: 'Camera Control Video',
+                    url: '/experimental/camera-control-video',
                 },
             ],
         },
