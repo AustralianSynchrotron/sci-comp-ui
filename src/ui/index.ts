@@ -37,3 +37,6 @@ export { Stack, stackVariants } from './layout/stack'
 // EXPERIMENTAL COMPONENTS
 export { FileBrowser, type FileTreeItem } from './experimental/file-browser'
 export { PeriodicTable, type PeriodicTableOutputType, type PeriodicTableProps, } from './experimental/periodic-table'
+export { CameraControl, type CameraControlProps } from './experimental/camera-control';
+export { VideoProvider, type VideoProviderProps } from './experimental/video-provider';
+export { WebsocketH264Provider, type WebsocketH264ProviderProps } from './experimental/websocket-h264-provider';

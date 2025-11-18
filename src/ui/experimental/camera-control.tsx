@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState, useContext } from "react";
 import { cn } from "../../lib/utils";
 import { ImageContext } from "./image-context";
 
-interface CameraControlProps {
+export interface CameraControlProps {
   className?: string;
   onMousePositionChange?: (pos: { x: number; y: number; intensity: number } | null) => void;
   onClick?: (pos: { x: number; y: number; intensity: number }) => void;

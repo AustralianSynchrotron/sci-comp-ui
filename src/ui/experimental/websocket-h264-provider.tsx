@@ -1,11 +1,11 @@
-import React, { useState, useEffect, ReactNode } from 'react';
+import React, { useState, useEffect } from 'react';
 
 
 import { ImageContext } from './image-context';
 
 
-interface WebsocketH264ProviderProps {
-  children: ReactNode,
+export interface WebsocketH264ProviderProps {
+  children: React.ReactNode,
   wsUrl: string;
 }
 

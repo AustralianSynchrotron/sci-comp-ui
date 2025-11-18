@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { ImageContext } from "./image-context";
 
-interface VideoProviderProps {
+export interface VideoProviderProps {
   children: React.ReactNode;
   videoUrl: string;
   loop?: boolean;
