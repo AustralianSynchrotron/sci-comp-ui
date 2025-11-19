@@ -19,7 +19,7 @@ function CameraControlWebsocketH264Demo() {
   const [clickPos, setClickPos] = useState<{ x: number, y: number, intensity: number } | null>(null);
   return (
     <div>
-      <WebsocketH264Provider wsUrl="wss://eiger-h264-stream.ads1.beamline.synchrotron.org.au/ws">
+      <WebsocketH264Provider wsUrl="ws://localhost:8080/ws">
         <CameraControl
           className="border"
           onMousePositionChange={setMousePos}
