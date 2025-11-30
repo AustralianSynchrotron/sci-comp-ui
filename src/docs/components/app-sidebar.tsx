@@ -187,6 +187,10 @@ const data = {
                     url: '/layout/grid',
                 },
                 {
+                    title: 'Resizable',
+                    url: '/layout/resizable',
+                },
+                {
                     title: 'Sheet',
                     url: '/layout/sheet',
                 },

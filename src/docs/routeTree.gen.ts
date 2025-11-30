@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as LayoutStackRouteImport } from './routes/layout/stack'
 import { Route as LayoutSheetRouteImport } from './routes/layout/sheet'
+import { Route as LayoutResizableRouteImport } from './routes/layout/resizable'
 import { Route as LayoutGridRouteImport } from './routes/layout/grid'
 import { Route as LayoutCollapsibleRouteImport } from './routes/layout/collapsible'
 import { Route as LayoutCardRouteImport } from './routes/layout/card'
@@ -68,6 +69,11 @@ const LayoutStackRoute = LayoutStackRouteImport.update({
 const LayoutSheetRoute = LayoutSheetRouteImport.update({
   id: '/layout/sheet',
   path: '/layout/sheet',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LayoutResizableRoute = LayoutResizableRouteImport.update({
+  id: '/layout/resizable',
+  path: '/layout/resizable',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LayoutGridRoute = LayoutGridRouteImport.update({
@@ -332,6 +338,7 @@ export interface FileRoutesByFullPath {
   '/layout/card': typeof LayoutCardRoute
   '/layout/collapsible': typeof LayoutCollapsibleRoute
   '/layout/grid': typeof LayoutGridRoute
+  '/layout/resizable': typeof LayoutResizableRoute
   '/layout/sheet': typeof LayoutSheetRoute
   '/layout/stack': typeof LayoutStackRoute
 }
@@ -379,6 +386,7 @@ export interface FileRoutesByTo {
   '/layout/card': typeof LayoutCardRoute
   '/layout/collapsible': typeof LayoutCollapsibleRoute
   '/layout/grid': typeof LayoutGridRoute
+  '/layout/resizable': typeof LayoutResizableRoute
   '/layout/sheet': typeof LayoutSheetRoute
   '/layout/stack': typeof LayoutStackRoute
 }
@@ -427,6 +435,7 @@ export interface FileRoutesById {
   '/layout/card': typeof LayoutCardRoute
   '/layout/collapsible': typeof LayoutCollapsibleRoute
   '/layout/grid': typeof LayoutGridRoute
+  '/layout/resizable': typeof LayoutResizableRoute
   '/layout/sheet': typeof LayoutSheetRoute
   '/layout/stack': typeof LayoutStackRoute
 }
@@ -476,6 +485,7 @@ export interface FileRouteTypes {
     | '/layout/card'
     | '/layout/collapsible'
     | '/layout/grid'
+    | '/layout/resizable'
     | '/layout/sheet'
     | '/layout/stack'
   fileRoutesByTo: FileRoutesByTo
@@ -523,6 +533,7 @@ export interface FileRouteTypes {
     | '/layout/card'
     | '/layout/collapsible'
     | '/layout/grid'
+    | '/layout/resizable'
     | '/layout/sheet'
     | '/layout/stack'
   id:
@@ -570,6 +581,7 @@ export interface FileRouteTypes {
     | '/layout/card'
     | '/layout/collapsible'
     | '/layout/grid'
+    | '/layout/resizable'
     | '/layout/sheet'
     | '/layout/stack'
   fileRoutesById: FileRoutesById
@@ -618,6 +630,7 @@ export interface RootRouteChildren {
   LayoutCardRoute: typeof LayoutCardRoute
   LayoutCollapsibleRoute: typeof LayoutCollapsibleRoute
   LayoutGridRoute: typeof LayoutGridRoute
+  LayoutResizableRoute: typeof LayoutResizableRoute
   LayoutSheetRoute: typeof LayoutSheetRoute
   LayoutStackRoute: typeof LayoutStackRoute
 }
@@ -643,6 +656,13 @@ declare module '@tanstack/react-router' {
       path: '/layout/sheet'
       fullPath: '/layout/sheet'
       preLoaderRoute: typeof LayoutSheetRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/layout/resizable': {
+      id: '/layout/resizable'
+      path: '/layout/resizable'
+      fullPath: '/layout/resizable'
+      preLoaderRoute: typeof LayoutResizableRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/layout/grid': {
@@ -986,6 +1006,7 @@ const rootRouteChildren: RootRouteChildren = {
   LayoutCardRoute: LayoutCardRoute,
   LayoutCollapsibleRoute: LayoutCollapsibleRoute,
   LayoutGridRoute: LayoutGridRoute,
+  LayoutResizableRoute: LayoutResizableRoute,
   LayoutSheetRoute: LayoutSheetRoute,
   LayoutStackRoute: LayoutStackRoute,
 }
