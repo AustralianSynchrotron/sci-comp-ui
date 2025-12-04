@@ -22,7 +22,7 @@ type NavItem = {
     items?: NavItem[];
 };
 
-const data = {
+const data: { navMain: NavItem[] } = {
     navMain: [
         {
             title: 'Links',
@@ -187,6 +187,10 @@ const data = {
                     url: '/layout/grid',
                 },
                 {
+                    title: 'Resizable',
+                    url: '/layout/resizable',
+                },
+                {
                     title: 'Sheet',
                     url: '/layout/sheet',
                 },
@@ -243,7 +247,7 @@ const data = {
             ],
         },
     ],
-} satisfies { navMain: NavItem[] };
+};
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     const location = useLocation();
