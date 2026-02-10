@@ -21,7 +21,7 @@ export { Slider } from './elements/slider'
 export { Switch } from './elements/switch'
 export { Textarea } from './elements/textarea'
 export { Toaster } from './elements/toaster'
-export { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './elements/tooltip'
+export { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger, TooltipArrow, TooltipPortal, type TooltipProps, type TooltipProviderProps, type TooltipTriggerProps, type TooltipPortalProps, type TooltipContentProps, type TooltipArrowProps } from './elements/tooltip'
 export { Typography, typographyVariants } from './elements/typography'
 
 // LAYOUT COMPONENTS
