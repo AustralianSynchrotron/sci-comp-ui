@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 
 
 import { ImageContext } from './image-context';
@@ -6,14 +6,18 @@ import { ImageContext } from './image-context';
 
 export interface WebsocketH264ProviderProps {
   children: React.ReactNode,
-  wsUrl: string;
+  url: string;
 }
 
-export const WebsocketH264Provider: React.FC<WebsocketH264ProviderProps> = ({ children, wsUrl }) => {
+export const WebsocketH264Provider: React.FC<WebsocketH264ProviderProps> = ({ children, url }) => {
 
+  const [sessionID, setSessionID] = useState<string | null>("019c5500-67da-79b0-b7bf-ebe373778106");
   const [imageBitmap, setImageBitmap] = useState<ImageBitmap | null>(null);
+  const [sourceWidth, setSourceWidth] = useState<number>(1024);
+  const [sourceHeight, setSourceHeight] = useState<number>(1024);
   const [currentWidth, setCurrentWidth] = useState<number>(1024);
   const [currentHeight, setCurrentHeight] = useState<number>(1024);
+
 
   useEffect(() => {
     let ws: WebSocket;
@@ -146,7 +150,7 @@ export const WebsocketH264Provider: React.FC<WebsocketH264ProviderProps> = ({ ch
     };
 
     const connect = () => {
-      ws = new WebSocket(wsUrl);
+      ws = new WebSocket("ws://" + url + "/ws?session_id=" + sessionID);
       ws.binaryType = 'arraybuffer';
 
       ws.onopen = () => {
@@ -159,19 +163,17 @@ export const WebsocketH264Provider: React.FC<WebsocketH264ProviderProps> = ({ ch
           try {
             const meta = JSON.parse(ev.data);
             if (meta.type === 'config') {
-              console.log("meta.width");
-              console.log(meta.width);
-              console.log("meta.height");
-              console.log(meta.height);
+              console.log(meta);
               setCurrentWidth(meta.width);
               setCurrentHeight(meta.height);
+              setSourceWidth(meta.source_width);
+              setSourceHeight(meta.source_height);
               configured = false; // force reconfigure
             }
           } catch (e) {
             console.warn("Failed to parse metadata:", e);
           }
         } else {
-
           onAccessUnit(ev.data);
         }
       };
@@ -196,10 +198,106 @@ export const WebsocketH264Provider: React.FC<WebsocketH264ProviderProps> = ({ ch
       ws?.close();
       decoder?.close();
     };
-  }, [wsUrl]);
+  }, [url]);
+
+
+  const reportSize = useCallback(async (width: number, height: number) => {
+
+    const response = await fetch("http://" + url + "/api/sessions/" + sessionID + "/resolution", {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ width, height }),
+    });
+  }, []);
+
+  const reportZoom = useCallback(async (startX: number, startY: number, width: number, height: number) => {
+
+    const crop_response = await fetch("http://" + url + "/api/sessions/" + sessionID + "/crop", {
+      method: "GET",
+    });
+
+    let { x: currentCropX, y: currentCropY, width: currentCropWidth, height: currentCropHeight } = await crop_response.json() ?? { x: 0, y: 0, width: sourceWidth, height: sourceHeight };
+
+    let xScale = currentCropWidth / currentWidth;
+    let yScale = currentCropHeight / currentHeight;
+
+    if (width < 0){
+      startX = startX + width;
+      width = -1*width;
+    }
+    if (height < 0){
+      startY = startY + height;
+      height = -1*height;
+    }
+
+    let x = currentCropX + Math.floor(startX * xScale);
+    let y = currentCropY + Math.floor(startY * yScale);
+
+    let cropWidth = Math.floor(width * xScale);
+    let cropHeight = Math.floor(height * yScale);
+
+    if (cropWidth == 0 || cropHeight == 0) {
+      return
+    }
+
+    console.log(x, y, cropWidth, cropHeight);
+
+
+    const response = await fetch("http://" + url + "/api/sessions/" + sessionID + "/crop", {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ x, y, width: cropWidth, height: cropHeight }),
+    });
+  }, [sourceWidth, currentWidth, sourceHeight, currentHeight]);
+
+  const reportDrag = useCallback(async (totalX: number, totalY: number, deltaX: number, deltaY: number, active: boolean) => {
+
+    if (!active) {
+      const crop_response = await fetch("http://" + url + "/api/sessions/" + sessionID + "/crop", {
+        method: "GET",
+      });
+      let { x: currentCropX, y: currentCropY, width: currentCropWidth, height: currentCropHeight } = await crop_response.json();
+
+      let xScale = currentCropWidth / currentWidth;
+      let yScale = currentCropHeight / currentHeight;
+
+
+      let x = currentCropX - Math.floor(totalX * xScale);
+      let y = currentCropY - Math.floor(totalY * yScale);
+
+      console.log({currentCropX, currentCropWidth, currentWidth, xScale, totalX, shiftX: Math.floor(totalX * xScale), x});
+
+
+      const response = await fetch("http://" + url + "/api/sessions/" + sessionID + "/crop", {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ x, y, width: currentCropWidth, height: currentCropHeight }),
+      });
+    }
+  }, [currentWidth, currentHeight]);
+
+  const clearZoom = useCallback(async () => {
+    const response = await fetch("http://" + url + "/api/sessions/" + sessionID + "/crop", {
+      method: "DELETE",
+    });
+  }, []);
+
+  const contextValue = useMemo(() => ({
+    image: imageBitmap,
+    reportSize,
+    reportZoom,
+    reportDrag,
+    clearZoom
+  }), [imageBitmap, reportSize, reportZoom, clearZoom]);
 
   return (
-    <ImageContext.Provider value={imageBitmap}>
+    <ImageContext.Provider value={contextValue}>
       {children}
     </ImageContext.Provider>
   )

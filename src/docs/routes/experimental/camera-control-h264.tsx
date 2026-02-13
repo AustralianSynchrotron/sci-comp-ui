@@ -18,8 +18,8 @@ function CameraControlWebsocketH264Demo() {
   const [mousePos, setMousePos] = useState<{ x: number, y: number, intensity: number } | null>(null);
   const [clickPos, setClickPos] = useState<{ x: number, y: number, intensity: number } | null>(null);
   return (
-    <div>
-      <WebsocketH264Provider wsUrl="ws://localhost:8080/ws">
+    <div style={{width: "100%", height: "100%"}}>
+      <WebsocketH264Provider url="localhost:9999">
         <CameraControl
           className="border"
           onMousePositionChange={setMousePos}
