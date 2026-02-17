@@ -11,7 +11,7 @@ export interface WebsocketH264ProviderProps {
 
 export const WebsocketH264Provider: React.FC<WebsocketH264ProviderProps> = ({ children, url }) => {
 
-  const [sessionID, setSessionID] = useState<string | null>("019c5500-67da-79b0-b7bf-ebe373778106");
+  const [sessionID, setSessionID] = useState<string | null>("019c6950-555b-7a13-afce-81c0e3188de4");
   const [imageBitmap, setImageBitmap] = useState<ImageBitmap | null>(null);
   const [sourceWidth, setSourceWidth] = useState<number>(1024);
   const [sourceHeight, setSourceHeight] = useState<number>(1024);
@@ -218,10 +218,10 @@ export const WebsocketH264Provider: React.FC<WebsocketH264ProviderProps> = ({ ch
       method: "GET",
     });
 
-    let { x: currentCropX, y: currentCropY, width: currentCropWidth, height: currentCropHeight } = await crop_response.json() ?? { x: 0, y: 0, width: sourceWidth, height: sourceHeight };
+    const { x: currentCropX, y: currentCropY, width: currentCropWidth, height: currentCropHeight } = await crop_response.json() ?? { x: 0, y: 0, width: sourceWidth, height: sourceHeight };
 
-    let xScale = currentCropWidth / currentWidth;
-    let yScale = currentCropHeight / currentHeight;
+    const xScale = currentCropWidth / currentWidth;
+    const yScale = currentCropHeight / currentHeight;
 
     if (width < 0){
       startX = startX + width;
@@ -232,11 +232,11 @@ export const WebsocketH264Provider: React.FC<WebsocketH264ProviderProps> = ({ ch
       height = -1*height;
     }
 
-    let x = currentCropX + Math.floor(startX * xScale);
-    let y = currentCropY + Math.floor(startY * yScale);
+    const x = currentCropX + Math.floor(startX * xScale);
+    const y = currentCropY + Math.floor(startY * yScale);
 
-    let cropWidth = Math.floor(width * xScale);
-    let cropHeight = Math.floor(height * yScale);
+    const cropWidth = Math.floor(width * xScale);
+    const cropHeight = Math.floor(height * yScale);
 
     if (cropWidth == 0 || cropHeight == 0) {
       return
@@ -260,14 +260,15 @@ export const WebsocketH264Provider: React.FC<WebsocketH264ProviderProps> = ({ ch
       const crop_response = await fetch("http://" + url + "/api/sessions/" + sessionID + "/crop", {
         method: "GET",
       });
-      let { x: currentCropX, y: currentCropY, width: currentCropWidth, height: currentCropHeight } = await crop_response.json();
+      const { x: currentCropX, y: currentCropY, width: currentCropWidth, height: currentCropHeight } = await crop_response.json();
 
-      let xScale = currentCropWidth / currentWidth;
-      let yScale = currentCropHeight / currentHeight;
+      const xScale = currentCropWidth / currentWidth;
+      const yScale = currentCropHeight / currentHeight;
 
+      const scale = Math.max(xScale, yScale);
 
-      let x = currentCropX - Math.floor(totalX * xScale);
-      let y = currentCropY - Math.floor(totalY * yScale);
+      const x = (currentCropX - Math.floor(totalX * scale));
+      const y = (currentCropY - Math.floor(totalY * scale));
 
       console.log({currentCropX, currentCropWidth, currentWidth, xScale, totalX, shiftX: Math.floor(totalX * xScale), x});
 
@@ -280,7 +281,7 @@ export const WebsocketH264Provider: React.FC<WebsocketH264ProviderProps> = ({ ch
         body: JSON.stringify({ x, y, width: currentCropWidth, height: currentCropHeight }),
       });
     }
-  }, [currentWidth, currentHeight]);
+  },  [sourceWidth, currentWidth, sourceHeight, currentHeight]);
 
   const clearZoom = useCallback(async () => {
     const response = await fetch("http://" + url + "/api/sessions/" + sessionID + "/crop", {

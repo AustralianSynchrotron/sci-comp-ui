@@ -2,12 +2,39 @@ import React, { useEffect, useRef, useState, useContext } from "react";
 import { cn } from "../../lib/utils";
 import { ImageContext } from "./image-context";
 
+function debounceResize(
+  fn: (entry: ResizeObserverEntry) => void,
+  delay: number,
+) {
+  let timer: ReturnType<typeof setTimeout> | undefined;
+
+  const debounced = (entry: ResizeObserverEntry) => {
+    if (timer) clearTimeout(timer);
+    timer = setTimeout(() => fn(entry), delay);
+  };
+
+  debounced.cancel = () => {
+    if (timer) clearTimeout(timer);
+    timer = undefined;
+  };
+
+  return debounced;
+}
+
 export interface CameraControlProps {
   className?: string;
-  onMousePositionChange?: (pos: { x: number; y: number; intensity: number } | null) => void;
+  onMousePositionChange?: (
+    pos: { x: number; y: number; intensity: number } | null,
+  ) => void;
   onClick?: (pos: { x: number; y: number; intensity: number }) => void;
   showIntensity?: boolean;
-  onZoom?: (box: { startX: number; startY: number, width: number, height: number }) => void;
+  onZoom?: (box: {
+    startX: number;
+    startY: number;
+    width: number;
+    height: number;
+  }) => void;
+  sizeFollowsImage?: boolean;
 }
 
 export const CameraControl: React.FC<CameraControlProps> = ({
@@ -15,15 +42,32 @@ export const CameraControl: React.FC<CameraControlProps> = ({
   onMousePositionChange,
   onClick,
   showIntensity = false,
-  onZoom
+  onZoom,
+  sizeFollowsImage = false,
 }) => {
-  const { image, reportSize, reportZoom, reportDrag, clearZoom } = useContext(ImageContext);
+  const { image, reportSize, reportZoom, reportDrag, clearZoom } =
+    useContext(ImageContext);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [popupPos, setPopupPos] = useState<{ x: number; y: number } | null>(null);
+  const [popupPos, setPopupPos] = useState<{ x: number; y: number } | null>(
+    null,
+  );
   const [pixelValue, setPixelValue] = useState<string | null>(null);
-  const [cursorPosition, setCursorPosition] = useState<{ x: number; y: number } | null>(null);
-  const [zoomBox, setZoomBox] = useState<{ startX: number; startY: number; width: number; height: number } | null>(null);
-  const [dragStart, setDragStart] = useState<{ startX: number; startY: number; lastX: number, lastY: number } | null>(null);
+  const [cursorPosition, setCursorPosition] = useState<{
+    x: number;
+    y: number;
+  } | null>(null);
+  const [zoomBox, setZoomBox] = useState<{
+    startX: number;
+    startY: number;
+    width: number;
+    height: number;
+  } | null>(null);
+  const [dragStart, setDragStart] = useState<{
+    startX: number;
+    startY: number;
+    lastX: number;
+    lastY: number;
+  } | null>(null);
   const [frameCount, setFrameCount] = useState<number>(0);
   const [startTime, setStartTime] = useState<number>(performance.now());
 
@@ -43,16 +87,17 @@ export const CameraControl: React.FC<CameraControlProps> = ({
     const canvas = canvasRef.current;
     if (!canvas || !reportSize) return;
 
-    // TODO: This should be debounced
-    const observer = new ResizeObserver((entries) => {
-      const { width, height } = entries[0].contentRect;
+    const handler = debounceResize((entry) => {
+      const { width, height } = entry.contentRect;
       // Set canvas to size of canvas?
       canvas.width = width;
       canvas.height = height;
 
       // Report the size back to the provider
       reportSize(Math.floor(width), Math.floor(height));
-    });
+    }, 100);
+
+    const observer = new ResizeObserver((entries) => handler(entries[0]));
 
     observer.observe(canvas);
     return () => observer.disconnect();
@@ -66,12 +111,12 @@ export const CameraControl: React.FC<CameraControlProps> = ({
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    // const { w, h } = getDimensions();
-    // if (w === 0 || h === 0) return;
-
-
-    // canvas.width = w;
-    // canvas.height = h;
+    if (sizeFollowsImage) {
+      const { w, h } = getDimensions();
+      if (w === 0 || h === 0) return;
+      canvas.width = w;
+      canvas.height = h;
+    }
 
     try {
       if (typeof image === "object" && "video" in image && image.video) {
@@ -80,9 +125,14 @@ export const CameraControl: React.FC<CameraControlProps> = ({
         ctx.drawImage(image, 0, 0);
       }
       if (zoomBox) {
-        ctx.strokeStyle = 'yellow'; // Set bounding box color
+        ctx.strokeStyle = "yellow"; // Set bounding box color
         ctx.lineWidth = 2; // Set line width
-        ctx.strokeRect(zoomBox.startX, zoomBox.startY, zoomBox.width, zoomBox.height);
+        ctx.strokeRect(
+          zoomBox.startX,
+          zoomBox.startY,
+          zoomBox.width,
+          zoomBox.height,
+        );
       }
     } catch (err) {
       console.warn("Draw failed:", err);
@@ -103,41 +153,58 @@ export const CameraControl: React.FC<CameraControlProps> = ({
   let lastMove = 0;
   const handleMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
     if (dragStart) {
-
       console.log(e.clientX);
 
-      let deltaX = e.clientX - dragStart.lastX;
-      let deltaY = e.clientY - dragStart.lastY;
+      const deltaX = e.clientX - dragStart.lastX;
+      const deltaY = e.clientY - dragStart.lastY;
       setDragStart({ ...dragStart, lastX: e.clientX, lastY: e.clientY });
-      reportDrag(e.clientX - dragStart.startX, e.clientY - dragStart.startY, deltaX, deltaY, true);
-      return
+      reportDrag(
+        e.clientX - dragStart.startX,
+        e.clientY - dragStart.startY,
+        deltaX,
+        deltaY,
+        true,
+      );
+      return;
     }
 
     const now = performance.now();
     if (now - lastMove < 50) return;
     lastMove = now;
 
-
-
     const info = getMousePixelInfo(e);
+
+    if (zoomBox) {
+      setZoomBox({
+        ...zoomBox,
+        width: info.x - zoomBox.startX,
+        height: info.y - zoomBox.startY,
+      });
+    }
+
     setPopupPos({ x: e.clientX, y: e.clientY });
-    setPixelValue(showIntensity ? `intensity: ${info.intensity}` : `rgba(${info.pixel[0]}, ${info.pixel[1]}, ${info.pixel[2]}, ${info.pixel[3] / 255})`);
-    onMousePositionChange?.({ x: info.x, y: info.y, intensity: info.intensity });
+    setPixelValue(
+      showIntensity
+        ? `intensity: ${info.intensity}`
+        : `rgba(${info.pixel[0]}, ${info.pixel[1]}, ${info.pixel[2]}, ${info.pixel[3] / 255})`,
+    );
+    onMousePositionChange?.({
+      x: info.x,
+      y: info.y,
+      intensity: info.intensity,
+    });
   };
 
   const getMousePixelInfo = (e: React.MouseEvent<HTMLCanvasElement>) => {
     const canvas = canvasRef.current;
-    if (!canvas || canvas.width === 0 || canvas.height === 0) return { x: 0, y: 0, intensity: 0, pixel: [0, 0, 0, 0] };
+    if (!canvas || canvas.width === 0 || canvas.height === 0)
+      return { x: 0, y: 0, intensity: 0, pixel: [0, 0, 0, 0] };
 
     const rect = canvas.getBoundingClientRect();
     const x = Math.floor(e.clientX - rect.left);
     const y = Math.floor(e.clientY - rect.top);
 
     const ctx = canvas.getContext("2d");
-
-    if (zoomBox) {
-      setZoomBox({ startX: zoomBox.startX, startY: zoomBox.startY, width: x - zoomBox.startX, height: y - zoomBox.startY })
-    }
 
     if (!ctx) return { x, y, intensity: 0, pixel: [0, 0, 0, 0] };
 
@@ -158,6 +225,7 @@ export const CameraControl: React.FC<CameraControlProps> = ({
 
   const handleMouseClick = (e: React.MouseEvent<HTMLCanvasElement>) => {
     const info = getMousePixelInfo(e);
+
     onClick?.({ x: info.x, y: info.y, intensity: info.intensity });
     if (e.ctrlKey) {
       setCursorPosition({ x: info.x, y: info.y });
@@ -168,17 +236,28 @@ export const CameraControl: React.FC<CameraControlProps> = ({
 
   const handleMouseDown = (e: React.MouseEvent<HTMLCanvasElement>) => {
     if (e.shiftKey) {
-      setDragStart({ startX: e.clientX, startY: e.clientY, lastX: e.clientX, lastY: e.clientY });
+      setDragStart({
+        startX: e.clientX,
+        startY: e.clientY,
+        lastX: e.clientX,
+        lastY: e.clientY,
+      });
     } else {
       const info = getMousePixelInfo(e);
       setZoomBox({ startX: info.x, startY: info.y, width: 0, height: 0 });
     }
-  }
+  };
 
   const handleMouseUp = (e: React.MouseEvent<HTMLCanvasElement>) => {
     if (dragStart) {
       console.log(dragStart);
-      reportDrag(e.clientX - dragStart.startX, e.clientY - dragStart.startY, 0, 0, false)
+      reportDrag(
+        e.clientX - dragStart.startX,
+        e.clientY - dragStart.startY,
+        0,
+        0,
+        false,
+      );
       setDragStart(null);
     }
     if (zoomBox) {
@@ -186,15 +265,22 @@ export const CameraControl: React.FC<CameraControlProps> = ({
       reportZoom(zoomBox.startX, zoomBox.startY, zoomBox.width, zoomBox.height);
     }
     setZoomBox(null);
-  }
+  };
 
   const handleDoubleClick = (e: React.MouseEvent<HTMLCanvasElement>) => {
-    clearZoom()
-  }
-  // const { w, h } = getDimensions();
+    clearZoom();
+  };
 
   return (
-    <div className={cn("space-y-4", className)} style={{ position: "relative", display: "inline-block", width: "100%", height: "100%" }}>
+    <div
+      className={cn("space-y-4", className)}
+      style={{
+        position: "relative",
+        display: "inline-block",
+        width: "100%",
+        height: "100%",
+      }}
+    >
       <canvas
         ref={canvasRef}
         onMouseMove={handleMouseMove}
@@ -208,7 +294,7 @@ export const CameraControl: React.FC<CameraControlProps> = ({
           display: "block",
           border: "1px solid red",
           width: "100%",
-          height: "100%"
+          height: "100%",
           // width: `${w}px`,
           // height: `${h}px`,
         }}
@@ -226,8 +312,26 @@ export const CameraControl: React.FC<CameraControlProps> = ({
             zIndex: 10,
           }}
         >
-          <div style={{ position: "absolute", left: cursorPosition.x, top: 0, width: 1, height: "100%", background: "red" }} />
-          <div style={{ position: "absolute", left: 0, top: cursorPosition.y, width: "100%", height: 1, background: "red" }} />
+          <div
+            style={{
+              position: "absolute",
+              left: cursorPosition.x,
+              top: 0,
+              width: 1,
+              height: "100%",
+              background: "red",
+            }}
+          />
+          <div
+            style={{
+              position: "absolute",
+              left: 0,
+              top: cursorPosition.y,
+              width: "100%",
+              height: 1,
+              background: "red",
+            }}
+          />
         </div>
       )}
       {/* Popup */}
