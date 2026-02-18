@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 
 
 import { ImageContext } from './image-context';
@@ -11,7 +11,7 @@ export interface WebsocketH264ProviderProps {
 
 export const WebsocketH264Provider: React.FC<WebsocketH264ProviderProps> = ({ children, url }) => {
 
-  const [sessionID, setSessionID] = useState<string | null>("019c6950-555b-7a13-afce-81c0e3188de4");
+  const [sessionID, setSessionID] = useState<string | null>("");
   const [imageBitmap, setImageBitmap] = useState<ImageBitmap | null>(null);
   const [sourceWidth, setSourceWidth] = useState<number>(1024);
   const [sourceHeight, setSourceHeight] = useState<number>(1024);
@@ -19,13 +19,19 @@ export const WebsocketH264Provider: React.FC<WebsocketH264ProviderProps> = ({ ch
   const [currentHeight, setCurrentHeight] = useState<number>(1024);
 
 
+  const wsRef = useRef<WebSocket | null>(null);
+  const abortedRef = useRef<boolean>(false);
+  const configuredRef = useRef<boolean>(false);
+  const decoderRef = useRef<VideoDecoder | null>(null);
+  const reconnectTimerRef = useRef<number | null>(null);
+
+
   useEffect(() => {
     let ws: WebSocket;
-    let decoder: VideoDecoder | null = null;
-    let configured = false;
     let sps: Uint8Array | null = null;
     let pps: Uint8Array | null = null;
     let nextTs = 0;
+
     const frameDurationUs = Math.round(1_000_000 / 50);
 
     const splitAnnexB = (buf: ArrayBuffer): Uint8Array[] => {
@@ -75,9 +81,9 @@ export const WebsocketH264Provider: React.FC<WebsocketH264ProviderProps> = ({ ch
     };
 
     const ensureDecoder = () => {
-      if (decoder) return;
+      if (decoderRef.current) return;
 
-      decoder = new VideoDecoder({
+      decoderRef.current = new VideoDecoder({
         output: async frame => {
           const bitmap = await createImageBitmap(frame);
           setImageBitmap(bitmap);
@@ -88,7 +94,7 @@ export const WebsocketH264Provider: React.FC<WebsocketH264ProviderProps> = ({ ch
     };
 
     const tryConfigure = async (): Promise<boolean> => {
-      if (configured || !sps || !pps) return false;
+      if (configuredRef.current || !sps || !pps) return false;
       ensureDecoder();
 
       const description = buildAvcC(sps, pps);
@@ -106,9 +112,9 @@ export const WebsocketH264Provider: React.FC<WebsocketH264ProviderProps> = ({ ch
         return false;
       }
 
-      if (decoder!.state === 'configured') decoder!.reset();
-      decoder!.configure(config);
-      configured = true;
+      if (decoderRef.current!.state === 'configured') decoderRef.current!.reset();
+      decoderRef.current!.configure(config);
+      configuredRef.current = true;
       return true;
     };
 
@@ -132,7 +138,7 @@ export const WebsocketH264Provider: React.FC<WebsocketH264ProviderProps> = ({ ch
         data: payload
       });
       nextTs += frameDurationUs;
-      decoder!.decode(chunk);
+      decoderRef.current!.decode(chunk);
     };
 
     const onAccessUnit = (buf: ArrayBuffer) => {
@@ -145,17 +151,18 @@ export const WebsocketH264Provider: React.FC<WebsocketH264ProviderProps> = ({ ch
         else if (t === 8) pps = n.slice();
       }
 
-      if (!configured && sps && pps) tryConfigure().then(ok => { if (ok) feedChunk(nals); });
-      else if (configured) feedChunk(nals);
+      if (!configuredRef.current && sps && pps) tryConfigure().then(ok => { if (ok) feedChunk(nals); });
+      else if (configuredRef.current) feedChunk(nals);
     };
 
     const connect = () => {
       ws = new WebSocket("ws://" + url + "/ws?session_id=" + sessionID);
+      wsRef.current = ws;
       ws.binaryType = 'arraybuffer';
 
       ws.onopen = () => {
         console.log("Connected");
-        configured = false;
+        configuredRef.current = false;
       };
 
       ws.onmessage = ev => {
@@ -168,7 +175,7 @@ export const WebsocketH264Provider: React.FC<WebsocketH264ProviderProps> = ({ ch
               setCurrentHeight(meta.height);
               setSourceWidth(meta.source_width);
               setSourceHeight(meta.source_height);
-              configured = false; // force reconfigure
+              configuredRef.current = false; // force reconfigure
             }
           } catch (e) {
             console.warn("Failed to parse metadata:", e);
@@ -179,11 +186,11 @@ export const WebsocketH264Provider: React.FC<WebsocketH264ProviderProps> = ({ ch
       };
 
       ws.onclose = () => {
-        configured = false;
-        try {
-          decoder?.flush().catch(() => { });
-        } catch { }
-        setTimeout(connect, 3000);
+        configuredRef.current = false;
+        try { decoderRef.current?.flush().catch(() => {}); } catch {}
+        if (!abortedRef.current) {
+          reconnectTimerRef.current = window.setTimeout(connect, 3000);
+        }
       };
 
       ws.onerror = e => {
@@ -195,10 +202,16 @@ export const WebsocketH264Provider: React.FC<WebsocketH264ProviderProps> = ({ ch
     connect();
 
     return () => {
-      ws?.close();
-      decoder?.close();
+      abortedRef.current = true;
+      if (reconnectTimerRef.current !== null) {
+        clearTimeout(reconnectTimerRef.current);
+        reconnectTimerRef.current = null;
+      }
+      try { wsRef.current?.close(); } catch {}
+      try { decoderRef.current?.close(); } catch {}
+
     };
-  }, [url]);
+  }, [currentHeight, currentWidth, sessionID, url]);
 
 
   const reportSize = useCallback(async (width: number, height: number) => {
@@ -252,7 +265,7 @@ export const WebsocketH264Provider: React.FC<WebsocketH264ProviderProps> = ({ ch
       },
       body: JSON.stringify({ x, y, width: cropWidth, height: cropHeight }),
     });
-  }, [sourceWidth, currentWidth, sourceHeight, currentHeight]);
+  }, [url, sessionID, sourceWidth, sourceHeight, currentWidth, currentHeight]);
 
   const reportDrag = useCallback(async (totalX: number, totalY: number, deltaX: number, deltaY: number, active: boolean) => {
 
@@ -281,7 +294,7 @@ export const WebsocketH264Provider: React.FC<WebsocketH264ProviderProps> = ({ ch
         body: JSON.stringify({ x, y, width: currentCropWidth, height: currentCropHeight }),
       });
     }
-  },  [sourceWidth, currentWidth, sourceHeight, currentHeight]);
+  },  [url, sessionID, currentWidth, currentHeight]);
 
   const clearZoom = useCallback(async () => {
     const response = await fetch("http://" + url + "/api/sessions/" + sessionID + "/crop", {
@@ -295,7 +308,7 @@ export const WebsocketH264Provider: React.FC<WebsocketH264ProviderProps> = ({ ch
     reportZoom,
     reportDrag,
     clearZoom
-  }), [imageBitmap, reportSize, reportZoom, clearZoom]);
+  }), [imageBitmap, reportSize, reportZoom, reportDrag, clearZoom]);
 
   return (
     <ImageContext.Provider value={contextValue}>
