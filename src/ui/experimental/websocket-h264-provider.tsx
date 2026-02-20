@@ -20,9 +20,6 @@ export const WebsocketH264Provider: React.FC<WebsocketH264ProviderProps> = ({
   // ==================
   // State
   // ==================
-  const [sessionID, setSessionID] = useState<string | null>(
-    "019c6ef1-821e-7b7b-a28b-085f73d0a248",
-  );
   const [imageBitmap, setImageBitmap] = useState<ImageBitmap | null>(null);
   const [sourceWidth, setSourceWidth] = useState<number>(1024);
   const [sourceHeight, setSourceHeight] = useState<number>(1024);
@@ -38,17 +35,27 @@ export const WebsocketH264Provider: React.FC<WebsocketH264ProviderProps> = ({
     height: 1024,
   });
   const abortedRef = useRef<boolean>(false);
+  const configuringRef = useRef<boolean>(false);
   const configuredRef = useRef<boolean>(false);
   const decoderRef = useRef<VideoDecoder | null>(null);
   const reconnectTimerRef = useRef<number | null>(null);
   const spsRef = useRef<Uint8Array | null>(null);
   const ppsRef = useRef<Uint8Array | null>(null);
   const nextTsRef = useRef<number>(0);
+  const sidRef = useRef<string | null>(sessionID ?? null);
+
+  // Internal resolved session ID. We mirror the prop; if null, we create and then set it here.
+  const [resolvedSessionId, setResolvedSessionId] = useState<string | null>(
+    sessionID,
+  );
+
+  useEffect(() => {
+    setResolvedSessionId(sessionID ?? null);
+  }, [sessionID]);
 
   // ==================
   // Helper Functions
   // ==================
-
   const frameDurationUs = Math.round(1_000_000 / 50);
 
   const splitAnnexB = (buf: ArrayBuffer): Uint8Array[] => {
@@ -111,7 +118,7 @@ export const WebsocketH264Provider: React.FC<WebsocketH264ProviderProps> = ({
   };
 
   const ensureDecoder = () => {
-    if (decoderRef.current) return;
+    if (decoderRef.current && decoderRef.current.state !== "closed") return;
 
     decoderRef.current = new VideoDecoder({
       output: async (frame) => {
@@ -124,34 +131,49 @@ export const WebsocketH264Provider: React.FC<WebsocketH264ProviderProps> = ({
   };
 
   const tryConfigure = async (): Promise<boolean> => {
+    if (abortedRef.current) return false;
+    if (configuringRef.current) return false;
     if (configuredRef.current || !spsRef.current || !ppsRef.current)
       return false;
-    ensureDecoder();
 
-    const description = buildAvcC(spsRef.current, ppsRef.current);
-    const codec = codecFromSps(spsRef.current);
+    configuringRef.current = true;
+    try {
+      ensureDecoder();
 
-    const { width: codedWidth, height: codedHeight } = dimsRef.current;
+      const description = buildAvcC(spsRef.current, ppsRef.current);
+      const codec = codecFromSps(spsRef.current);
+      const { width: codedWidth, height: codedHeight } = dimsRef.current;
 
-    const config: VideoDecoderConfig = {
-      codec,
-      codedWidth: codedWidth,
-      codedHeight: codedHeight,
-      description: description.buffer,
-    };
+      const config: VideoDecoderConfig = {
+        codec,
+        codedWidth: codedWidth,
+        codedHeight: codedHeight,
+        description: description.buffer,
+      };
 
-    const support = await VideoDecoder.isConfigSupported(config).catch(
-      () => null,
-    );
-    if (!support?.supported) {
-      console.warn("Unsupported config:", config);
+      const support = await VideoDecoder.isConfigSupported(config).catch(
+        () => null,
+      );
+      if (!support?.supported) {
+        console.warn("Unsupported config:", config);
+        return false;
+      }
+
+      if (abortedRef.current) return false;
+
+      const dec = decoderRef.current;
+      if (!dec || dec.state === "closed") return false;
+
+      if (dec.state === "configured") dec.reset();
+      dec.configure(config);
+      configuredRef.current = true;
+      return true;
+    } catch (e) {
+      console.warn("tryConfigure failed:", e);
       return false;
+    } finally {
+      configuringRef.current = false;
     }
-
-    if (decoderRef.current!.state === "configured") decoderRef.current!.reset();
-    decoderRef.current!.configure(config);
-    configuredRef.current = true;
-    return true;
   };
 
   const feedChunk = (nals: Uint8Array[]) => {
@@ -175,7 +197,14 @@ export const WebsocketH264Provider: React.FC<WebsocketH264ProviderProps> = ({
       data: payload,
     });
     nextTsRef.current += frameDurationUs;
-    decoderRef.current!.decode(chunk);
+
+    const dec = decoderRef.current;
+    if (!dec || dec.state === "closed") return;
+    try {
+      dec.decode(chunk);
+    } catch {
+      /**/
+    }
   };
 
   const onAccessUnit = (buf: ArrayBuffer) => {
@@ -202,13 +231,16 @@ export const WebsocketH264Provider: React.FC<WebsocketH264ProviderProps> = ({
       return;
     }
 
+    const aborter = new AbortController();
+    abortedRef.current = false;
+
     let ws: WebSocket;
     spsRef.current = null;
     ppsRef.current = null;
     nextTsRef.current = 0;
 
-    const connect = () => {
-      ws = new WebSocket("ws://" + url + "/ws?session_id=" + sessionID);
+    const connect = (sid: string) => {
+      ws = new WebSocket("ws://" + url + "/ws?session_id=" + sid);
       wsRef.current = ws;
       ws.binaryType = "arraybuffer";
 
@@ -244,9 +276,14 @@ export const WebsocketH264Provider: React.FC<WebsocketH264ProviderProps> = ({
         configuredRef.current = false;
         try {
           decoderRef.current?.flush().catch(() => {});
-        } catch {/**/}
-        if (!abortedRef.current) {
-          reconnectTimerRef.current = window.setTimeout(connect, 3000);
+        } catch {
+          /**/
+        }
+        if (!abortedRef.current && sidRef.current) {
+          reconnectTimerRef.current = window.setTimeout(
+            () => connect(sidRef.current!),
+            3000,
+          );
         }
       };
 
@@ -254,47 +291,112 @@ export const WebsocketH264Provider: React.FC<WebsocketH264ProviderProps> = ({
         console.error("WebSocket error:", e);
         try {
           ws.close();
-        } catch {/**/}
+        } catch {
+          /**/
+        }
       };
     };
 
-    connect();
+    const ensureSessionId = async (): Promise<string> => {
+      if (sidRef.current) return sidRef.current;
+      if (resolvedSessionId) {
+        sidRef.current = resolvedSessionId;
+        return resolvedSessionId;
+      }
+
+      const res = await fetch("http://" + url + "/api/sessions", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        signal: aborter.signal,
+        body: JSON.stringify({
+          colour_mapping: "none",
+          crop: null,
+          resolution: {
+            width: 1024,
+            height: 1024,
+          },
+        }),
+      });
+      if (!res.ok)
+        throw new Error(
+          `Failed to create session: ${res.status} ${res.statusText}`,
+        );
+
+      const body = await res.json();
+      const sid = body.id as string;
+      if (!sid) throw new Error("Server did not return session_id");
+
+      // Inform parent so it can persist/store as it sees fit
+      onSessionCreated?.(sid);
+
+      // Keep our internal view so we can connect immediately
+      setResolvedSessionId(sid);
+      sidRef.current = sid;
+      return sid;
+    };
+
+    (async () => {
+      try {
+        const sid = await ensureSessionId();
+        if (!abortedRef.current) connect(sid);
+      } catch (e) {
+        if (
+          !abortedRef.current &&
+          !(e instanceof DOMException && e.name === "AbortError")
+        ) {
+          console.error(e);
+        }
+      }
+    })();
 
     return () => {
       abortedRef.current = true;
+      aborter.abort();
+
       if (reconnectTimerRef.current !== null) {
         clearTimeout(reconnectTimerRef.current);
         reconnectTimerRef.current = null;
       }
       try {
         wsRef.current?.close();
-      } catch {/**/}
+      } catch {
+        /**/
+      }
       try {
         decoderRef.current?.close();
-      } catch {/**/}
+      } catch {
+        /**/
+      }
     };
-    
+
     // `tryConfigure` and `onAccessUnit` read only from refs and are intentionally stable.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sessionID, url]);
+  }, [url]);
 
-  const reportSize = useCallback(async (width: number, height: number) => {
-    const response = await fetch(
-      "http://" + url + "/api/sessions/" + sessionID + "/resolution",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+  const reportSize = useCallback(
+    async (width: number, height: number) => {
+      const sid = sidRef.current;
+      if (!sid) return;
+      const response = await fetch(
+        "http://" + url + "/api/sessions/" + sid + "/resolution",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ width, height }),
         },
-        body: JSON.stringify({ width, height }),
-      },
-    );
-  }, [url, sessionID]);
+      );
+    },
+    [url],
+  );
 
   const reportZoom = useCallback(
     async (startX: number, startY: number, width: number, height: number) => {
+      const sid = sidRef.current;
+      if (!sid) return;
       const crop_response = await fetch(
-        "http://" + url + "/api/sessions/" + sessionID + "/crop",
+        "http://" + url + "/api/sessions/" + sid + "/crop",
         {
           method: "GET",
         },
@@ -334,10 +436,8 @@ export const WebsocketH264Provider: React.FC<WebsocketH264ProviderProps> = ({
         return;
       }
 
-      console.log(x, y, cropWidth, cropHeight);
-
       const response = await fetch(
-        "http://" + url + "/api/sessions/" + sessionID + "/crop",
+        "http://" + url + "/api/sessions/" + sid + "/crop",
         {
           method: "POST",
           headers: {
@@ -347,7 +447,7 @@ export const WebsocketH264Provider: React.FC<WebsocketH264ProviderProps> = ({
         },
       );
     },
-    [url, sessionID, sourceWidth, sourceHeight, currentWidth, currentHeight],
+    [url, sourceWidth, sourceHeight, currentWidth, currentHeight],
   );
 
   const reportDrag = useCallback(
@@ -359,8 +459,10 @@ export const WebsocketH264Provider: React.FC<WebsocketH264ProviderProps> = ({
       active: boolean,
     ) => {
       if (!active) {
+        const sid = sidRef.current;
+        if (!sid) return;
         const crop_response = await fetch(
-          "http://" + url + "/api/sessions/" + sessionID + "/crop",
+          "http://" + url + "/api/sessions/" + sid + "/crop",
           {
             method: "GET",
           },
@@ -391,7 +493,7 @@ export const WebsocketH264Provider: React.FC<WebsocketH264ProviderProps> = ({
         });
 
         const response = await fetch(
-          "http://" + url + "/api/sessions/" + sessionID + "/crop",
+          "http://" + url + "/api/sessions/" + sid + "/crop",
           {
             method: "POST",
             headers: {
@@ -407,17 +509,19 @@ export const WebsocketH264Provider: React.FC<WebsocketH264ProviderProps> = ({
         );
       }
     },
-    [url, sessionID, currentWidth, currentHeight],
+    [url, currentWidth, currentHeight],
   );
 
   const clearZoom = useCallback(async () => {
+    const sid = sidRef.current;
+    if (!sid) return;
     const response = await fetch(
-      "http://" + url + "/api/sessions/" + sessionID + "/crop",
+      "http://" + url + "/api/sessions/" + sid + "/crop",
       {
         method: "DELETE",
       },
     );
-  }, [url, sessionID]);
+  }, [url]);
 
   const contextValue = useMemo(
     () => ({

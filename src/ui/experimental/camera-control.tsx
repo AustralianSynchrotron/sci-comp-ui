@@ -153,7 +153,6 @@ export const CameraControl: React.FC<CameraControlProps> = ({
   let lastMove = 0;
   const handleMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
     if (dragStart) {
-      console.log(e.clientX);
 
       const deltaX = e.clientX - dragStart.lastX;
       const deltaY = e.clientY - dragStart.lastY;
@@ -250,7 +249,6 @@ export const CameraControl: React.FC<CameraControlProps> = ({
 
   const handleMouseUp = (e: React.MouseEvent<HTMLCanvasElement>) => {
     if (dragStart) {
-      console.log(dragStart);
       reportDrag(
         e.clientX - dragStart.startX,
         e.clientY - dragStart.startY,
