@@ -8,14 +8,20 @@ import React, {
 
 import { ImageContext } from "./image-context";
 
+import { type H264Api } from "./h264-api";
+
 export interface WebsocketH264ProviderProps {
   children: React.ReactNode;
-  url: string;
+  sessionId?: string;
+  onSessionCreated?: (sessionId: string) => void;
+  api: H264Api;
 }
 
 export const WebsocketH264Provider: React.FC<WebsocketH264ProviderProps> = ({
   children,
-  url,
+  sessionId = null,
+  onSessionCreated = null,
+  api,
 }) => {
   // ==================
   // State
@@ -25,6 +31,8 @@ export const WebsocketH264Provider: React.FC<WebsocketH264ProviderProps> = ({
   const [sourceHeight, setSourceHeight] = useState<number>(1024);
   const [currentWidth, setCurrentWidth] = useState<number>(1024);
   const [currentHeight, setCurrentHeight] = useState<number>(1024);
+  const [paddingWidth, setPaddingWidth] = useState<number>(0);
+  const [paddingHeight, setPaddingHeight] = useState<number>(0);
 
   // ==================
   // Refs
@@ -42,16 +50,17 @@ export const WebsocketH264Provider: React.FC<WebsocketH264ProviderProps> = ({
   const spsRef = useRef<Uint8Array | null>(null);
   const ppsRef = useRef<Uint8Array | null>(null);
   const nextTsRef = useRef<number>(0);
-  const sidRef = useRef<string | null>(sessionID ?? null);
+  const sidRef = useRef<string | null>(sessionId ?? null);
+  const lastConfigRef = useRef<{ width: number; height: number } | null>(null);
 
   // Internal resolved session ID. We mirror the prop; if null, we create and then set it here.
   const [resolvedSessionId, setResolvedSessionId] = useState<string | null>(
-    sessionID,
+    sessionId,
   );
 
   useEffect(() => {
-    setResolvedSessionId(sessionID ?? null);
-  }, [sessionID]);
+    setResolvedSessionId(sessionId ?? null);
+  }, [sessionId]);
 
   // ==================
   // Helper Functions
@@ -148,7 +157,7 @@ export const WebsocketH264Provider: React.FC<WebsocketH264ProviderProps> = ({
         codec,
         codedWidth: codedWidth,
         codedHeight: codedHeight,
-        description: description.buffer,
+        description: description,
       };
 
       const support = await VideoDecoder.isConfigSupported(config).catch(
@@ -240,7 +249,8 @@ export const WebsocketH264Provider: React.FC<WebsocketH264ProviderProps> = ({
     nextTsRef.current = 0;
 
     const connect = (sid: string) => {
-      ws = new WebSocket("ws://" + url + "/ws?session_id=" + sid);
+      ws = api.wsFactory(sid);
+
       wsRef.current = ws;
       ws.binaryType = "arraybuffer";
 
@@ -259,10 +269,26 @@ export const WebsocketH264Provider: React.FC<WebsocketH264ProviderProps> = ({
               setCurrentHeight(meta.height);
               setSourceWidth(meta.source_width);
               setSourceHeight(meta.source_height);
+              setPaddingWidth(meta.padding_width);
+              setPaddingHeight(meta.padding_width);
 
-              dimsRef.current = { width: meta.width, height: meta.height };
-              configuredRef.current = false; // force reconfigure
-              void tryConfigure();
+              const last = lastConfigRef.current;
+              const changed =
+                !last ||
+                last.width !== meta.width ||
+                last.height !== meta.height;
+
+              if (changed) {
+                lastConfigRef.current = {
+                  width: meta.width,
+                  height: meta.height,
+                };
+                dimsRef.current = { width: meta.width, height: meta.height };
+                configuredRef.current = false; // force reconfigure
+                void tryConfigure();
+              } else {
+                /**/
+              }
             }
           } catch (e) {
             console.warn("Failed to parse metadata:", e);
@@ -304,26 +330,7 @@ export const WebsocketH264Provider: React.FC<WebsocketH264ProviderProps> = ({
         return resolvedSessionId;
       }
 
-      const res = await fetch("http://" + url + "/api/sessions", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        signal: aborter.signal,
-        body: JSON.stringify({
-          colour_mapping: "none",
-          crop: null,
-          resolution: {
-            width: 1024,
-            height: 1024,
-          },
-        }),
-      });
-      if (!res.ok)
-        throw new Error(
-          `Failed to create session: ${res.status} ${res.statusText}`,
-        );
-
-      const body = await res.json();
-      const sid = body.id as string;
+      const sid = await api.createSession(aborter.signal);
       if (!sid) throw new Error("Server did not return session_id");
 
       // Inform parent so it can persist/store as it sees fit
@@ -371,51 +378,58 @@ export const WebsocketH264Provider: React.FC<WebsocketH264ProviderProps> = ({
 
     // `tryConfigure` and `onAccessUnit` read only from refs and are intentionally stable.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [url]);
+  }, [api]);
 
   const reportSize = useCallback(
     async (width: number, height: number) => {
       const sid = sidRef.current;
       if (!sid) return;
-      const response = await fetch(
-        "http://" + url + "/api/sessions/" + sid + "/resolution",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ width, height }),
-        },
-      );
+      api.setResolution(sid, width, height);
     },
-    [url],
+    [api],
   );
 
   const reportZoom = useCallback(
     async (startX: number, startY: number, width: number, height: number) => {
       const sid = sidRef.current;
       if (!sid) return;
-      const crop_response = await fetch(
-        "http://" + url + "/api/sessions/" + sid + "/crop",
-        {
-          method: "GET",
-        },
-      );
+      const crop_response = await api.getCrop(sid);
 
       const {
         x: currentCropX,
         y: currentCropY,
         width: currentCropWidth,
         height: currentCropHeight,
-      } = (await crop_response.json()) ?? {
+      } = crop_response ?? {
         x: 0,
         y: 0,
         width: sourceWidth,
         height: sourceHeight,
       };
 
-      const xScale = currentCropWidth / currentWidth;
-      const yScale = currentCropHeight / currentHeight;
+      const native_aspect = sourceWidth / sourceHeight;
+      const aspect = currentWidth / currentHeight;
+
+      console.log(aspect, currentCropWidth/currentCropHeight);
+
+      let x_pad = currentCropX;
+      let y_pad = currentCropY;
+      let scale = 0,
+        xScale = 0,
+        yScale = 0;
+
+      if (y_pad == 0 && x_pad == 0) {
+        if (native_aspect > aspect) {
+          scale = currentWidth / sourceWidth;
+          y_pad = -Math.floor(currentHeight / (2 * scale) - sourceHeight / 2);
+        } else if (native_aspect < aspect) {
+          scale = currentHeight / sourceHeight;
+          x_pad = -Math.floor(currentWidth / (2 * scale) - sourceWidth / 2);
+        }
+      } else {
+        xScale = currentCropWidth / currentWidth;
+        yScale = currentCropHeight / currentHeight;
+      }
 
       if (width < 0) {
         startX = startX + width;
@@ -426,28 +440,41 @@ export const WebsocketH264Provider: React.FC<WebsocketH264ProviderProps> = ({
         height = -1 * height;
       }
 
-      const x = currentCropX + Math.floor(startX * xScale);
-      const y = currentCropY + Math.floor(startY * yScale);
+      let x = 0,
+        y = 0;
 
-      const cropWidth = Math.floor(width * xScale);
-      const cropHeight = Math.floor(height * yScale);
+      let cropWidth = 0,
+        cropHeight = 0;
+
+      if (scale == 0) {
+        x = currentCropX + Math.floor(startX * xScale);
+        y = currentCropY + Math.floor(startY * yScale);
+        cropWidth = Math.floor(width * xScale);
+        cropHeight = Math.floor(height * yScale);
+      } else {
+        x = x_pad + Math.floor(startX / scale);
+        y = y_pad + Math.floor(startY / scale);
+        x = Math.max(x, 0);
+        y = Math.max(y, 0);
+
+        cropWidth = Math.floor(width / scale);
+        cropHeight = Math.floor(height / scale);
+      }
+
+      console.log(x, y);
+      console.log(cropWidth, cropHeight);
 
       if (cropWidth == 0 || cropHeight == 0) {
         return;
       }
-
-      const response = await fetch(
-        "http://" + url + "/api/sessions/" + sid + "/crop",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ x, y, width: cropWidth, height: cropHeight }),
-        },
-      );
+      await api.setCrop(sid, {
+        x,
+        y,
+        width: cropWidth,
+        height: cropHeight,
+      });
     },
-    [url, sourceWidth, sourceHeight, currentWidth, currentHeight],
+    [api, sourceWidth, sourceHeight, currentWidth, currentHeight],
   );
 
   const reportDrag = useCallback(
@@ -461,18 +488,20 @@ export const WebsocketH264Provider: React.FC<WebsocketH264ProviderProps> = ({
       if (!active) {
         const sid = sidRef.current;
         if (!sid) return;
-        const crop_response = await fetch(
-          "http://" + url + "/api/sessions/" + sid + "/crop",
-          {
-            method: "GET",
-          },
-        );
+
+        const crop_response = await api.getCrop(sid);
+
         const {
           x: currentCropX,
           y: currentCropY,
           width: currentCropWidth,
           height: currentCropHeight,
-        } = await crop_response.json();
+        } = crop_response ?? {
+          x: 0,
+          y: 0,
+          width: sourceWidth,
+          height: sourceHeight,
+        };
 
         const xScale = currentCropWidth / currentWidth;
         const yScale = currentCropHeight / currentHeight;
@@ -492,36 +521,22 @@ export const WebsocketH264Provider: React.FC<WebsocketH264ProviderProps> = ({
           x,
         });
 
-        const response = await fetch(
-          "http://" + url + "/api/sessions/" + sid + "/crop",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              x,
-              y,
-              width: currentCropWidth,
-              height: currentCropHeight,
-            }),
-          },
-        );
+        await api.setCrop(sid, {
+          x,
+          y,
+          width: currentCropWidth,
+          height: currentCropHeight,
+        });
       }
     },
-    [url, currentWidth, currentHeight],
+    [api, sourceWidth, sourceHeight, currentWidth, currentHeight],
   );
 
   const clearZoom = useCallback(async () => {
     const sid = sidRef.current;
     if (!sid) return;
-    const response = await fetch(
-      "http://" + url + "/api/sessions/" + sid + "/crop",
-      {
-        method: "DELETE",
-      },
-    );
-  }, [url]);
+    api.clearCrop(sid);
+  }, [api]);
 
   const contextValue = useMemo(
     () => ({
