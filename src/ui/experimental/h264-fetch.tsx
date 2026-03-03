@@ -38,8 +38,25 @@ export function h264FetchApi(url: string): H264Api {
       const data = await res.json();
       return {
         width: data.source_width,
-        height: data.source_height
-      }
+        height: data.source_height,
+      };
+    },
+    async getSessionResolution(sessionId: string, signal?: AbortSignal) {
+      const res = await fetch("http://" + url + "/api/sessions/" + sessionId + "/resolution", {
+        method: "GET",
+        signal: signal,
+      });
+      if (!res.ok)
+        throw new Error(
+          `Failed to get resolution.`,
+        );
+      const data = await res.json();
+      return {
+        width: data.source_width,
+        height: data.source_height,
+        paddingWidth: data.padding_width,
+        paddingHeight: data.padding_height,
+      };
     },
     async setResolution(
       sessionId: string,

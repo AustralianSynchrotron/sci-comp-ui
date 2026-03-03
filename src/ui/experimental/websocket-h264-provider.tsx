@@ -31,6 +31,10 @@ export const WebsocketH264Provider: React.FC<WebsocketH264ProviderProps> = ({
   const [sourceHeight, setSourceHeight] = useState<number>(1024);
   const [currentWidth, setCurrentWidth] = useState<number>(1024);
   const [currentHeight, setCurrentHeight] = useState<number>(1024);
+  const [currentCropHeight, setCurrentCropHeight] = useState<number>(1024);
+  const [currentCropWidth, setCurrentCropWidth] = useState<number>(1024);
+  const [currentCropStartX, setCurrentCropStartX] = useState<number>(0);
+  const [currentCropStartY, setCurrentCropStartY] = useState<number>(0);
   const [paddingWidth, setPaddingWidth] = useState<number>(0);
   const [paddingHeight, setPaddingHeight] = useState<number>(0);
 
@@ -270,7 +274,11 @@ export const WebsocketH264Provider: React.FC<WebsocketH264ProviderProps> = ({
               setSourceWidth(meta.source_width);
               setSourceHeight(meta.source_height);
               setPaddingWidth(meta.padding_width);
-              setPaddingHeight(meta.padding_width);
+              setPaddingHeight(meta.padding_height);
+              setCurrentCropWidth(meta.crop_width);
+              setCurrentCropHeight(meta.crop_height);
+              setCurrentCropStartX(meta.crop_x);
+              setCurrentCropStartY(meta.crop_y);
 
               const last = lastConfigRef.current;
               const changed =
@@ -393,6 +401,7 @@ export const WebsocketH264Provider: React.FC<WebsocketH264ProviderProps> = ({
     async (startX: number, startY: number, width: number, height: number) => {
       const sid = sidRef.current;
       if (!sid) return;
+      // TODO: Should I get this from meta in websocket instead of rest.
       const crop_response = await api.getCrop(sid);
 
       const {
@@ -410,25 +419,18 @@ export const WebsocketH264Provider: React.FC<WebsocketH264ProviderProps> = ({
       const native_aspect = sourceWidth / sourceHeight;
       const aspect = currentWidth / currentHeight;
 
-      console.log(aspect, currentCropWidth/currentCropHeight);
-
       let x_pad = currentCropX;
       let y_pad = currentCropY;
-      let scale = 0,
-        xScale = 0,
-        yScale = 0;
+      let scale = 0;
 
-      if (y_pad == 0 && x_pad == 0) {
-        if (native_aspect > aspect) {
-          scale = currentWidth / sourceWidth;
-          y_pad = -Math.floor(currentHeight / (2 * scale) - sourceHeight / 2);
-        } else if (native_aspect < aspect) {
-          scale = currentHeight / sourceHeight;
-          x_pad = -Math.floor(currentWidth / (2 * scale) - sourceWidth / 2);
-        }
-      } else {
-        xScale = currentCropWidth / currentWidth;
-        yScale = currentCropHeight / currentHeight;
+      if (native_aspect >= aspect) {
+        scale = currentWidth / currentCropWidth;
+        x_pad = currentCropX;
+        y_pad = currentCropY - Math.floor(paddingHeight / (2 * scale));
+      } else if (native_aspect < aspect) {
+        scale = currentHeight / currentCropHeight;
+        x_pad = currentCropX - Math.floor(paddingWidth / (2 * scale));
+        y_pad = currentCropY;
       }
 
       if (width < 0) {
@@ -446,23 +448,13 @@ export const WebsocketH264Provider: React.FC<WebsocketH264ProviderProps> = ({
       let cropWidth = 0,
         cropHeight = 0;
 
-      if (scale == 0) {
-        x = currentCropX + Math.floor(startX * xScale);
-        y = currentCropY + Math.floor(startY * yScale);
-        cropWidth = Math.floor(width * xScale);
-        cropHeight = Math.floor(height * yScale);
-      } else {
-        x = x_pad + Math.floor(startX / scale);
-        y = y_pad + Math.floor(startY / scale);
-        x = Math.max(x, 0);
-        y = Math.max(y, 0);
+      x = x_pad + Math.floor(startX / scale);
+      y = y_pad + Math.floor(startY / scale);
+      x = Math.max(x, 0);
+      y = Math.max(y, 0);
 
-        cropWidth = Math.floor(width / scale);
-        cropHeight = Math.floor(height / scale);
-      }
-
-      console.log(x, y);
-      console.log(cropWidth, cropHeight);
+      cropWidth = Math.floor(width / scale);
+      cropHeight = Math.floor(height / scale);
 
       if (cropWidth == 0 || cropHeight == 0) {
         return;
@@ -474,7 +466,15 @@ export const WebsocketH264Provider: React.FC<WebsocketH264ProviderProps> = ({
         height: cropHeight,
       });
     },
-    [api, sourceWidth, sourceHeight, currentWidth, currentHeight],
+    [
+      api,
+      sourceWidth,
+      sourceHeight,
+      currentWidth,
+      currentHeight,
+      paddingWidth,
+      paddingHeight,
+    ],
   );
 
   const reportDrag = useCallback(

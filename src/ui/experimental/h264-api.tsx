@@ -1,5 +1,9 @@
 export type Crop = { x: number; y: number; width: number; height: number };
 export type Resolution = { width: number; height: number };
+export type SessionResolution = Resolution & {
+  paddingWidth: number;
+  paddingHeight: number;
+};
 
 export interface H264Api {
   /** Create a session if needed. Return the session ID. */
@@ -7,6 +11,12 @@ export interface H264Api {
 
   /** Get source resolution - this only works if there is an active encoder */
   getSourceResolution: () => Promise<Resolution>;
+
+  /** Get session resolution */
+  getSessionResolution: (
+    sessionId: string,
+    signal?: AbortSignal,
+  ) => Promise<SessionResolution>;
 
   /** Resolution of the view (stream == display by design). */
   setResolution: (
