@@ -1,4 +1,10 @@
-import React, { useEffect, useRef, useState, useContext } from "react";
+import React, {
+  useEffect,
+  useRef,
+  useState,
+  useContext,
+  useCallback,
+} from "react";
 import { cn } from "../../lib/utils";
 import { ImageContext } from "./image-context";
 
@@ -43,7 +49,7 @@ export const CameraControl: React.FC<CameraControlProps> = ({
   onClick,
   showIntensity = false,
   onZoom,
-  sizeFollowsImage = false,
+  sizeFollowsImage = false
 }) => {
   const { image, reportSize, reportZoom, reportDrag, clearZoom } =
     useContext(ImageContext);
@@ -68,6 +74,8 @@ export const CameraControl: React.FC<CameraControlProps> = ({
     lastX: number;
     lastY: number;
   } | null>(null);
+  const [spaceHeld, setSpaceHeld] = useState<boolean>(false);
+  const [cursorDisplay, setCursorDisplay] = useState<string>("crosshair");
   const [frameCount, setFrameCount] = useState<number>(0);
   const [startTime, setStartTime] = useState<number>(performance.now());
 
@@ -153,7 +161,6 @@ export const CameraControl: React.FC<CameraControlProps> = ({
   let lastMove = 0;
   const handleMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
     if (dragStart) {
-
       const deltaX = e.clientX - dragStart.lastX;
       const deltaY = e.clientY - dragStart.lastY;
       setDragStart({ ...dragStart, lastX: e.clientX, lastY: e.clientY });
@@ -233,40 +240,84 @@ export const CameraControl: React.FC<CameraControlProps> = ({
     }
   };
 
-  const handleMouseDown = (e: React.MouseEvent<HTMLCanvasElement>) => {
-    if (e.shiftKey) {
-      setDragStart({
-        startX: e.clientX,
-        startY: e.clientY,
-        lastX: e.clientX,
-        lastY: e.clientY,
-      });
-    } else {
-      const info = getMousePixelInfo(e);
-      setZoomBox({ startX: info.x, startY: info.y, width: 0, height: 0 });
-    }
-  };
+  const handleMouseDown = useCallback(
+    (e: React.MouseEvent<HTMLCanvasElement>) => {
+      if (spaceHeld) {
+        setCursorDisplay("grabbing");
+        setDragStart({
+          startX: e.clientX,
+          startY: e.clientY,
+          lastX: e.clientX,
+          lastY: e.clientY,
+        });
+      } else {
+        const info = getMousePixelInfo(e);
+        setZoomBox({ startX: info.x, startY: info.y, width: 0, height: 0 });
+      }
+    },
+    [spaceHeld],
+  );
 
-  const handleMouseUp = (e: React.MouseEvent<HTMLCanvasElement>) => {
-    if (dragStart) {
-      reportDrag(
-        e.clientX - dragStart.startX,
-        e.clientY - dragStart.startY,
-        0,
-        0,
-        false,
-      );
-      setDragStart(null);
-    }
-    if (zoomBox) {
-      onZoom?.(zoomBox);
-      reportZoom(zoomBox.startX, zoomBox.startY, zoomBox.width, zoomBox.height);
-    }
-    setZoomBox(null);
-  };
+  const handleMouseUp = useCallback(
+    (e: React.MouseEvent<HTMLCanvasElement>) => {
+      if (dragStart) {
+        if (spaceHeld) {
+          setCursorDisplay("grab");
+        } else {
+          setCursorDisplay("crosshair");
+        }
+        reportDrag(
+          e.clientX - dragStart.startX,
+          e.clientY - dragStart.startY,
+          0,
+          0,
+          false,
+        );
+        setDragStart(null);
+      }
+      if (zoomBox) {
+        onZoom?.(zoomBox);
+        reportZoom(
+          zoomBox.startX,
+          zoomBox.startY,
+          zoomBox.width,
+          zoomBox.height,
+        );
+      }
+      setZoomBox(null);
+    },
+    [dragStart, spaceHeld, zoomBox, onZoom, reportDrag, reportZoom],
+  );
 
   const handleDoubleClick = (e: React.MouseEvent<HTMLCanvasElement>) => {
     clearZoom();
+  };
+
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent<HTMLCanvasElement>) => {
+      if (e.code === "Space") {
+        if (!spaceHeld) {
+          setCursorDisplay("grab");
+          setSpaceHeld(true);
+        }
+        e.preventDefault();
+      }
+    },
+    [spaceHeld],
+  );
+
+  const handleKeyUp = (e: React.KeyboardEvent<HTMLCanvasElement>) => {
+    if (e.code === "Space") {
+      setSpaceHeld(false);
+      if (!dragStart) {      
+        setCursorDisplay("crosshair");
+      };
+      e.preventDefault();
+    }
+  };
+
+  const handleMouseEnter = (e: React.MouseEvent<HTMLCanvasElement>) => {
+    e.currentTarget.focus();
   };
 
   return (
@@ -282,13 +333,17 @@ export const CameraControl: React.FC<CameraControlProps> = ({
       <canvas
         ref={canvasRef}
         onMouseMove={handleMouseMove}
+        onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         onClick={handleMouseClick}
         onMouseDown={handleMouseDown}
         onMouseUp={handleMouseUp}
         onDoubleClick={handleDoubleClick}
+        onKeyDown={handleKeyDown}
+        onKeyUp={handleKeyUp}
+        tabIndex={0}
         style={{
-          cursor: "crosshair",
+          cursor: cursorDisplay,
           display: "block",
           border: "1px solid red",
           width: "100%",
