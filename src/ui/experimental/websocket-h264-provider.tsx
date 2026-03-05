@@ -399,38 +399,23 @@ export const WebsocketH264Provider: React.FC<WebsocketH264ProviderProps> = ({
 
   const reportZoom = useCallback(
     async (startX: number, startY: number, width: number, height: number) => {
-      const sid = sidRef.current;
-      if (!sid) return;
-      // TODO: Should I get this from meta in websocket instead of rest.
-      const crop_response = await api.getCrop(sid);
 
-      const {
-        x: currentCropX,
-        y: currentCropY,
-        width: currentCropWidth,
-        height: currentCropHeight,
-      } = crop_response ?? {
-        x: 0,
-        y: 0,
-        width: sourceWidth,
-        height: sourceHeight,
-      };
 
       const native_aspect = sourceWidth / sourceHeight;
       const aspect = currentWidth / currentHeight;
 
-      let x_pad = currentCropX;
-      let y_pad = currentCropY;
+      let x_pad = currentCropStartX;
+      let y_pad = currentCropStartY;
       let scale = 0;
 
       if (native_aspect >= aspect) {
         scale = currentWidth / currentCropWidth;
-        x_pad = currentCropX;
-        y_pad = currentCropY - Math.floor(paddingHeight / (2 * scale));
+        x_pad = currentCropStartX;
+        y_pad = currentCropStartY - Math.floor(paddingHeight / (2 * scale));
       } else if (native_aspect < aspect) {
         scale = currentHeight / currentCropHeight;
-        x_pad = currentCropX - Math.floor(paddingWidth / (2 * scale));
-        y_pad = currentCropY;
+        x_pad = currentCropStartX - Math.floor(paddingWidth / (2 * scale));
+        y_pad = currentCropStartY;
       }
 
       if (width < 0) {
@@ -459,6 +444,9 @@ export const WebsocketH264Provider: React.FC<WebsocketH264ProviderProps> = ({
       if (cropWidth == 0 || cropHeight == 0) {
         return;
       }
+
+      const sid = sidRef.current;
+      if (!sid) return;
       await api.setCrop(sid, {
         x,
         y,
@@ -474,6 +462,10 @@ export const WebsocketH264Provider: React.FC<WebsocketH264ProviderProps> = ({
       currentHeight,
       paddingWidth,
       paddingHeight,
+      currentCropHeight,
+      currentCropWidth,
+      currentCropStartX,
+      currentCropStartY,
     ],
   );
 
