@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { createFileRoute } from '@tanstack/react-router'
 import { PageHeader } from "../../components/page-header"
 import { CameraControl } from '../../../ui/experimental/camera-control'
@@ -7,6 +7,7 @@ import { TypographyH1 } from '../../../ui/elements/typography'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../../ui/layout/card"
 import { DemoContainer } from "@/docs/components/demo-container"
 
+import { h264FetchApi } from '@/ui/experimental/h264-fetch';
 
 export const Route = createFileRoute('/experimental/camera-control-h264')({
   component: CameraControlWebsocketH264Page,
@@ -17,9 +18,10 @@ export const Route = createFileRoute('/experimental/camera-control-h264')({
 function CameraControlWebsocketH264Demo() {
   const [mousePos, setMousePos] = useState<{ x: number, y: number, intensity: number } | null>(null);
   const [clickPos, setClickPos] = useState<{ x: number, y: number, intensity: number } | null>(null);
+  const api = useMemo(() => h264FetchApi("localhost:9999"), []);
   return (
-    <div>
-      <WebsocketH264Provider wsUrl="ws://localhost:8080/ws">
+    <div style={{width: "100%", height: "100%"}}>
+      <WebsocketH264Provider api={api}>
         <CameraControl
           className="border"
           onMousePositionChange={setMousePos}

@@ -1,12 +1,46 @@
-import React, { useEffect, useRef, useState, useContext } from "react";
+import React, {
+  useEffect,
+  useRef,
+  useState,
+  useContext,
+  useCallback,
+} from "react";
 import { cn } from "../../lib/utils";
 import { ImageContext } from "./image-context";
 
+function debounceResize(
+  fn: (entry: ResizeObserverEntry) => void,
+  delay: number,
+) {
+  let timer: ReturnType<typeof setTimeout> | undefined;
+
+  const debounced = (entry: ResizeObserverEntry) => {
+    if (timer) clearTimeout(timer);
+    timer = setTimeout(() => fn(entry), delay);
+  };
+
+  debounced.cancel = () => {
+    if (timer) clearTimeout(timer);
+    timer = undefined;
+  };
+
+  return debounced;
+}
+
 export interface CameraControlProps {
   className?: string;
-  onMousePositionChange?: (pos: { x: number; y: number; intensity: number } | null) => void;
+  onMousePositionChange?: (
+    pos: { x: number; y: number; intensity: number } | null,
+  ) => void;
   onClick?: (pos: { x: number; y: number; intensity: number }) => void;
   showIntensity?: boolean;
+  onZoom?: (box: {
+    startX: number;
+    startY: number;
+    width: number;
+    height: number;
+  }) => void;
+  sizeFollowsImage?: boolean;
 }
 
 export const CameraControl: React.FC<CameraControlProps> = ({
@@ -14,46 +48,99 @@ export const CameraControl: React.FC<CameraControlProps> = ({
   onMousePositionChange,
   onClick,
   showIntensity = false,
+  onZoom,
+  sizeFollowsImage = false
 }) => {
-  const source = useContext(ImageContext);
+  const { image, reportSize, reportZoom, reportDrag, clearZoom } =
+    useContext(ImageContext);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [popupPos, setPopupPos] = useState<{ x: number; y: number } | null>(null);
+  const [popupPos, setPopupPos] = useState<{ x: number; y: number } | null>(
+    null,
+  );
   const [pixelValue, setPixelValue] = useState<string | null>(null);
-  const [cursorPosition, setCursorPosition] = useState<{ x: number; y: number } | null>(null);
+  const [cursorPosition, setCursorPosition] = useState<{
+    x: number;
+    y: number;
+  } | null>(null);
+  const [zoomBox, setZoomBox] = useState<{
+    startX: number;
+    startY: number;
+    width: number;
+    height: number;
+  } | null>(null);
+  const [dragStart, setDragStart] = useState<{
+    startX: number;
+    startY: number;
+    lastX: number;
+    lastY: number;
+  } | null>(null);
+  const [spaceHeld, setSpaceHeld] = useState<boolean>(false);
+  const [cursorDisplay, setCursorDisplay] = useState<string>("crosshair");
   const [frameCount, setFrameCount] = useState<number>(0);
   const [startTime, setStartTime] = useState<number>(performance.now());
 
   // Helper to get dimensions safely
   const getDimensions = () => {
-    if (!source) return { w: 0, h: 0 };
-    if (typeof source === "object" && "video" in source && source.video) {
-      return { w: source.video.videoWidth, h: source.video.videoHeight };
+    if (!image) return { w: 0, h: 0 };
+    if (typeof image === "object" && "video" in image && image.video) {
+      return { w: image.video.videoWidth, h: image.video.videoHeight };
     }
-    if (source instanceof ImageBitmap) {
-      return { w: source.width, h: source.height };
+    if (image instanceof ImageBitmap) {
+      return { w: image.width, h: image.height };
     }
     return { w: 0, h: 0 };
   };
 
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas || !reportSize) return;
+
+    const handler = debounceResize((entry) => {
+      const { width, height } = entry.contentRect;
+      // Set canvas to size of canvas?
+      canvas.width = width;
+      canvas.height = height;
+
+      // Report the size back to the provider
+      reportSize(Math.floor(width), Math.floor(height));
+    }, 100);
+
+    const observer = new ResizeObserver((entries) => handler(entries[0]));
+
+    observer.observe(canvas);
+    return () => observer.disconnect();
+  }, [reportSize]);
+
   // Draw source when updated
   useEffect(() => {
-    if (!source || !canvasRef.current) return;
+    if (!image || !canvasRef.current) return;
 
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    const { w, h } = getDimensions();
-    if (w === 0 || h === 0) return;
-
-    canvas.width = w;
-    canvas.height = h;
+    if (sizeFollowsImage) {
+      const { w, h } = getDimensions();
+      if (w === 0 || h === 0) return;
+      canvas.width = w;
+      canvas.height = h;
+    }
 
     try {
-      if (typeof source === "object" && "video" in source && source.video) {
-        ctx.drawImage(source.video, 0, 0);
-      } else if (source instanceof ImageBitmap) {
-        ctx.drawImage(source, 0, 0);
+      if (typeof image === "object" && "video" in image && image.video) {
+        ctx.drawImage(image.video, 0, 0);
+      } else if (image instanceof ImageBitmap) {
+        ctx.drawImage(image, 0, 0);
+      }
+      if (zoomBox) {
+        ctx.strokeStyle = "yellow"; // Set bounding box color
+        ctx.lineWidth = 2; // Set line width
+        ctx.strokeRect(
+          zoomBox.startX,
+          zoomBox.startY,
+          zoomBox.width,
+          zoomBox.height,
+        );
       }
     } catch (err) {
       console.warn("Draw failed:", err);
@@ -64,34 +151,67 @@ export const CameraControl: React.FC<CameraControlProps> = ({
     setFrameCount((prev) => prev + 1);
     const now = performance.now();
     if (now - startTime >= 1000) {
-      console.log(`FPS: ${frameCount}`);
+      // console.log(`FPS: ${frameCount}`);
       setFrameCount(0);
       setStartTime(now);
     }
-  }, [source instanceof ImageBitmap ? source : (source as any)?.frameId]);
+  }, [image instanceof ImageBitmap ? image : (image as any)?.frameId]);
 
   // Throttle mouse move
   let lastMove = 0;
   const handleMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
+    if (dragStart) {
+      const deltaX = e.clientX - dragStart.lastX;
+      const deltaY = e.clientY - dragStart.lastY;
+      setDragStart({ ...dragStart, lastX: e.clientX, lastY: e.clientY });
+      reportDrag(
+        e.clientX - dragStart.startX,
+        e.clientY - dragStart.startY,
+        deltaX,
+        deltaY,
+        true,
+      );
+      return;
+    }
+
     const now = performance.now();
     if (now - lastMove < 50) return;
     lastMove = now;
 
     const info = getMousePixelInfo(e);
+
+    if (zoomBox) {
+      setZoomBox({
+        ...zoomBox,
+        width: info.x - zoomBox.startX,
+        height: info.y - zoomBox.startY,
+      });
+    }
+
     setPopupPos({ x: e.clientX, y: e.clientY });
-    setPixelValue(showIntensity ? `intensity: ${info.intensity}` : `rgba(${info.pixel[0]}, ${info.pixel[1]}, ${info.pixel[2]}, ${info.pixel[3] / 255})`);
-    onMousePositionChange?.({ x: info.x, y: info.y, intensity: info.intensity });
+    setPixelValue(
+      showIntensity
+        ? `intensity: ${info.intensity}`
+        : `rgba(${info.pixel[0]}, ${info.pixel[1]}, ${info.pixel[2]}, ${info.pixel[3] / 255})`,
+    );
+    onMousePositionChange?.({
+      x: info.x,
+      y: info.y,
+      intensity: info.intensity,
+    });
   };
 
   const getMousePixelInfo = (e: React.MouseEvent<HTMLCanvasElement>) => {
     const canvas = canvasRef.current;
-    if (!canvas || canvas.width === 0 || canvas.height === 0) return { x: 0, y: 0, intensity: 0, pixel: [0, 0, 0, 0] };
+    if (!canvas || canvas.width === 0 || canvas.height === 0)
+      return { x: 0, y: 0, intensity: 0, pixel: [0, 0, 0, 0] };
 
     const rect = canvas.getBoundingClientRect();
     const x = Math.floor(e.clientX - rect.left);
     const y = Math.floor(e.clientY - rect.top);
 
     const ctx = canvas.getContext("2d");
+
     if (!ctx) return { x, y, intensity: 0, pixel: [0, 0, 0, 0] };
 
     try {
@@ -111,6 +231,7 @@ export const CameraControl: React.FC<CameraControlProps> = ({
 
   const handleMouseClick = (e: React.MouseEvent<HTMLCanvasElement>) => {
     const info = getMousePixelInfo(e);
+
     onClick?.({ x: info.x, y: info.y, intensity: info.intensity });
     if (e.ctrlKey) {
       setCursorPosition({ x: info.x, y: info.y });
@@ -119,21 +240,116 @@ export const CameraControl: React.FC<CameraControlProps> = ({
     }
   };
 
-  const { w, h } = getDimensions();
+  const handleMouseDown = useCallback(
+    (e: React.MouseEvent<HTMLCanvasElement>) => {
+      if (spaceHeld) {
+        setCursorDisplay("grabbing");
+        setDragStart({
+          startX: e.clientX,
+          startY: e.clientY,
+          lastX: e.clientX,
+          lastY: e.clientY,
+        });
+      } else {
+        const info = getMousePixelInfo(e);
+        setZoomBox({ startX: info.x, startY: info.y, width: 0, height: 0 });
+      }
+    },
+    [spaceHeld],
+  );
+
+  const handleMouseUp = useCallback(
+    (e: React.MouseEvent<HTMLCanvasElement>) => {
+      if (dragStart) {
+        if (spaceHeld) {
+          setCursorDisplay("grab");
+        } else {
+          setCursorDisplay("crosshair");
+        }
+        reportDrag(
+          e.clientX - dragStart.startX,
+          e.clientY - dragStart.startY,
+          0,
+          0,
+          false,
+        );
+        setDragStart(null);
+      }
+      if (zoomBox) {
+        onZoom?.(zoomBox);
+        reportZoom(
+          zoomBox.startX,
+          zoomBox.startY,
+          zoomBox.width,
+          zoomBox.height,
+        );
+      }
+      setZoomBox(null);
+    },
+    [dragStart, spaceHeld, zoomBox, onZoom, reportDrag, reportZoom],
+  );
+
+  const handleDoubleClick = (e: React.MouseEvent<HTMLCanvasElement>) => {
+    clearZoom();
+  };
+
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent<HTMLCanvasElement>) => {
+      if (e.code === "Space") {
+        if (!spaceHeld) {
+          setCursorDisplay("grab");
+          setSpaceHeld(true);
+        }
+        e.preventDefault();
+      }
+    },
+    [spaceHeld],
+  );
+
+  const handleKeyUp = (e: React.KeyboardEvent<HTMLCanvasElement>) => {
+    if (e.code === "Space") {
+      setSpaceHeld(false);
+      if (!dragStart) {      
+        setCursorDisplay("crosshair");
+      };
+      e.preventDefault();
+    }
+  };
+
+  const handleMouseEnter = (e: React.MouseEvent<HTMLCanvasElement>) => {
+    e.currentTarget.focus();
+  };
 
   return (
-    <div className={cn("space-y-4", className)} style={{ position: "relative", display: "inline-block" }}>
+    <div
+      className={cn("space-y-4", className)}
+      style={{
+        position: "relative",
+        display: "inline-block",
+        width: "100%",
+        height: "100%",
+      }}
+    >
       <canvas
         ref={canvasRef}
         onMouseMove={handleMouseMove}
+        onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         onClick={handleMouseClick}
+        onMouseDown={handleMouseDown}
+        onMouseUp={handleMouseUp}
+        onDoubleClick={handleDoubleClick}
+        onKeyDown={handleKeyDown}
+        onKeyUp={handleKeyUp}
+        tabIndex={0}
         style={{
-          cursor: "crosshair",
+          cursor: cursorDisplay,
           display: "block",
           border: "1px solid red",
-          width: `${w}px`,
-          height: `${h}px`,
+          width: "100%",
+          height: "100%",
+          // width: `${w}px`,
+          // height: `${h}px`,
         }}
       />
       {/* Crosshair */}
@@ -149,8 +365,26 @@ export const CameraControl: React.FC<CameraControlProps> = ({
             zIndex: 10,
           }}
         >
-          <div style={{ position: "absolute", left: cursorPosition.x, top: 0, width: 1, height: "100%", background: "red" }} />
-          <div style={{ position: "absolute", left: 0, top: cursorPosition.y, width: "100%", height: 1, background: "red" }} />
+          <div
+            style={{
+              position: "absolute",
+              left: cursorPosition.x,
+              top: 0,
+              width: 1,
+              height: "100%",
+              background: "red",
+            }}
+          />
+          <div
+            style={{
+              position: "absolute",
+              left: 0,
+              top: cursorPosition.y,
+              width: "100%",
+              height: 1,
+              background: "red",
+            }}
+          />
         </div>
       )}
       {/* Popup */}
