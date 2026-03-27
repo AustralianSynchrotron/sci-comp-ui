@@ -191,20 +191,29 @@ function PeriodicTableGrid({
   onElementSelect,
   selectedCategories,
   availableElements,
+  searchQuery = '',
 }: {
   elements: Element[]
   onElementSelect: (element: Element) => void
   selectedCategories: Set<ElementCategory>
   availableElements?: string[]
+  searchQuery?: string
 }) {
   const availableSet = React.useMemo(
     () => new Set(availableElements ?? []),
     [availableElements]
   )
-  const filteredElements = elements.filter(
-    (element) =>
+  const filteredElements = elements.filter((element) => {
+    const matchesCategory =
       selectedCategories.size === 0 || selectedCategories.has(element.category)
-  )
+    const query = searchQuery.toLowerCase().trim()
+    const matchesSearch =
+      query === '' ||
+      element.name.toLowerCase().includes(query) ||
+      element.symbol.toLowerCase().includes(query) ||
+      String(element.atomicNumber).includes(query)
+    return matchesCategory && matchesSearch
+  })
 
   // Create the classic periodic table layout
   // Each array represents the atomic numbers for that period, with null for empty spaces
@@ -422,6 +431,7 @@ export function PeriodicTable({
   const [selectedCategories, setSelectedCategories] = React.useState<
     Set<ElementCategory>
   >(new Set())
+  const [searchQuery, setSearchQuery] = React.useState('')
 
   const availableSet = React.useMemo(
     () => new Set(availableElements ?? []),
@@ -565,7 +575,10 @@ export function PeriodicTable({
   }
   if (variant === 'grid') {
     return (
-      <Popover open={open} onOpenChange={setOpen}>
+      <Popover open={open} onOpenChange={(isOpen) => {
+        setOpen(isOpen)
+        if (!isOpen) setSearchQuery('')
+      }}>
         <PopoverTrigger asChild>
           <Button
             variant="outline"
@@ -597,9 +610,14 @@ export function PeriodicTable({
           align="start"
         >
           <div className="space-y-3">
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-2 border-b pb-2">
               <Search className="h-4 w-4 text-muted-foreground" />
-              <h4 className="font-medium">Select an Element</h4>
+              <input
+                className="flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
+                placeholder="Search elements..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
             </div>
 
             <CategoryLegend
@@ -612,6 +630,7 @@ export function PeriodicTable({
               onElementSelect={handleElementSelect}
               selectedCategories={selectedCategories}
               availableElements={availableElements}
+              searchQuery={searchQuery}
             />
           </div>
         </PopoverContent>
