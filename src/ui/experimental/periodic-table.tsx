@@ -42,7 +42,7 @@ export interface PeriodicTableProps {
   placeholder?: string
   className?: string
   disabled?: boolean
-  availableElements?: string[]
+  enabledSymbols?: string[]
 }
 
 function ElementCard({
@@ -190,18 +190,18 @@ function PeriodicTableGrid({
   elements,
   onElementSelect,
   selectedCategories,
-  availableElements,
+  enabledSymbols,
   searchQuery = '',
 }: {
   elements: Element[]
   onElementSelect: (element: Element) => void
   selectedCategories: Set<ElementCategory>
-  availableElements?: string[]
+  enabledSymbols?: string[]
   searchQuery?: string
 }) {
   const availableSet = React.useMemo(
-    () => new Set(availableElements ?? []),
-    [availableElements]
+    () => new Set(enabledSymbols ?? []),
+    [enabledSymbols]
   )
   const filteredElements = elements.filter((element) => {
     const matchesCategory =
@@ -422,7 +422,7 @@ export function PeriodicTable({
   placeholder = 'Select element...',
   className,
   disabled = false,
-  availableElements,
+  enabledSymbols,
 }: PeriodicTableProps) {
   const [open, setOpen] = React.useState(false)
   const [selectedElement, setSelectedElement] = React.useState<Element | null>(
@@ -434,8 +434,8 @@ export function PeriodicTable({
   const [searchQuery, setSearchQuery] = React.useState('')
 
   const availableSet = React.useMemo(
-    () => new Set(availableElements ?? []),
-    [availableElements]
+    () => new Set(enabledSymbols ?? []),
+    [enabledSymbols]
   )
 
   const handleElementSelect = (element: Element) => {
@@ -629,7 +629,7 @@ export function PeriodicTable({
               elements={PERIODIC_TABLE_DATA}
               onElementSelect={handleElementSelect}
               selectedCategories={selectedCategories}
-              availableElements={availableElements}
+              enabledSymbols={enabledSymbols}
               searchQuery={searchQuery}
             />
           </div>
