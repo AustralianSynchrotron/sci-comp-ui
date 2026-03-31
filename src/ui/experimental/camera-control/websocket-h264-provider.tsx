@@ -8,7 +8,7 @@ import React, {
 
 import { ImageContext } from "./image-context";
 
-import { type H264Api } from "./h264-api";
+import { type H264Api, DefaultResolution } from "./h264-api";
 
 export interface WebsocketH264ProviderProps {
   children: React.ReactNode;
@@ -27,12 +27,12 @@ export const WebsocketH264Provider: React.FC<WebsocketH264ProviderProps> = ({
   // State
   // ==================
   const [imageBitmap, setImageBitmap] = useState<ImageBitmap | null>(null);
-  const [sourceWidth, setSourceWidth] = useState<number>(1024);
-  const [sourceHeight, setSourceHeight] = useState<number>(1024);
-  const [currentWidth, setCurrentWidth] = useState<number>(1024);
-  const [currentHeight, setCurrentHeight] = useState<number>(1024);
-  const [currentCropHeight, setCurrentCropHeight] = useState<number>(1024);
-  const [currentCropWidth, setCurrentCropWidth] = useState<number>(1024);
+  const [sourceWidth, setSourceWidth] = useState<number>(DefaultResolution.width);
+  const [sourceHeight, setSourceHeight] = useState<number>(DefaultResolution.height);
+  const [currentWidth, setCurrentWidth] = useState<number>(DefaultResolution.width);
+  const [currentHeight, setCurrentHeight] = useState<number>(DefaultResolution.height);
+  const [currentCropHeight, setCurrentCropHeight] = useState<number>(DefaultResolution.height);
+  const [currentCropWidth, setCurrentCropWidth] = useState<number>(DefaultResolution.width);
   const [currentCropStartX, setCurrentCropStartX] = useState<number>(0);
   const [currentCropStartY, setCurrentCropStartY] = useState<number>(0);
   const [paddingWidth, setPaddingWidth] = useState<number>(0);
@@ -43,8 +43,8 @@ export const WebsocketH264Provider: React.FC<WebsocketH264ProviderProps> = ({
   // ==================
   const wsRef = useRef<WebSocket | null>(null);
   const dimsRef = useRef<{ width: number; height: number }>({
-    width: 1024,
-    height: 1024,
+    width: DefaultResolution.width,
+    height: DefaultResolution.height,
   });
   const abortedRef = useRef<boolean>(false);
   const configuringRef = useRef<boolean>(false);

@@ -5,6 +5,16 @@ export type SessionResolution = Resolution & {
   paddingHeight: number;
 };
 
+type DefaultResolutionType = {
+  width: number,
+  height: number
+}
+
+export const DefaultResolution: DefaultResolutionType = {
+  width: 1024,
+  height: 1024
+};
+
 export interface H264Api {
   /** Create a session if needed. Return the session ID. */
   createSession: (signal?: AbortSignal) => Promise<string>;
