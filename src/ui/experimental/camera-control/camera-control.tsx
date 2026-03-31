@@ -5,7 +5,7 @@ import React, {
   useContext,
   useCallback,
 } from "react";
-import { cn } from "../../lib/utils";
+import { cn } from "../../../lib/utils";
 import { ImageContext } from "./image-context";
 
 function debounceResize(
