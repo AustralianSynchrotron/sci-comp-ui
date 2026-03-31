@@ -42,14 +42,17 @@ export interface PeriodicTableProps {
   placeholder?: string
   className?: string
   disabled?: boolean
+  enabledSymbols?: string[]
 }
 
 function ElementCard({
   element,
   onClick,
+  disabled,
 }: {
   element: Element
   onClick?: () => void
+  disabled?: boolean
 }) {
   const categoryInfo = ELEMENT_CATEGORIES[element.category]
 
@@ -61,12 +64,15 @@ function ElementCard({
       <HoverCardTrigger>
         <div
           className={cn(
-            'relative w-12 h-12 border border-border rounded cursor-pointer transition-all hover:scale-105 hover:shadow-md',
+            'relative w-12 h-12 border border-border rounded transition-all',
             categoryInfo.lightColor,
             'font-medium text-center flex flex-col justify-center items-center',
-            onClick && 'hover:ring-1 hover:ring-ring hover:ring-offset-1'
+            disabled
+              ? 'opacity-40 cursor-not-allowed'
+              : 'cursor-pointer hover:scale-105 hover:shadow-md',
+            !disabled && onClick && 'hover:ring-1 hover:ring-ring hover:ring-offset-1'
           )}
-          onClick={onClick}
+          onClick={disabled ? undefined : onClick}
         >
           <div className="font-bold absolute top-0.5 left-0.5 text-[8px] opacity-80 leading-none">
             {element.atomicNumber}
@@ -184,15 +190,30 @@ function PeriodicTableGrid({
   elements,
   onElementSelect,
   selectedCategories,
+  enabledSymbols,
+  searchQuery = '',
 }: {
   elements: Element[]
   onElementSelect: (element: Element) => void
   selectedCategories: Set<ElementCategory>
+  enabledSymbols?: string[]
+  searchQuery?: string
 }) {
-  const filteredElements = elements.filter(
-    (element) =>
-      selectedCategories.size === 0 || selectedCategories.has(element.category)
+  const availableSet = React.useMemo(
+    () => new Set(enabledSymbols ?? []),
+    [enabledSymbols]
   )
+  const filteredElements = elements.filter((element) => {
+    const matchesCategory =
+      selectedCategories.size === 0 || selectedCategories.has(element.category)
+    const query = searchQuery.toLowerCase().trim()
+    const matchesSearch =
+      query === '' ||
+      element.name.toLowerCase().includes(query) ||
+      element.symbol.toLowerCase().includes(query) ||
+      String(element.atomicNumber).includes(query)
+    return matchesCategory && matchesSearch
+  })
 
   // Create the classic periodic table layout
   // Each array represents the atomic numbers for that period, with null for empty spaces
@@ -341,11 +362,14 @@ function PeriodicTableGrid({
       return <div key={atomicNumber} className="w-12 h-12" />
     }
 
+    const isDisabled = availableSet.size > 0 && !availableSet.has(element.symbol)
+
     return (
       <ElementCard
         key={element.atomicNumber}
         element={element}
         onClick={() => onElementSelect(element)}
+        disabled={isDisabled}
       />
     )
   }
@@ -398,6 +422,7 @@ export function PeriodicTable({
   placeholder = 'Select element...',
   className,
   disabled = false,
+  enabledSymbols,
 }: PeriodicTableProps) {
   const [open, setOpen] = React.useState(false)
   const [selectedElement, setSelectedElement] = React.useState<Element | null>(
@@ -406,6 +431,12 @@ export function PeriodicTable({
   const [selectedCategories, setSelectedCategories] = React.useState<
     Set<ElementCategory>
   >(new Set())
+  const [searchQuery, setSearchQuery] = React.useState('')
+
+  const availableSet = React.useMemo(
+    () => new Set(enabledSymbols ?? []),
+    [enabledSymbols]
+  )
 
   const handleElementSelect = (element: Element) => {
     setSelectedElement(element)
@@ -503,6 +534,7 @@ export function PeriodicTable({
                           key={element.atomicNumber}
                           value={`${element.name} ${element.symbol} ${element.atomicNumber}`}
                           onSelect={() => handleElementSelect(element)}
+                          disabled={availableSet.size > 0 && !availableSet.has(element.symbol)}
                         >
                           <div className="flex items-center space-x-3 w-full">
                             <div
@@ -543,7 +575,10 @@ export function PeriodicTable({
   }
   if (variant === 'grid') {
     return (
-      <Popover open={open} onOpenChange={setOpen}>
+      <Popover open={open} onOpenChange={(isOpen) => {
+        setOpen(isOpen)
+        if (!isOpen) setSearchQuery('')
+      }}>
         <PopoverTrigger asChild>
           <Button
             variant="outline"
@@ -575,9 +610,14 @@ export function PeriodicTable({
           align="start"
         >
           <div className="space-y-3">
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-2 border-b pb-2">
               <Search className="h-4 w-4 text-muted-foreground" />
-              <h4 className="font-medium">Select an Element</h4>
+              <input
+                className="flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
+                placeholder="Search elements..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
             </div>
 
             <CategoryLegend
@@ -589,6 +629,8 @@ export function PeriodicTable({
               elements={PERIODIC_TABLE_DATA}
               onElementSelect={handleElementSelect}
               selectedCategories={selectedCategories}
+              enabledSymbols={enabledSymbols}
+              searchQuery={searchQuery}
             />
           </div>
         </PopoverContent>
