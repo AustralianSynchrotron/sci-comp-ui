@@ -27,6 +27,13 @@ function debounceResize(
   return debounced;
 }
 
+type BoundingBox = {
+  startX: number;
+  startY: number;
+  width: number;
+  height: number;
+};
+
 export interface CameraControlProps {
   className?: string;
   onMousePositionChange?: (
@@ -34,12 +41,7 @@ export interface CameraControlProps {
   ) => void;
   onClick?: (pos: { x: number; y: number; intensity: number }) => void;
   showIntensity?: boolean;
-  onZoom?: (box: {
-    startX: number;
-    startY: number;
-    width: number;
-    height: number;
-  }) => void;
+  onZoom?: (box: BoundingBox) => void;
   sizeFollowsImage?: boolean;
 }
 
@@ -49,7 +51,7 @@ export const CameraControl: React.FC<CameraControlProps> = ({
   onClick,
   showIntensity = false,
   onZoom,
-  sizeFollowsImage = false
+  sizeFollowsImage = false,
 }) => {
   const { image, reportSize, reportZoom, reportDrag, clearZoom } =
     useContext(ImageContext);
@@ -62,12 +64,7 @@ export const CameraControl: React.FC<CameraControlProps> = ({
     x: number;
     y: number;
   } | null>(null);
-  const [zoomBox, setZoomBox] = useState<{
-    startX: number;
-    startY: number;
-    width: number;
-    height: number;
-  } | null>(null);
+  const [zoomBox, setZoomBox] = useState<BoundingBox | null>(null);
   const [dragStart, setDragStart] = useState<{
     startX: number;
     startY: number;
@@ -309,9 +306,9 @@ export const CameraControl: React.FC<CameraControlProps> = ({
   const handleKeyUp = (e: React.KeyboardEvent<HTMLCanvasElement>) => {
     if (e.code === "Space") {
       setSpaceHeld(false);
-      if (!dragStart) {      
+      if (!dragStart) {
         setCursorDisplay("crosshair");
-      };
+      }
       e.preventDefault();
     }
   };
