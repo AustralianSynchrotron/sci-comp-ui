@@ -122,6 +122,45 @@ function OutputTypesDemo() {
 
 const outputTypesSource = __SOURCE__
 
+/* DEMO_START */
+function EnabledSymbolsDemo() {
+  const [selectedElement, setSelectedElement] = useState<any>(null)
+
+  const enabledSymbols = [
+    "Mn", "Fe", "Co", "Ni", "Cu", "Zn", "Ga", "Ge", "As", "Se",
+    "Br", "Kr", "Rb", "Sr", "Y", "Zr", "Nb", "Mo", "Tc", "Ru",
+    "Rh", "Pd", "Ag", "Cd", "In", "Sn", "Sb", "Pr", "Nd", "Pm",
+    "Sm", "Eu", "Gd", "Tb", "Dy", "Ho", "Er", "Tm", "Yb", "Lu",
+    "Hf", "Ta", "W", "Re", "Os", "Ir", "Pt", "Au", "Hg", "Tl",
+    "Pb", "Bi", "Po", "At", "Rn", "Fr", "Ra", "Ac", "Th", "Pa",
+    "U", "Np", "Pu", "Am", "Cm", "Bk", "Cf",
+  ]
+
+  return (
+    <div className="space-y-4">
+      <PeriodicTable
+        variant="grid"
+        outputType="element"
+        outputFormat="object"
+        onElementSelect={setSelectedElement}
+        placeholder="Choose an element..."
+        enabledSymbols={enabledSymbols}
+      />
+
+      {selectedElement && (
+        <div className="space-y-2">
+          <h4 className="font-medium">Selected Element:</h4>
+          <Badge variant="secondary">{selectedElement.symbol}</Badge>
+          <span className="font-medium ml-2">{selectedElement.name}</span>
+        </div>
+      )}
+    </div>
+  )
+}
+/* DEMO_END */
+
+const enabledSymbolsSource = __SOURCE__
+
 function PeriodicTablePage() {
 
 
@@ -156,6 +195,19 @@ function PeriodicTablePage() {
               <DemoContainer
                 demo={<DefaultPeriodicTableDemo />}
                 source={defaultPeriodicTableSource}
+              />
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Grid Variant with Enabled Symbols</CardTitle>
+              <CardDescription>Restrict selectable elements to a subset using enabledSymbols</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <DemoContainer
+                demo={<EnabledSymbolsDemo />}
+                source={enabledSymbolsSource}
               />
             </CardContent>
           </Card>
