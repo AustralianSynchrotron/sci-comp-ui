@@ -45,6 +45,16 @@ export interface CameraControlProps {
   sizeFollowsImage?: boolean;
 }
 
+/**
+ * Returns a webcomponent that provides a container (canvas) for various video or image
+ * producers, and implements various controls and annotations.
+ * @param onMousePositionChange - Callback called on mouse movement inside canvas.
+ * @param onClick - Callback called on a mouse click within canvas.
+ * @param showIntensity - Whether to show the pixel intensity at mouse position as a tooltip.
+ * @param onZoom - Callback called after a bounding box is drawn.
+ * @param sizeFollowsImage - Resize the canvas if the image size changes
+ * @returns 
+ */
 export const CameraControl: React.FC<CameraControlProps> = ({
   className,
   onMousePositionChange,
@@ -345,8 +355,6 @@ export const CameraControl: React.FC<CameraControlProps> = ({
           border: "1px solid red",
           width: "100%",
           height: "100%",
-          // width: `${w}px`,
-          // height: `${h}px`,
         }}
       />
       {/* Crosshair */}

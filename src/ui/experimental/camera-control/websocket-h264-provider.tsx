@@ -17,6 +17,14 @@ export interface WebsocketH264ProviderProps {
   api: H264Api;
 }
 
+/**
+ * A provider to be used with the CameraControl Webcomponent. This provider
+ * receives streams from the h264-websocket-stream server and maps camera control
+ * controls to approriate endpoints to control the stream.
+ * @param api - An API the satisfies the H264Api Interface for 
+ *              communicating with h264 websocket stream server. 
+ * @returns 
+ */
 export const WebsocketH264Provider: React.FC<WebsocketH264ProviderProps> = ({
   children,
   sessionId = null,
@@ -294,8 +302,6 @@ export const WebsocketH264Provider: React.FC<WebsocketH264ProviderProps> = ({
                 dimsRef.current = { width: meta.width, height: meta.height };
                 configuredRef.current = false; // force reconfigure
                 void tryConfigure();
-              } else {
-                /**/
               }
             }
           } catch (e) {
