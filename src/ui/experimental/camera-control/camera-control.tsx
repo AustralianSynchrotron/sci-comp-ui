@@ -10,7 +10,7 @@ import { ImageContext, isVideo } from "./image-context";
 
 function debounceResize(
   fn: (entry: ResizeObserverEntry) => void,
-  delay: number,
+  delay: number = 100
 ) {
   let timer: ReturnType<typeof setTimeout> | undefined;
 
@@ -109,7 +109,7 @@ export const CameraControl: React.FC<CameraControlProps> = ({
 
       // Report the size back to the provider
       reportSize(Math.floor(width), Math.floor(height));
-    }, 100);
+    });
 
     const observer = new ResizeObserver((entries) => handler(entries[0]));
 
