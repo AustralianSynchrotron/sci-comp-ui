@@ -14,3 +14,10 @@ export const ImageContext = createContext<ImageSource>({
     reportDrag: () => { },
     clearZoom: () => { }
 });
+
+export type VideoFrame = { video: HTMLVideoElement; frameId: number };  
+export const isVideo = (image: unknown): image is VideoFrame => 
+    typeof image === "object" && 
+    image !== null && 
+    "video" in image && 
+    !!(image as Record<string, unknown>).video;

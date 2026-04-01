@@ -6,7 +6,7 @@ import React, {
   useCallback,
 } from "react";
 import { cn } from "../../../lib/utils";
-import { ImageContext } from "./image-context";
+import { ImageContext, isVideo } from "./image-context";
 
 function debounceResize(
   fn: (entry: ResizeObserverEntry) => void,
@@ -88,8 +88,7 @@ export const CameraControl: React.FC<CameraControlProps> = ({
 
   // Helper to get dimensions safely
   const getDimensions = () => {
-    if (!image) return { w: 0, h: 0 };
-    if (typeof image === "object" && "video" in image && image.video) {
+    if (isVideo(image)) {
       return { w: image.video.videoWidth, h: image.video.videoHeight };
     }
     if (image instanceof ImageBitmap) {
@@ -134,7 +133,7 @@ export const CameraControl: React.FC<CameraControlProps> = ({
     }
 
     try {
-      if (typeof image === "object" && "video" in image && image.video) {
+      if (isVideo(image)) {
         ctx.drawImage(image.video, 0, 0);
       } else if (image instanceof ImageBitmap) {
         ctx.drawImage(image, 0, 0);
