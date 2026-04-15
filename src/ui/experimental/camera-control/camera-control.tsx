@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState, useContext, useCallback } from 'react';
-import { cn } from '../../../lib/utils';
+
+import { cn } from '@/lib/utils';
+
 import { ImageContext, isVideo } from './image-context';
 
 function debounceResize(fn: (entry: ResizeObserverEntry) => void, delay: number = 100) {

@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+
 import { ImageContext } from './image-context';
 
 export interface VideoProviderProps {

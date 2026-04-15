@@ -1,12 +1,14 @@
 import { useState, useMemo } from 'react';
 import { createFileRoute } from '@tanstack/react-router';
+
 import { PageHeader } from '@/docs/components/page-header';
-import { CameraControl } from '@/ui/experimental/camera-control/camera-control';
-import { WebsocketH264Provider } from '@/ui/experimental/camera-control/websocket-h264-provider';
-import { TypographyH1 } from '@/ui/elements/typography';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/ui/layout/card';
 import { DemoContainer } from '@/docs/components/demo-container';
 
+import { TypographyH1 } from '@/ui/elements/typography';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/ui/layout/card';
+
+import { CameraControl } from '@/ui/experimental/camera-control/camera-control';
+import { WebsocketH264Provider } from '@/ui/experimental/camera-control/websocket-h264-provider';
 import { h264FetchApi } from '@/ui/experimental/camera-control/h264-fetch';
 
 export const Route = createFileRoute('/experimental/camera-control-h264')({
