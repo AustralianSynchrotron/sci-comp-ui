@@ -21,9 +21,9 @@ export function h264FetchApi(url: string): H264Api {
             });
             if (!res.ok) throw new Error(`Failed to create session: ${res.status} ${res.statusText}`);
 
-            const body = await res.json();
-            const sid = body.id as string;
-            if (!sid) throw new Error('Server did not return session_id');
+            const data = await res.json();
+            const sid = data.id as string;
+            if (!sid) throw new Error('Failed to return API session_id');
             return String(sid);
         },
         async getSourceResolution(signal?: AbortSignal) {
