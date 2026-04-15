@@ -21,7 +21,7 @@ function CameraControlWebsocketH264Demo() {
     const [clickPos, setClickPos] = useState<CameraMousePosition | null>(null);
     const api = useMemo(() => h264FetchApi('localhost:9999'), []);
     return (
-        <div style={{ width: '100%', height: '100%' }}>
+        <div className="w-full h-full">
             <WebsocketH264Provider api={api}>
                 <CameraControl
                     className="border"
