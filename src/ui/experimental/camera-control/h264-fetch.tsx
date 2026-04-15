@@ -1,9 +1,12 @@
 import { type Crop, type H264Api, DEFAULT_RESOLUTION } from './h264-api';
 
 export function h264FetchApi(url: string): H264Api {
+    const apiUrl = 'http://' + url + '/api';
+    const websocketUrl = 'ws://' + url + '/ws';
+
     return {
         async createSession(signal) {
-            const res = await fetch('http://' + url + '/api/sessions', {
+            const res = await fetch(apiUrl + '/sessions', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 signal: signal,
@@ -24,7 +27,7 @@ export function h264FetchApi(url: string): H264Api {
             return String(sid);
         },
         async getSourceResolution(signal?: AbortSignal) {
-            const res = await fetch('http://' + url + '/api/resolution', {
+            const res = await fetch(apiUrl + '/resolution', {
                 method: 'GET',
                 signal: signal,
             });
@@ -36,7 +39,7 @@ export function h264FetchApi(url: string): H264Api {
             };
         },
         async getSessionResolution(sessionId: string, signal?: AbortSignal) {
-            const res = await fetch('http://' + url + '/api/sessions/' + sessionId + '/resolution', {
+            const res = await fetch(apiUrl + '/sessions/' + sessionId + '/resolution', {
                 method: 'GET',
                 signal: signal,
             });
@@ -50,7 +53,7 @@ export function h264FetchApi(url: string): H264Api {
             };
         },
         async setResolution(sessionId: string, width: number, height: number, signal?: AbortSignal) {
-            const res = await fetch('http://' + url + '/api/sessions/' + sessionId + '/resolution', {
+            const res = await fetch(apiUrl + '/sessions/' + sessionId + '/resolution', {
                 method: 'POST',
                 signal: signal,
                 headers: {
@@ -62,7 +65,7 @@ export function h264FetchApi(url: string): H264Api {
             return;
         },
         async getCrop(sessionId: string, signal?: AbortSignal) {
-            const crop_response = await fetch('http://' + url + '/api/sessions/' + sessionId + '/crop', {
+            const crop_response = await fetch(apiUrl + '/sessions/' + sessionId + '/crop', {
                 method: 'GET',
                 signal: signal,
             });
@@ -72,7 +75,7 @@ export function h264FetchApi(url: string): H264Api {
             return crop;
         },
         async setCrop(sessionID: string, crop: Crop, signal?: AbortSignal) {
-            const res = await fetch('http://' + url + '/api/sessions/' + sessionID + '/crop', {
+            const res = await fetch(apiUrl + '/sessions/' + sessionID + '/crop', {
                 method: 'POST',
                 signal: signal,
                 headers: {
@@ -84,14 +87,14 @@ export function h264FetchApi(url: string): H264Api {
             return;
         },
         async clearCrop(sessionId: string, signal?: AbortSignal) {
-            const res = await fetch('http://' + url + '/api/sessions/' + sessionId + '/crop', {
+            const res = await fetch(apiUrl + '/sessions/' + sessionId + '/crop', {
                 method: 'DELETE',
                 signal: signal,
             });
             if (!res.ok) throw new Error(`Failed to clear crop: ${res.status} ${res.statusText}`);
         },
         wsFactory(sessionId) {
-            return new WebSocket('ws://' + url + '/ws?session_id=' + sessionId);
+            return new WebSocket(websocketUrl + '?session_id=' + sessionId);
         },
     };
 }
