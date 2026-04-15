@@ -27,10 +27,16 @@ type BoundingBox = {
     height: number;
 };
 
+export type CameraMousePosition = {
+    x: number;
+    y: number;
+    intensity: number;
+};
+
 export interface CameraControlProps {
     className?: string;
-    onMousePositionChange?: (pos: { x: number; y: number; intensity: number } | null) => void;
-    onClick?: (pos: { x: number; y: number; intensity: number }) => void;
+    onMousePositionChange?: (pos: CameraMousePosition | null) => void;
+    onClick?: (pos: CameraMousePosition) => void;
     showIntensity?: boolean;
     onZoom?: (box: BoundingBox) => void;
     sizeFollowsImage?: boolean;

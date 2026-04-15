@@ -7,7 +7,7 @@ import { DemoContainer } from '@/docs/components/demo-container';
 import { TypographyH1 } from '@/ui/elements/typography';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/ui/layout/card';
 
-import { CameraControl } from '@/ui/experimental/camera-control/camera-control';
+import { CameraControl, type CameraMousePosition } from '@/ui/experimental/camera-control/camera-control';
 import { WebsocketH264Provider } from '@/ui/experimental/camera-control/websocket-h264-provider';
 import { h264FetchApi } from '@/ui/experimental/camera-control/h264-fetch';
 
@@ -17,8 +17,8 @@ export const Route = createFileRoute('/experimental/camera-control-h264')({
 
 /* DEMO_START */
 function CameraControlWebsocketH264Demo() {
-    const [mousePos, setMousePos] = useState<{ x: number; y: number; intensity: number } | null>(null);
-    const [clickPos, setClickPos] = useState<{ x: number; y: number; intensity: number } | null>(null);
+    const [mousePos, setMousePos] = useState<CameraMousePosition | null>(null);
+    const [clickPos, setClickPos] = useState<CameraMousePosition | null>(null);
     const api = useMemo(() => h264FetchApi('localhost:9999'), []);
     return (
         <div style={{ width: '100%', height: '100%' }}>
