@@ -71,7 +71,7 @@ export const CameraControl: React.FC<CameraControlProps> = ({
     } | null>(null);
     const [spaceHeld, setSpaceHeld] = useState<boolean>(false);
     const [cursorDisplay, setCursorDisplay] = useState<string>('crosshair');
-    const [frameCount, setFrameCount] = useState<number>(0);
+    const [_frameCount, setFrameCount] = useState<number>(0);
     const [startTime, setStartTime] = useState<number>(performance.now());
 
     // Helper to get dimensions safely
@@ -140,7 +140,7 @@ export const CameraControl: React.FC<CameraControlProps> = ({
         setFrameCount((prev) => prev + 1);
         const now = performance.now();
         if (now - startTime >= 1000) {
-            // console.log(`FPS: ${frameCount}`);
+            // console.log(`FPS: ${_frameCount}`);
             setFrameCount(0);
             setStartTime(now);
         }
@@ -261,7 +261,7 @@ export const CameraControl: React.FC<CameraControlProps> = ({
         [dragStart, spaceHeld, zoomBox, onZoom, reportDrag, reportZoom],
     );
 
-    const handleDoubleClick = (e: React.MouseEvent<HTMLCanvasElement>) => {
+    const handleDoubleClick = (_e: React.MouseEvent<HTMLCanvasElement>) => {
         clearZoom();
     };
 
