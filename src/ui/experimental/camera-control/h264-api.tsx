@@ -1,16 +1,13 @@
 export type Crop = { x: number; y: number; width: number; height: number };
+
 export type Resolution = { width: number; height: number };
+
 export type SessionResolution = Resolution & {
     paddingWidth: number;
     paddingHeight: number;
 };
 
-type DefaultResolutionType = {
-    width: number;
-    height: number;
-};
-
-export const DefaultResolution: DefaultResolutionType = {
+export const DEFAULT_RESOLUTION: Resolution = {
     width: 1024,
     height: 1024,
 };

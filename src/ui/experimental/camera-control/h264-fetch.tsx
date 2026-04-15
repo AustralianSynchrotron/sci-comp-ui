@@ -1,4 +1,4 @@
-import { type Crop, type H264Api, DefaultResolution } from './h264-api';
+import { type Crop, type H264Api, DEFAULT_RESOLUTION } from './h264-api';
 
 export function h264FetchApi(url: string): H264Api {
     return {
@@ -11,8 +11,8 @@ export function h264FetchApi(url: string): H264Api {
                     colour_mapping: 'none',
                     crop: null,
                     resolution: {
-                        width: DefaultResolution.width,
-                        height: DefaultResolution.height,
+                        width: DEFAULT_RESOLUTION.width,
+                        height: DEFAULT_RESOLUTION.height,
                     },
                 }),
             });
