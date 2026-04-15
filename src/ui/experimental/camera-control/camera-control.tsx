@@ -324,7 +324,7 @@ export const CameraControl: React.FC<CameraControlProps> = ({
                 onKeyDown={handleKeyDown}
                 onKeyUp={handleKeyUp}
                 tabIndex={0}
-                className="block w-full h-full border border-red-600"
+                className="block w-full h-full border border-red-600 m-0"
                 style={{
                     cursor: cursorDisplay,
                 }}
