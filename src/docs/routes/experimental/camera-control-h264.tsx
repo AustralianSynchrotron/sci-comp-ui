@@ -28,7 +28,6 @@ function CameraControlWebsocketH264Demo() {
                     onMousePositionChange={setMousePos}
                     onClick={setClickPos}
                     showIntensity={true}
-                    // cursorPosition={clickPos}
                 />
             </WebsocketH264Provider>
             <TypographyH1>
