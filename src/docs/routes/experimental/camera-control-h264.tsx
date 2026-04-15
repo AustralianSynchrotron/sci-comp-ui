@@ -66,9 +66,14 @@ function CameraControlWebsocketH264Page() {
                         <CardHeader>
                             <CardTitle>Position Control</CardTitle>
                             <CardDescription>
-                                Interactive motor position control with real-time movement simulation, adjustable
-                                increments, and visual feedback. Perfect for controlling stepper motors, linear
-                                actuators, and other positioning systems.
+                                <p>
+                                    Interactive motor position control with real-time movement simulation, adjustable
+                                    increments, and visual feedback. Perfect for controlling stepper motors, linear
+                                    actuators, and other positioning systems.
+                                </p>
+                                <p>Click and drag to zoom in.</p>
+                                <p>Hold space and drag to move (will not move when at the edge of the image).</p>
+                                <p>Double-click to reset zoom.</p>
                             </CardDescription>
                         </CardHeader>
                         <CardContent>
