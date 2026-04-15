@@ -19,7 +19,7 @@ export function h264FetchApi(url: string): H264Api {
                     },
                 }),
             });
-            if (!res.ok) throw new Error(`Failed to create session: ${res.status} ${res.statusText}`);
+            if (!res.ok) throw new Error(`Failed to create API session: ${res.status} ${res.statusText}`);
 
             const data = await res.json();
             const sid = data.id as string;
@@ -31,7 +31,8 @@ export function h264FetchApi(url: string): H264Api {
                 method: 'GET',
                 signal: signal,
             });
-            if (!res.ok) throw new Error(`Failed to get resolution. Is there an encoder running?`);
+            if (!res.ok) throw new Error(`Failed to get resolution. Check if an encoder is running.`);
+
             const data = await res.json();
             return {
                 width: data.source_width,
