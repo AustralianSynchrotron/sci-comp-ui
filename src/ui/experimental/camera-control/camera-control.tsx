@@ -1,8 +1,8 @@
-import React, { useEffect, useRef, useState, useContext, useCallback } from 'react';
+import React, { useEffect, useRef, useState, useMemo, useContext, useCallback } from 'react';
 
 import { cn } from '@/lib/utils';
 
-import { ImageContext, isVideo } from './image-context';
+import { ImageContext, type VideoFrame, type ImageSource } from './image-context';
 
 function debounceResize(fn: (entry: ResizeObserverEntry) => void, delay: number = 100) {
     let timer: ReturnType<typeof setTimeout> | undefined;
@@ -60,7 +60,7 @@ export const CameraControl: React.FC<CameraControlProps> = ({
     onZoom,
     sizeFollowsImage = false,
 }) => {
-    const { image, reportSize, reportZoom, reportDrag, clearZoom } = useContext(ImageContext);
+    const { image, reportSize, reportZoom, reportDrag, clearZoom }: ImageSource = useContext(ImageContext);
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const [popupPos, setPopupPos] = useState<{ x: number; y: number } | null>(null);
     const [pixelValue, setPixelValue] = useState<string | null>(null);
@@ -77,20 +77,25 @@ export const CameraControl: React.FC<CameraControlProps> = ({
     } | null>(null);
     const [spaceHeld, setSpaceHeld] = useState<boolean>(false);
     const [cursorDisplay, setCursorDisplay] = useState<string>('crosshair');
+
+    // FPS debug
     const [_frameCount, setFrameCount] = useState<number>(0);
     const [startTime, setStartTime] = useState<number>(performance.now());
 
-    // Helper to get dimensions safely
-    const getDimensions = () => {
-        if (isVideo(image)) {
-            return { w: image.video.videoWidth, h: image.video.videoHeight };
-        }
-        if (image instanceof ImageBitmap) {
-            return { w: image.width, h: image.height };
-        }
-        return { w: 0, h: 0 };
-    };
+    // Get image dimensions depending on type
+    const imageDimensions = useMemo(() => {
+        const DEFAULT_DIMENSIONS = { w: 0, h: 0 };
 
+        if (!image) return DEFAULT_DIMENSIONS;
+        if (image instanceof VideoFrame) {
+            const video = (image as VideoFrame).video;
+            return { w: video.videoWidth, h: video.videoHeight };
+        }
+        if (image instanceof ImageBitmap) return { w: image.width, h: image.height };
+        return DEFAULT_DIMENSIONS;
+    }, [image]);
+
+    // Canvas resize listener and reporter
     useEffect(() => {
         const canvas = canvasRef.current;
         if (!canvas || !reportSize) return;
@@ -120,15 +125,15 @@ export const CameraControl: React.FC<CameraControlProps> = ({
         if (!ctx) return;
 
         if (sizeFollowsImage) {
-            const { w, h } = getDimensions();
+            const { w, h } = imageDimensions;
             if (w === 0 || h === 0) return;
             canvas.width = w;
             canvas.height = h;
         }
 
         try {
-            if (isVideo(image)) {
-                ctx.drawImage(image.video, 0, 0);
+            if (image instanceof VideoFrame) {
+                ctx.drawImage((image as VideoFrame).video, 0, 0);
             } else if (image instanceof ImageBitmap) {
                 ctx.drawImage(image, 0, 0);
             }
@@ -150,7 +155,7 @@ export const CameraControl: React.FC<CameraControlProps> = ({
             setFrameCount(0);
             setStartTime(now);
         }
-    }, [image instanceof ImageBitmap ? image : (image as any)?.frameId]);
+    }, [image, imageDimensions, sizeFollowsImage, zoomBox, startTime]);
 
     // Throttle mouse move
     let lastMove = 0;
