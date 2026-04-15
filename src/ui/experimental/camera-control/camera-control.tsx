@@ -79,7 +79,7 @@ export const CameraControl: React.FC<CameraControlProps> = ({
         lastY: number;
     } | null>(null);
     const [spaceHeld, setSpaceHeld] = useState<boolean>(false);
-    const [cursorDisplay, setCursorDisplay] = useState<string>('crosshair');
+    const [cursorDisplay, setCursorDisplay] = useState<'crosshair' | 'grabbing' | 'grab'>('crosshair');
 
     // FPS debug tools
     const [frameCount, setFrameCount] = useState<number>(0);
