@@ -40,6 +40,7 @@ export interface CameraControlProps {
     showIntensity?: boolean;
     onZoom?: (box: BoundingBox) => void;
     sizeFollowsImage?: boolean;
+    debugFPS?: boolean;
 }
 
 /**
@@ -50,6 +51,7 @@ export interface CameraControlProps {
  * @param showIntensity - Whether to show the pixel intensity at mouse position as a tooltip.
  * @param onZoom - Callback called after a bounding box is drawn.
  * @param sizeFollowsImage - Resize the canvas if the image size changes
+ * @param debugFPS - Whether to calculate and display FPS in console log, for debug purposes
  * @returns
  */
 export const CameraControl: React.FC<CameraControlProps> = ({
@@ -59,6 +61,7 @@ export const CameraControl: React.FC<CameraControlProps> = ({
     showIntensity = false,
     onZoom,
     sizeFollowsImage = false,
+    debugFPS = false,
 }) => {
     const { image, reportSize, reportZoom, reportDrag, clearZoom }: ImageSource = useContext(ImageContext);
     const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -78,8 +81,8 @@ export const CameraControl: React.FC<CameraControlProps> = ({
     const [spaceHeld, setSpaceHeld] = useState<boolean>(false);
     const [cursorDisplay, setCursorDisplay] = useState<string>('crosshair');
 
-    // FPS debug
-    const [_frameCount, setFrameCount] = useState<number>(0);
+    // FPS debug tools
+    const [frameCount, setFrameCount] = useState<number>(0);
     const [startTime, setStartTime] = useState<number>(performance.now());
 
     // Get image dimensions depending on type
@@ -146,16 +149,20 @@ export const CameraControl: React.FC<CameraControlProps> = ({
             console.warn('Draw failed:', err);
             return;
         }
+    }, [image, imageDimensions, sizeFollowsImage, zoomBox, startTime]);
 
-        // FPS tracking
+    // FPS tracking
+    useEffect(() => {
+        if (!image || !canvasRef.current || !debugFPS) return;
+
         setFrameCount((prev) => prev + 1);
         const now = performance.now();
         if (now - startTime >= 1000) {
-            // console.log(`FPS: ${_frameCount}`);
+            console.log(`FPS: ${frameCount}`);
             setFrameCount(0);
             setStartTime(now);
         }
-    }, [image, imageDimensions, sizeFollowsImage, zoomBox, startTime]);
+    }, [image, startTime, debugFPS]);
 
     // Throttle mouse move
     let lastMove = 0;
