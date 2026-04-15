@@ -311,15 +311,7 @@ export const CameraControl: React.FC<CameraControlProps> = ({
     };
 
     return (
-        <div
-            className={cn('space-y-4', className)}
-            style={{
-                position: 'relative',
-                display: 'inline-block',
-                width: '100%',
-                height: '100%',
-            }}
-        >
+        <div className={cn('space-y-4 relative inline-block w-full h-full', className)}>
             <canvas
                 ref={canvasRef}
                 onMouseMove={handleMouseMove}
@@ -332,45 +324,30 @@ export const CameraControl: React.FC<CameraControlProps> = ({
                 onKeyDown={handleKeyDown}
                 onKeyUp={handleKeyUp}
                 tabIndex={0}
+                className="block w-full h-full border border-red-600"
                 style={{
                     cursor: cursorDisplay,
-                    display: 'block',
-                    border: '1px solid red',
-                    width: '100%',
-                    height: '100%',
                 }}
             />
             {/* Crosshair */}
             {cursorPosition && canvasRef.current && (
                 <div
+                    className="absolute left-0 top-0 z-10 pointer-events-none"
                     style={{
-                        position: 'absolute',
-                        left: 0,
-                        top: 0,
                         width: canvasRef.current.getBoundingClientRect().width,
                         height: canvasRef.current.getBoundingClientRect().height,
-                        pointerEvents: 'none',
-                        zIndex: 10,
                     }}
                 >
                     <div
+                        className="absolute top-0 w-px h-full bg-red-600"
                         style={{
-                            position: 'absolute',
                             left: cursorPosition.x,
-                            top: 0,
-                            width: 1,
-                            height: '100%',
-                            background: 'red',
                         }}
                     />
                     <div
+                        className="absolute left-0 h-px width-full bg-red-600"
                         style={{
-                            position: 'absolute',
-                            left: 0,
                             top: cursorPosition.y,
-                            width: '100%',
-                            height: 1,
-                            background: 'red',
                         }}
                     />
                 </div>
@@ -378,17 +355,10 @@ export const CameraControl: React.FC<CameraControlProps> = ({
             {/* Popup */}
             {popupPos && (
                 <div
+                    className="fixed z-9999 pointer-events-none text-xs text-white py-1 px-2 rounded-sm bg-black/80"
                     style={{
-                        position: 'fixed',
                         left: popupPos.x + 10,
                         top: popupPos.y + 10,
-                        background: 'rgba(0,0,0,0.8)',
-                        color: 'white',
-                        padding: '4px 8px',
-                        borderRadius: '4px',
-                        pointerEvents: 'none',
-                        fontSize: '12px',
-                        zIndex: 9999,
                     }}
                 >
                     {pixelValue}
