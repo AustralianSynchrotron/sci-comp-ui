@@ -58,9 +58,7 @@ function CameraControlVideoPage() {
             <CardHeader>
               <CardTitle>Position Control</CardTitle>
               <CardDescription>
-                Interactive motor position control with real-time movement simulation,
-                adjustable increments, and visual feedback. Perfect for controlling
-                stepper motors, linear actuators, and other positioning systems.
+                Video display using the camera control component. Source is a valid video format.
               </CardDescription>
             </CardHeader>
             <CardContent>
