@@ -35,6 +35,9 @@ export type CameraMousePosition = {
 
 export interface CameraControlProps {
     className?: string;
+    canvasClassName?: string;
+    crosshairClassName?: string;
+    popupClassName?: string;
     onMousePositionChange?: (pos: CameraMousePosition | null) => void;
     onClick?: (pos: CameraMousePosition) => void;
     showIntensity?: boolean;
@@ -46,16 +49,23 @@ export interface CameraControlProps {
 /**
  * Returns a webcomponent that provides a container (canvas) for various video or image
  * producers, and implements various controls and annotations.
+ * @param className - Optional css classes for root div element.
+ * @param canvasClassName - Optional css classes for canvas element.
+ * @param crosshairClassName - Optional css classes for crosshair cursor element.
+ * @param popupClassName - Optional css classes for intensity value pop-up div element.
  * @param onMousePositionChange - Callback called on mouse movement inside canvas.
  * @param onClick - Callback called on a mouse click within canvas.
  * @param showIntensity - Whether to show the pixel intensity at mouse position as a tooltip.
  * @param onZoom - Callback called after a bounding box is drawn.
- * @param sizeFollowsImage - Resize the canvas if the image size changes
- * @param debugFPS - Whether to calculate and display FPS in console log, for debug purposes
+ * @param sizeFollowsImage - Resize the canvas if the image size changes.
+ * @param debugFPS - Whether to calculate and display FPS in console log, for debug purposes.
  * @returns
  */
 export const CameraControl: React.FC<CameraControlProps> = ({
     className,
+    canvasClassName,
+    crosshairClassName,
+    popupClassName,
     onMousePositionChange,
     onClick,
     showIntensity = false,
@@ -324,7 +334,7 @@ export const CameraControl: React.FC<CameraControlProps> = ({
                 onKeyDown={handleKeyDown}
                 onKeyUp={handleKeyUp}
                 tabIndex={0}
-                className="block w-full h-full border m-0"
+                className={cn('block w-full h-full m-0', canvasClassName)}
                 style={{
                     cursor: cursorDisplay,
                 }}
@@ -332,7 +342,7 @@ export const CameraControl: React.FC<CameraControlProps> = ({
             {/* Crosshair */}
             {cursorPosition && canvasRef.current && (
                 <div
-                    className="absolute left-0 top-0 z-10 pointer-events-none"
+                    className={cn('absolute left-0 top-0 z-10 pointer-events-none', crosshairClassName)}
                     style={{
                         width: canvasRef.current.getBoundingClientRect().width,
                         height: canvasRef.current.getBoundingClientRect().height,
@@ -355,7 +365,10 @@ export const CameraControl: React.FC<CameraControlProps> = ({
             {/* Popup */}
             {popupPos && (
                 <div
-                    className="fixed z-9999 pointer-events-none text-xs text-white py-1 px-2 rounded-sm bg-black/80"
+                    className={cn(
+                        'fixed z-9999 pointer-events-none text-xs text-white py-1 px-2 rounded-sm bg-black/80',
+                        popupClassName,
+                    )}
                     style={{
                         left: popupPos.x + 10,
                         top: popupPos.y + 10,
