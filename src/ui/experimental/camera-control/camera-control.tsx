@@ -345,7 +345,7 @@ export const CameraControl: React.FC<CameraControlProps> = ({
                         }}
                     />
                     <div
-                        className="absolute left-0 h-px width-full bg-red-600"
+                        className="absolute left-0 h-px w-full bg-red-600"
                         style={{
                             top: cursorPosition.y,
                         }}
