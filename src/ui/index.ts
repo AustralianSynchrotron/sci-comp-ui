@@ -105,3 +105,4 @@ export {
     WebsocketH264Provider,
     type WebsocketH264ProviderProps,
 } from './experimental/camera-control/websocket-h264-provider';
+export { h264FetchApi } from './experimental/camera-control/h264-fetch';
