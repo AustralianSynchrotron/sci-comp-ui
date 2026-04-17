@@ -1,12 +1,14 @@
 import { useState } from 'react';
 import { createFileRoute } from '@tanstack/react-router'
-import { PageHeader } from "../../components/page-header"
-import { CameraControl } from '../../../ui/experimental/camera-control'
-import { VideoProvider } from '../../../ui/experimental/video-provider'
-import { TypographyH1 } from '../../../ui/elements/typography'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../../ui/layout/card"
+
+import { PageHeader } from '@/docs/components/page-header';
 import { DemoContainer } from "@/docs/components/demo-container"
 
+import { TypographyH1 } from '@/ui/elements/typography'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/ui/layout/card"
+
+import { CameraControl } from '@/ui/experimental/camera-control/camera-control'
+import { VideoProvider } from '@/ui/experimental/camera-control/video-provider'
 
 export const Route = createFileRoute('/experimental/camera-control-video')({
   component: CameraControlVideoPage,
@@ -58,9 +60,7 @@ function CameraControlVideoPage() {
             <CardHeader>
               <CardTitle>Position Control</CardTitle>
               <CardDescription>
-                Interactive motor position control with real-time movement simulation,
-                adjustable increments, and visual feedback. Perfect for controlling
-                stepper motors, linear actuators, and other positioning systems.
+                Video display using the camera control component. Source is a valid video format.
               </CardDescription>
             </CardHeader>
             <CardContent>
