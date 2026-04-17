@@ -181,3 +181,16 @@ export {
   SelectTrigger,
   SelectValue,
 }
+
+export {
+  type SelectProps,
+  type SelectContentProps,
+  type SelectGroupProps,
+  type SelectItemProps,
+  type SelectLabelProps,
+  type SelectScrollDownButtonProps,
+  type SelectScrollUpButtonProps,
+  type SelectSeparatorProps,
+  type SelectTriggerProps,
+  type SelectValueProps,
+} from "@radix-ui/react-select"

@@ -3,7 +3,7 @@ import { PageHeader } from "../../components/page-header"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../../ui/layout/card"
 import { Alert, AlertDescription } from "../../../ui/components/alert"
 import { CodeBlock } from "../../../ui/components/code-block"
-import { InfoIcon, AlertTriangle } from "lucide-react"
+import { InfoIcon } from "lucide-react"
 
 export const Route = createFileRoute('/docs/mui-migration')({
   component: MuiMigrationPage,

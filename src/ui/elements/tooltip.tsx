@@ -57,3 +57,13 @@ function TooltipContent({
 }
 
 export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider }
+export {
+  TooltipArrow,
+  TooltipPortal,
+  type TooltipProps,
+  type TooltipProviderProps,
+  type TooltipTriggerProps,
+  type TooltipPortalProps,
+  type TooltipContentProps,
+  type TooltipArrowProps,
+} from "@radix-ui/react-tooltip"
