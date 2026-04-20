@@ -13,6 +13,8 @@ export const VideoProvider: React.FC<VideoProviderProps> = ({ children, videoUrl
     const [frameId, setFrameId] = useState(0);
 
     useEffect(() => {
+        if (!videoRef || !videoUrl) return;
+
         const video = videoRef.current;
         if (!video) return;
 
@@ -38,7 +40,7 @@ export const VideoProvider: React.FC<VideoProviderProps> = ({ children, videoUrl
         };
 
         video.requestVideoFrameCallback(updateFrame);
-    }, [videoUrl]);
+    }, [videoUrl, videoRef]);
 
     const contextValue = useMemo(
         () => ({
