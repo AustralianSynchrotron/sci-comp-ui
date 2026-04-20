@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useMemo } from 'react';
 
-import { ImageContext } from './image-context';
+import { ImageContext, type VideoFrame } from './image-context';
 
 export interface VideoProviderProps {
     children: React.ReactNode;
@@ -40,10 +40,21 @@ export const VideoProvider: React.FC<VideoProviderProps> = ({ children, videoUrl
         video.requestVideoFrameCallback(updateFrame);
     }, [videoUrl]);
 
+    const contextValue = useMemo(
+        () => ({
+            image: { video: videoRef.current, frameId } as VideoFrame,
+            reportSize: () => {},
+            reportZoom: () => {},
+            reportDrag: () => {},
+            clearZoom: () => {},
+        }),
+        [videoRef, frameId],
+    );
+
     return (
         <>
-            <video ref={videoRef} src={videoUrl} autoPlay loop={loop} muted style={{ display: 'none' }} />
-            <ImageContext.Provider value={{ video: videoRef.current, frameId }}>{children}</ImageContext.Provider>
+            <video ref={videoRef} src={videoUrl} autoPlay loop={loop} muted className="hidden" />
+            <ImageContext.Provider value={contextValue}>{children}</ImageContext.Provider>
         </>
     );
 };
