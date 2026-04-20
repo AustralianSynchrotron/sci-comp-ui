@@ -178,10 +178,8 @@ export const CameraControl: React.FC<CameraControlProps> = ({
     let lastMove = 0;
     const handleMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
         if (dragStart) {
-            const deltaX = e.clientX - dragStart.lastX;
-            const deltaY = e.clientY - dragStart.lastY;
             setDragStart({ ...dragStart, lastX: e.clientX, lastY: e.clientY });
-            reportDrag(e.clientX - dragStart.startX, e.clientY - dragStart.startY, deltaX, deltaY, true);
+            reportDrag(e.clientX - dragStart.startX, e.clientY - dragStart.startY, true);
             return;
         }
 
@@ -277,7 +275,7 @@ export const CameraControl: React.FC<CameraControlProps> = ({
                 } else {
                     setCursorDisplay('crosshair');
                 }
-                reportDrag(e.clientX - dragStart.startX, e.clientY - dragStart.startY, 0, 0, false);
+                reportDrag(e.clientX - dragStart.startX, e.clientY - dragStart.startY, false);
                 setDragStart(null);
             }
             if (zoomBox) {
