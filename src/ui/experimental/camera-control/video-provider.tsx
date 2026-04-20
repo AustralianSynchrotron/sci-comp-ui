@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useMemo } from 'react';
 
-import { ImageContext } from './image-context';
+import { ImageContext, type VideoFrame } from './image-context';
 
 export interface VideoProviderProps {
     children: React.ReactNode;
@@ -13,6 +13,8 @@ export const VideoProvider: React.FC<VideoProviderProps> = ({ children, videoUrl
     const [frameId, setFrameId] = useState(0);
 
     useEffect(() => {
+        if (!videoRef || !videoUrl) return;
+
         const video = videoRef.current;
         if (!video) return;
 
@@ -29,7 +31,7 @@ export const VideoProvider: React.FC<VideoProviderProps> = ({ children, videoUrl
         };
 
         video.onerror = () => {
-            console.error(`Failed to load video: ${videoUrl}`);
+            console.error(`Failed to load video from: ${videoUrl}`);
         };
 
         const updateFrame = () => {
@@ -38,12 +40,23 @@ export const VideoProvider: React.FC<VideoProviderProps> = ({ children, videoUrl
         };
 
         video.requestVideoFrameCallback(updateFrame);
-    }, [videoUrl]);
+    }, [videoUrl, videoRef]);
+
+    const contextValue = useMemo(
+        () => ({
+            image: { video: videoRef.current, frameId } as VideoFrame,
+            reportSize: () => {},
+            reportZoom: () => {},
+            reportDrag: () => {},
+            clearZoom: () => {},
+        }),
+        [videoRef, frameId],
+    );
 
     return (
         <>
-            <video ref={videoRef} src={videoUrl} autoPlay loop={loop} muted style={{ display: 'none' }} />
-            <ImageContext.Provider value={{ video: videoRef.current, frameId }}>{children}</ImageContext.Provider>
+            <video ref={videoRef} src={videoUrl} autoPlay loop={loop} muted className="hidden" />
+            <ImageContext.Provider value={contextValue}>{children}</ImageContext.Provider>
         </>
     );
 };

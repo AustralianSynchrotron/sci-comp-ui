@@ -1,78 +1,83 @@
 import { useState } from 'react';
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute } from '@tanstack/react-router';
 
 import { PageHeader } from '@/docs/components/page-header';
-import { DemoContainer } from "@/docs/components/demo-container"
+import { DemoContainer } from '@/docs/components/demo-container';
 
-import { TypographyH1 } from '@/ui/elements/typography'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/ui/layout/card"
+import { TypographyH1 } from '@/ui/elements/typography';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/ui/layout/card';
 
-import { CameraControl } from '@/ui/experimental/camera-control/camera-control'
-import { VideoProvider } from '@/ui/experimental/camera-control/video-provider'
+import { CameraControl, type CameraMousePosition } from '@/ui/experimental/camera-control/camera-control';
+import { VideoProvider } from '@/ui/experimental/camera-control/video-provider';
 
 export const Route = createFileRoute('/experimental/camera-control-video')({
-  component: CameraControlVideoPage,
-})
-
+    component: CameraControlVideoPage,
+});
 
 /* DEMO_START */
 function CameraControlVideoDemo() {
-  const [mousePos, setMousePos] = useState<{ x: number, y: number, intensity: number } | null>(null);
-  const [clickPos, setClickPos] = useState<{ x: number, y: number, intensity: number } | null>(null);
-  return (
-    <div>
-      <VideoProvider videoUrl="">
-        <CameraControl
-          className="border"
-          onMousePositionChange={setMousePos}
-          onClick={setClickPos}
-          showIntensity={true}
-        // cursorPosition={clickPos}
-        />
-      </VideoProvider>
-      <TypographyH1>
-        {mousePos ? `Cursor: x=${Math.round(mousePos.x)}, y=${Math.round(mousePos.y)}, intensity=${mousePos.intensity}` : 'Move mouse over image'}
-      </TypographyH1>
-      <TypographyH1>
-        {clickPos ? `Cursor: x=${Math.round(clickPos.x)}, y=${Math.round(clickPos.y)}, intensity=${clickPos.intensity}` : 'Click on the image'}
-      </TypographyH1>
-
-    </div>
-  )
+    const [mousePos, setMousePos] = useState<CameraMousePosition | null>(null);
+    const [clickPos, setClickPos] = useState<CameraMousePosition | null>(null);
+    const DEMO_VIDEO = ''; // To test demo, place a video file into /public dir and update filepath here
+    return (
+        <div>
+            <VideoProvider videoUrl={DEMO_VIDEO}>
+                <CameraControl
+                    className="border"
+                    onMousePositionChange={setMousePos}
+                    onClick={setClickPos}
+                    showIntensity={true}
+                />
+            </VideoProvider>
+            <TypographyH1>
+                {mousePos
+                    ? `Cursor: x=${Math.round(mousePos.x)}, y=${Math.round(mousePos.y)}, intensity=${mousePos.intensity}`
+                    : 'Move mouse over image'}
+            </TypographyH1>
+            <TypographyH1>
+                {clickPos
+                    ? `Cursor: x=${Math.round(clickPos.x)}, y=${Math.round(clickPos.y)}, intensity=${clickPos.intensity}`
+                    : 'Click on the image'}
+            </TypographyH1>
+        </div>
+    );
 }
 /* DEMO_END */
 
 // This gets replaced at build time with the actual source code
-const CameraControlVideoSource = __SOURCE__
+const CameraControlVideoSource = __SOURCE__;
 
 /* DEMO_START */
 function CameraControlVideoPage() {
-  return (
-    <>
-      <PageHeader
-        breadcrumbs={[{ title: "Experimental", href: "/experimental" }, { title: "Camera Control with Video Source" }]}
-        pageHeading="Camera Control with Video Source"
-        pageSubheading="A camera control component integrated with a video stream for real-time image interaction."
-      />
-      <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-        <div className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>Position Control</CardTitle>
-              <CardDescription>
-                Video display using the camera control component. Source is a valid video format.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <DemoContainer
-                demo={<CameraControlVideoDemo />}
-                source={CameraControlVideoSource}
-              />
-            </CardContent>
-          </Card>
-        </div>
-      </div>
-    </>
-  )
+    return (
+        <>
+            <PageHeader
+                breadcrumbs={[
+                    { title: 'Experimental', href: '/experimental' },
+                    { title: 'Camera Control with Video Source' },
+                ]}
+                pageHeading="Camera Control with Video Source"
+                pageSubheading="A camera control component integrated with a video stream for real-time image interaction."
+            />
+            <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
+                <div className="space-y-6">
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>Position Control</CardTitle>
+                            <CardDescription>
+                                <p>Video display using the camera control component. Source is a valid video format.</p>
+                                <p>
+                                    <b>NOTE: This component is currently broken.</b>
+                                </p>
+                            </CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                            <DemoContainer demo={<CameraControlVideoDemo />} source={CameraControlVideoSource} />
+                        </CardContent>
+                    </Card>
+                </div>
+            </div>
+        </>
+    );
 }
 /* DEMO_END */

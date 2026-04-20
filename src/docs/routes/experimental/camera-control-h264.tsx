@@ -67,13 +67,14 @@ function CameraControlWebsocketH264Page() {
                             <CardTitle>Position Control</CardTitle>
                             <CardDescription>
                                 <p>
-                                    Video display for h264 over websocket streams. Source is the AS Websocket Stream 
-                                    (private repo at this time). The h264 stream is provided to the camera-control component
-                                    via a h264 provider.
+                                    Video display for h264 over websocket streams. Source is the AS Websocket Stream
+                                    (private repo at this time). The h264 stream is provided to the camera-control
+                                    component via a h264 provider.
                                 </p>
                                 <p>Click and drag to zoom in.</p>
                                 <p>Hold space and drag to move (will not move when at the edge of the image).</p>
                                 <p>Double-click to reset zoom.</p>
+                                <p>Hold ctrl and click to visually mark clicked position.</p>
                                 <p>
                                     <i>
                                         Note: At the moment this demo only works if you have h264-websocket-stream API

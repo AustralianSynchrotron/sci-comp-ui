@@ -450,7 +450,7 @@ export const WebsocketH264Provider: React.FC<WebsocketH264ProviderProps> = ({
     );
 
     const reportDrag = useCallback(
-        async (totalX: number, totalY: number, deltaX: number, deltaY: number, active: boolean) => {
+        async (totalX: number, totalY: number, active: boolean) => {
             if (!active) {
                 const sid = sidRef.current;
                 if (!sid) return;
@@ -476,16 +476,6 @@ export const WebsocketH264Provider: React.FC<WebsocketH264ProviderProps> = ({
 
                 const x = currentCropX - Math.floor(totalX * scale);
                 const y = currentCropY - Math.floor(totalY * scale);
-
-                console.log({
-                    currentCropX,
-                    currentCropWidth,
-                    currentWidth,
-                    xScale,
-                    totalX,
-                    shiftX: Math.floor(totalX * xScale),
-                    x,
-                });
 
                 await api.setCrop(sid, {
                     x,
