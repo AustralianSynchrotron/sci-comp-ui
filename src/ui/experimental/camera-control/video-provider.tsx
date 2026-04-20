@@ -29,7 +29,7 @@ export const VideoProvider: React.FC<VideoProviderProps> = ({ children, videoUrl
         };
 
         video.onerror = () => {
-            console.error(`Failed to load video: ${videoUrl}`);
+            console.error(`Failed to load video from: ${videoUrl}`);
         };
 
         const updateFrame = () => {
