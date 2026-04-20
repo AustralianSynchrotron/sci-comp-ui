@@ -74,6 +74,7 @@ function CameraControlWebsocketH264Page() {
                                 <p>Click and drag to zoom in.</p>
                                 <p>Hold space and drag to move (will not move when at the edge of the image).</p>
                                 <p>Double-click to reset zoom.</p>
+                                <p>Hold ctrl and click to visually mark clicked position.</p>
                                 <p>
                                     <i>
                                         Note: At the moment this demo only works if you have h264-websocket-stream API
