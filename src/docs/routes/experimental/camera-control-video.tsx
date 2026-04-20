@@ -65,7 +65,10 @@ function CameraControlVideoPage() {
                         <CardHeader>
                             <CardTitle>Position Control</CardTitle>
                             <CardDescription>
-                                Video display using the camera control component. Source is a valid video format.
+                                <p>Video display using the camera control component. Source is a valid video format.</p>
+                                <p>
+                                    <b>NOTE: This component is currently broken.</b>
+                                </p>
                             </CardDescription>
                         </CardHeader>
                         <CardContent>
