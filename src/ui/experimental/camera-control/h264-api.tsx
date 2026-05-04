@@ -12,6 +12,31 @@ export const DEFAULT_RESOLUTION: Resolution = {
     height: 1024,
 };
 
+export const COLOUR_MAPPING_OPTIONS: string[] = [
+    'magma',
+    'inferno',
+    'plasma',
+    'viridis',
+    'turbo',
+    'range1',
+    'range2',
+    'shadows',
+    'highlights',
+    'solar',
+    'nominal',
+    'preferred',
+    'total',
+    'spectral',
+    'cool',
+    'heat',
+    'fiery',
+    'blues',
+    'green',
+    'helix',
+];
+
+export type ColourMappingOptionsKey = (typeof COLOUR_MAPPING_OPTIONS)[number];
+
 export interface H264Api {
     /** Create a session if needed. Return the session ID. */
     createSession: (signal?: AbortSignal) => Promise<string>;
@@ -33,6 +58,15 @@ export interface H264Api {
 
     /** Clear crop. */
     clearCrop: (sessionId: string, signal?: AbortSignal) => Promise<void>;
+
+    /** Get current colour mapping. */
+    getColourMapping: (sessionId: string, signal?: AbortSignal) => Promise<ColourMappingOptionsKey>;
+
+    /** Set colour mapping. */
+    setColourMapping: (sessionId: string, colour: ColourMappingOptionsKey, signal?: AbortSignal) => Promise<void>;
+
+    /** Clear colour mapping. */
+    clearColourMapping: (sessionId: string, signal?: AbortSignal) => Promise<void>;
 
     /** Optional: customize WebSocket construction (auth headers, subprotocols, polyfills). */
     wsFactory: (sessionId: string) => WebSocket;

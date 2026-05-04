@@ -1,4 +1,4 @@
-import { type Crop, type H264Api, DEFAULT_RESOLUTION } from './h264-api';
+import { type Crop, type H264Api, type ColourMappingOptionsKey, DEFAULT_RESOLUTION } from './h264-api';
 
 export function h264FetchApi(url: string): H264Api {
     /**
@@ -113,6 +113,63 @@ export function h264FetchApi(url: string): H264Api {
                 signal: signal,
             });
             if (!res.ok) throw new Error(`Failed to clear crop: ${res.status} ${res.statusText}`);
+        },
+        async getColourMapping(sessionId: string, signal?: AbortSignal) {
+            const res = await fetch(apiUrl + '/sessions/' + sessionId + '/colour_mapping', {
+                method: 'GET',
+                signal: signal,
+            });
+            if (!res.ok) throw new Error(`Failed to get current colour mapping: ${res.status} ${res.statusText}`);
+            const json = await res.json();
+
+            if (!('colour_mapping' in json))
+                throw new Error(`Failed to get current colour mapping: ${JSON.stringify(json)}`);
+            const colour: ColourMappingOptionsKey = json['colour_mapping'];
+            return colour;
+        },
+        async setColourMapping(sessionId: string, colour: ColourMappingOptionsKey, signal?: AbortSignal) {
+            const res = await fetch(apiUrl + '/sessions/' + sessionId + '/colour_mapping', {
+                method: 'POST',
+                signal: signal,
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    colour_mapping: colour,
+                }),
+            });
+            if (!res.ok) throw new Error(`Failed to set colour mapping: ${res.status} ${res.statusText}`);
+            const json = await res.json();
+
+            if (!('colour_mapping' in json))
+                throw new Error(`Failed to get newly set colour mapping: ${JSON.stringify(json)}`);
+            const resPreset: ColourMappingOptionsKey = json['colour_mapping'];
+
+            if (resPreset !== colour) throw new Error(`Failed to set colour mapping: ${JSON.stringify(json)}`);
+            return;
+        },
+        async clearColourMapping(sessionId: string, signal?: AbortSignal) {
+            const DEFAULT_PRESET = 'none';
+            const res = await fetch(apiUrl + '/sessions/' + sessionId + '/colour_mapping', {
+                method: 'POST',
+                signal: signal,
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    colour_mapping: DEFAULT_PRESET,
+                }),
+            });
+            if (!res.ok) throw new Error(`Failed to clear colour mapping: ${res.status} ${res.statusText}`);
+            const json = await res.json();
+
+            if (!('colour_mapping' in json))
+                throw new Error(`Failed to get newly cleared colour mapping: ${JSON.stringify(json)}`);
+            const resPreset: ColourMappingOptionsKey = json['colour_mapping'];
+
+            if (resPreset !== DEFAULT_PRESET)
+                throw new Error(`Failed to clear colour mapping: ${JSON.stringify(json)}`);
+            return;
         },
         wsFactory(sessionId) {
             return new WebSocket(websocketUrl + '?session_id=' + sessionId);
