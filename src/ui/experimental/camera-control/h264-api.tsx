@@ -36,8 +36,4 @@ export interface H264Api {
 
     /** Optional: customize WebSocket construction (auth headers, subprotocols, polyfills). */
     wsFactory: (sessionId: string) => WebSocket;
-
-    /** Optional: build absolute HTTP/WS URLs if you don’t want the component to concatenate strings. */
-    buildHttpUrl?: (path: string) => string; // e.g., p => `${base}${p}`
-    buildWsUrl?: (path: string) => string; // e.g., p => `${wssBase}${p}`
 }
