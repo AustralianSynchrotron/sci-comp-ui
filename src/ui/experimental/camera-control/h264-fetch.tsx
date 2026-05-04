@@ -95,8 +95,8 @@ export function h264FetchApi(url: string): H264Api {
             const crop: Crop = await crop_response.json();
             return crop;
         },
-        async setCrop(sessionID: string, crop: Crop, signal?: AbortSignal) {
-            const res = await fetch(apiUrl + '/sessions/' + sessionID + '/crop', {
+        async setCrop(sessionId: string, crop: Crop, signal?: AbortSignal) {
+            const res = await fetch(apiUrl + '/sessions/' + sessionId + '/crop', {
                 method: 'POST',
                 signal: signal,
                 headers: {
