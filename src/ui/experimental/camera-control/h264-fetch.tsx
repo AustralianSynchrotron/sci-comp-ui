@@ -1,8 +1,28 @@
 import { type Crop, type H264Api, DEFAULT_RESOLUTION } from './h264-api';
 
 export function h264FetchApi(url: string): H264Api {
-    const apiUrl = 'http://' + url + '/api';
-    const websocketUrl = 'ws://' + url + '/ws';
+    /**
+     * Function to strip http://, https://, etc., protocols from a URL string.
+     *
+     * @param {string} url Url string to strip protocol from
+     * @return {string} Url string without protocol
+     */
+    const stripUrlProtocol = (url: string): string => {
+        try {
+            const { host, pathname, search, hash } = new URL(url);
+            return `${host}${pathname}${search}${hash}`;
+        } catch {
+            // Just return the OG full URL string if the param was unable to be turned into a React-compliant URL() object
+            return url;
+        }
+    };
+
+    const noProtocolUrl = stripUrlProtocol(url);
+
+    const apiUrl = url + '/api';
+
+    const websocketProtocol = new URL(url).protocol === 'https:' ? 'wss://' : 'ws://';
+    const websocketUrl = websocketProtocol + noProtocolUrl + '/ws';
 
     return {
         async createSession(signal) {
