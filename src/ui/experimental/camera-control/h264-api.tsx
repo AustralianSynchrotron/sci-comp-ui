@@ -35,6 +35,8 @@ export const COLOUR_MAPPING_OPTIONS: string[] = [
     'helix',
 ];
 
+export const DEFAULT_COLOUR_MAPPING = 'none';
+
 export type ColourMappingOptionsKey = (typeof COLOUR_MAPPING_OPTIONS)[number];
 
 export interface H264Api {
