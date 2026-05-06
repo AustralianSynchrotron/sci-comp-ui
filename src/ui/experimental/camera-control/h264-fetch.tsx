@@ -1,9 +1,12 @@
 import {
-    type Crop,
     type H264Api,
+    type Crop,
+    type DataIntensity,
+    type DataScaling,
     type ColourMappingOptionsKey,
-    DEFAULT_COLOUR_MAPPING,
     DEFAULT_RESOLUTION,
+    DEFAULT_SCALING,
+    DEFAULT_COLOUR_MAPPING,
 } from './h264-api';
 
 export function h264FetchApi(url: string): H264Api {
@@ -130,8 +133,8 @@ export function h264FetchApi(url: string): H264Api {
 
             if (!('colour_mapping' in json))
                 throw new Error(`Failed to get current colour mapping: ${JSON.stringify(json)}`);
-            const colour: ColourMappingOptionsKey = json['colour_mapping'];
-            return colour;
+            const colourMap: ColourMappingOptionsKey = json['colour_mapping'];
+            return colourMap;
         },
         async setColourMapping(sessionId: string, colour: ColourMappingOptionsKey, signal?: AbortSignal) {
             const res = await fetch(apiUrl + '/sessions/' + sessionId + '/colour_mapping', {
@@ -149,9 +152,9 @@ export function h264FetchApi(url: string): H264Api {
 
             if (!('colour_mapping' in json))
                 throw new Error(`Failed to get newly set colour mapping: ${JSON.stringify(json)}`);
-            const resPreset: ColourMappingOptionsKey = json['colour_mapping'];
+            const colourMap: ColourMappingOptionsKey = json['colour_mapping'];
 
-            if (resPreset !== colour) throw new Error(`Failed to set colour mapping: ${JSON.stringify(json)}`);
+            if (colourMap !== colour) throw new Error(`Failed to set colour mapping: ${JSON.stringify(json)}`);
             return;
         },
         async clearColourMapping(sessionId: string, signal?: AbortSignal) {
@@ -170,10 +173,105 @@ export function h264FetchApi(url: string): H264Api {
 
             if (!('colour_mapping' in json))
                 throw new Error(`Failed to get newly cleared colour mapping: ${JSON.stringify(json)}`);
-            const resPreset: ColourMappingOptionsKey = json['colour_mapping'];
+            const colourMap: ColourMappingOptionsKey = json['colour_mapping'];
 
-            if (resPreset !== DEFAULT_COLOUR_MAPPING)
+            if (colourMap !== DEFAULT_COLOUR_MAPPING)
                 throw new Error(`Failed to clear colour mapping: ${JSON.stringify(json)}`);
+            return;
+        },
+        async getDataIntensity(signal?: AbortSignal) {
+            const res = await fetch(apiUrl + '/data_intensity_range', {
+                method: 'GET',
+                signal: signal,
+            });
+            if (!res.ok) throw new Error(`Failed to get current data intensity range: ${res.status} ${res.statusText}`);
+            const json = await res.json();
+
+            if (!('min_intensity' in json) || !('max_intensity' in json))
+                throw new Error(`Failed to get current data intensity range: ${JSON.stringify(json)}`);
+            const range: DataIntensity = {
+                min: json['min_intensity'],
+                max: json['max_intensity'],
+            };
+            return range;
+        },
+        async setDataIntensity(min: number, max: number, signal?: AbortSignal) {
+            const res = await fetch(apiUrl + '/data_intensity_range', {
+                method: 'POST',
+                signal: signal,
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    min_intensity: min,
+                    max_intensity: max,
+                }),
+            });
+            if (!res.ok) throw new Error(`Failed to set data intensity range: ${res.status} ${res.statusText}`);
+            const json = await res.json();
+
+            if (!('min_intensity' in json) || !('max_intensity' in json))
+                throw new Error(`Failed to get newly set data intensity range: ${JSON.stringify(json)}`);
+
+            if (json['min_intensity'] !== min || json['max_intensity'] !== max)
+                throw new Error(`Failed to set data intensity range: ${JSON.stringify(json)}`);
+            return;
+        },
+        async clearDataIntensity(signal?: AbortSignal) {
+            const res = await fetch(apiUrl + '/data_intensity_range', {
+                method: 'POST',
+                signal: signal,
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    min_intensity: 0,
+                    max_intensity: 0,
+                }),
+            });
+            if (!res.ok) throw new Error(`Failed to clear data intensity range: ${res.status} ${res.statusText}`);
+            return;
+        },
+        async getDataScaling(signal?: AbortSignal) {
+            const res = await fetch(apiUrl + '/data_scaling_power', {
+                method: 'GET',
+                signal: signal,
+            });
+            if (!res.ok) throw new Error(`Failed to get current data scaling power ${res.status} ${res.statusText}`);
+            const scaling: DataScaling = await res.json();
+            return scaling;
+        },
+        async setDataScaling(value: number, signal?: AbortSignal) {
+            const res = await fetch(apiUrl + '/data_scaling_power', {
+                method: 'POST',
+                signal: signal,
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    value: value,
+                }),
+            });
+            if (!res.ok) throw new Error(`Failed to set data scaling power: ${res.status} ${res.statusText}`);
+            const scaling: DataScaling = await res.json();
+
+            if (scaling.value !== value) throw new Error(`Failed to set data scaling power ${JSON.stringify(scaling)}`);
+            return;
+        },
+        async clearDataScaling(signal?: AbortSignal) {
+            const res = await fetch(apiUrl + '/data_scaling_power', {
+                method: 'POST',
+                signal: signal,
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(DEFAULT_SCALING),
+            });
+            if (!res.ok) throw new Error(`Failed to clear data scaling power ${res.status} ${res.statusText}`);
+            const scaling: DataScaling = await res.json();
+
+            if (scaling.value !== DEFAULT_SCALING.value)
+                throw new Error(`Failed to clear data scaling power ${JSON.stringify(scaling)}`);
             return;
         },
         wsFactory(sessionId) {
