@@ -147,3 +147,4 @@ export {
     COLOUR_MAPPING_OPTIONS,
 } from './experimental/camera-control/h264-api';
 export { h264FetchApi } from './experimental/camera-control/h264-fetch';
+export { CustomSlider } from './experimental/custom-slider';

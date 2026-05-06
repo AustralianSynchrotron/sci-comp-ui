@@ -37,7 +37,7 @@ const data: { navMain: NavItem[] } = {
                     title: 'npm',
                     url: 'https://www.npmjs.com/package/@australiansynchrotron/sci-comp-ui',
                     newTab: true,
-                }
+                },
             ],
         },
         {
@@ -244,6 +244,10 @@ const data: { navMain: NavItem[] } = {
                     title: 'Camera Control Video',
                     url: '/experimental/camera-control-video',
                 },
+                {
+                    title: 'Custom Slider',
+                    url: '/experimental/custom-slider',
+                },
             ],
         },
     ],
@@ -292,7 +296,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                                                     <Link
                                                         to={subItem.url}
                                                         target={subItem.newTab ? '_blank' : undefined}
-                                                        rel={subItem.newTab ? 'noopener noreferrer' : undefined}>{subItem.title}
+                                                        rel={subItem.newTab ? 'noopener noreferrer' : undefined}
+                                                    >
+                                                        {subItem.title}
                                                     </Link>
                                                 </SidebarMenuSubButton>
                                             </SidebarMenuSubItem>
