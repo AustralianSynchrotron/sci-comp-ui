@@ -42,6 +42,8 @@ function CustomSlider({
         return values.sort((a, b) => a - b);
     }, [value, defaultValue, min, max]);
 
+    // TODO: Gotta figure out what to do about these tailwindcss styles & theme, because currently they are not statically generated, so class names don't actually work between this library and external services, when they do, it's actually just a coincidence due to existing generated classes
+
     return (
         <SliderPrimitive.Root
             id={id}
