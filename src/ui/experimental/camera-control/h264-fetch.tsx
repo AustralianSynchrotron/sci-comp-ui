@@ -225,8 +225,8 @@ export function h264FetchApi(url: string): H264Api {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    min_intensity: 0,
-                    max_intensity: 0,
+                    min_intensity: 0, // TODO: We need an endpoint to get the OG intensities
+                    max_intensity: 0, // TODO: We need an endpoint to get the OG intensities
                 }),
             });
             if (!res.ok) throw new Error(`Failed to clear data intensity range: ${res.status} ${res.statusText}`);
