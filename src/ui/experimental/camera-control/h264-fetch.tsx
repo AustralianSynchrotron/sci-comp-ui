@@ -10,28 +10,25 @@ import {
 } from './h264-api';
 
 export function h264FetchApi(url: string): H264Api {
-    /**
-     * Function to strip http://, https://, etc., protocols from a URL string.
-     *
-     * @param {string} url Url string to strip protocol from
-     * @return {string} Url string without protocol
-     */
-    const stripUrlProtocol = (url: string): string => {
-        try {
-            const { host, pathname, search, hash } = new URL(url);
-            return `${host}${pathname}${search}${hash}`;
-        } catch {
-            // Just return the OG full URL string if the param was unable to be turned into a React-compliant URL() object
-            return url;
-        }
+    let baseUrl: URL | null = null;
+
+    try {
+        baseUrl = new URL(url);
+    } catch (e) {
+        throw new Error(`Failed to create URL from string, ${url}: ${e}`);
+    }
+
+    const apiUrl = new URL(baseUrl.href);
+    apiUrl.pathname += '/api';
+
+    const generateWebsocketUrl = (url: URL): string => {
+        const { host, pathname, search, hash } = url;
+        const noProtocolUrl = `${host}${pathname}${search}${hash}`; // Strip http://, https:// protocol from URL
+        const protocol = url.protocol === 'https:' ? 'wss://' : 'ws://'; // Add the respective ws://, wss:// protocol
+        return protocol + noProtocolUrl + '/ws';
     };
 
-    const noProtocolUrl = stripUrlProtocol(url);
-
-    const apiUrl = url + '/api';
-
-    const websocketProtocol = new URL(url).protocol === 'https:' ? 'wss://' : 'ws://';
-    const websocketUrl = websocketProtocol + noProtocolUrl + '/ws';
+    const websocketUrl = generateWebsocketUrl(baseUrl);
 
     return {
         async createSession(signal) {
@@ -225,8 +222,8 @@ export function h264FetchApi(url: string): H264Api {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    min_intensity: 0,
-                    max_intensity: 0,
+                    min_intensity: 0, // TODO: We need an endpoint to get the OG intensities
+                    max_intensity: 0, // TODO: We need an endpoint to get the OG intensities
                 }),
             });
             if (!res.ok) throw new Error(`Failed to clear data intensity range: ${res.status} ${res.statusText}`);

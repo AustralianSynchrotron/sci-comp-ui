@@ -19,7 +19,7 @@ export const Route = createFileRoute('/experimental/camera-control-h264')({
 function CameraControlWebsocketH264Demo() {
     const [mousePos, setMousePos] = useState<CameraMousePosition | null>(null);
     const [clickPos, setClickPos] = useState<CameraMousePosition | null>(null);
-    const api = useMemo(() => h264FetchApi('localhost:9999'), []);
+    const api = useMemo(() => h264FetchApi('http://localhost:9999'), []);
     return (
         <div className="w-full h-full">
             <WebsocketH264Provider api={api}>
