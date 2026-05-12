@@ -7,10 +7,45 @@ export type SessionResolution = Resolution & {
     paddingHeight: number;
 };
 
+export type DataIntensity = { min: number; max: number };
+
+export type DataScaling = { value: number };
+
 export const DEFAULT_RESOLUTION: Resolution = {
     width: 1024,
     height: 1024,
 };
+
+export const DEFAULT_SCALING: DataScaling = {
+    value: 1,
+};
+
+export const COLOUR_MAPPING_OPTIONS: string[] = [
+    'magma',
+    'inferno',
+    'plasma',
+    'viridis',
+    'turbo',
+    'range1',
+    'range2',
+    'shadows',
+    'highlights',
+    'solar',
+    'nominal',
+    'preferred',
+    'total',
+    'spectral',
+    'cool',
+    'heat',
+    'fiery',
+    'blues',
+    'green',
+    'helix',
+];
+
+export const DEFAULT_COLOUR_MAPPING = 'none';
+
+export type ColourMappingOptionsKey = (typeof COLOUR_MAPPING_OPTIONS)[number];
 
 export interface H264Api {
     /** Create a session if needed. Return the session ID. */
@@ -34,10 +69,33 @@ export interface H264Api {
     /** Clear crop. */
     clearCrop: (sessionId: string, signal?: AbortSignal) => Promise<void>;
 
+    /** Get current colour mapping. */
+    getColourMapping: (sessionId: string, signal?: AbortSignal) => Promise<ColourMappingOptionsKey>;
+
+    /** Set colour mapping. */
+    setColourMapping: (sessionId: string, colour: ColourMappingOptionsKey, signal?: AbortSignal) => Promise<void>;
+
+    /** Clear colour mapping. */
+    clearColourMapping: (sessionId: string, signal?: AbortSignal) => Promise<void>;
+
+    /** Get current data intensity range - currently, this is shared between all sessions, not per session */
+    getDataIntensity: (signal?: AbortSignal) => Promise<DataIntensity>;
+
+    /** Set data intensity range - currently, this is shared between all sessions, not per session */
+    setDataIntensity: (min: number, max: number, signal?: AbortSignal) => Promise<void>;
+
+    /** Clear data intensity range - currently, this is shared between all sessions, not per session */
+    clearDataIntensity: (signal?: AbortSignal) => Promise<void>;
+
+    /** Get current data scaling power - currently, this is shared between all sessions, not per session */
+    getDataScaling: (signal?: AbortSignal) => Promise<DataScaling>;
+
+    /** Set data scaling power - currently, this is shared between all sessions, not per session */
+    setDataScaling: (value: number, signal?: AbortSignal) => Promise<void>;
+
+    /** Clear data scaling power - currently, this is shared between all sessions, not per session */
+    clearDataScaling: (signal?: AbortSignal) => Promise<void>;
+
     /** Optional: customize WebSocket construction (auth headers, subprotocols, polyfills). */
     wsFactory: (sessionId: string) => WebSocket;
-
-    /** Optional: build absolute HTTP/WS URLs if you don’t want the component to concatenate strings. */
-    buildHttpUrl?: (path: string) => string; // e.g., p => `${base}${p}`
-    buildWsUrl?: (path: string) => string; // e.g., p => `${wssBase}${p}`
 }

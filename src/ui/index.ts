@@ -139,4 +139,11 @@ export {
     WebsocketH264Provider,
     type WebsocketH264ProviderProps,
 } from './experimental/camera-control/websocket-h264-provider';
+export {
+    type H264Api,
+    type ColourMappingOptionsKey,
+    type DataIntensity,
+    type DataScaling,
+    COLOUR_MAPPING_OPTIONS,
+} from './experimental/camera-control/h264-api';
 export { h264FetchApi } from './experimental/camera-control/h264-fetch';
