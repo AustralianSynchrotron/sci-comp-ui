@@ -317,11 +317,11 @@ export const WebsocketH264Provider: React.FC<WebsocketH264ProviderProps> = ({
         };
 
         const ensureSessionId = async (): Promise<string> => {
-            if (sidRef.current) return sidRef.current;
-            if (resolvedSessionId) {
-                sidRef.current = resolvedSessionId;
-                return resolvedSessionId;
-            }
+            // if (sidRef.current) return sidRef.current;
+            // if (resolvedSessionId) {
+            //     sidRef.current = resolvedSessionId;
+            //     return resolvedSessionId;
+            // }
 
             const sid = await api.createSession(aborter.signal);
             if (!sid) throw new Error('Server did not return session_id');
