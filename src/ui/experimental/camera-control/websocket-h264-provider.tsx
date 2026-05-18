@@ -28,6 +28,7 @@ export const WebsocketH264Provider: React.FC<WebsocketH264ProviderProps> = ({
     // ==================
     // State
     // ==================
+    const [apiUrl, setApiUrl] = useState<string>('');
     const [imageBitmap, setImageBitmap] = useState<ImageBitmap | null>(null);
     const [sourceWidth, setSourceWidth] = useState<number>(DEFAULT_RESOLUTION.width);
     const [sourceHeight, setSourceHeight] = useState<number>(DEFAULT_RESOLUTION.height);
@@ -317,12 +318,16 @@ export const WebsocketH264Provider: React.FC<WebsocketH264ProviderProps> = ({
         };
 
         const ensureSessionId = async (): Promise<string> => {
-            if (sidRef.current) return sidRef.current;
-            if (resolvedSessionId) {
-                sidRef.current = resolvedSessionId;
-                return resolvedSessionId;
+            if (apiUrl === api.getApiUrl()) {
+                // Reuse session ID if requested API URL has not changed
+                if (sidRef.current) return sidRef.current;
+                if (resolvedSessionId) {
+                    sidRef.current = resolvedSessionId;
+                    return resolvedSessionId;
+                }
             }
 
+            setApiUrl(api.getApiUrl());
             const sid = await api.createSession(aborter.signal);
             if (!sid) throw new Error('Server did not return session_id');
 
