@@ -233,14 +233,10 @@ export const WebsocketH264Provider: React.FC<WebsocketH264ProviderProps> = ({
     };
 
     useEffect(() => {
-        console.log('000000000000');
-
         if (!('VideoDecoder' in window)) {
             console.error('WebCodecs VideoDecoder is not supported in this browser.');
             return;
         }
-
-        console.log('11111111111');
 
         const aborter = new AbortController();
         abortedRef.current = false;
@@ -251,8 +247,6 @@ export const WebsocketH264Provider: React.FC<WebsocketH264ProviderProps> = ({
         nextTsRef.current = 0;
 
         const connect = (sid: string) => {
-            console.log('22222222222');
-            console.log(sid);
             ws = api.wsFactory(sid);
 
             wsRef.current = ws;
@@ -308,7 +302,7 @@ export const WebsocketH264Provider: React.FC<WebsocketH264ProviderProps> = ({
                 } catch {
                     /**/
                 }
-                if (!abortedRef.current && sidRef.current) {
+                if (apiUrl === api.getApiUrl() && !abortedRef.current && sidRef.current) {
                     reconnectTimerRef.current = window.setTimeout(() => connect(sidRef.current!), 3000);
                 }
             };
@@ -324,11 +318,7 @@ export const WebsocketH264Provider: React.FC<WebsocketH264ProviderProps> = ({
         };
 
         const ensureSessionId = async (): Promise<string> => {
-            console.log('33333333');
-            console.log(apiUrl);
-            console.log(api.getApiUrl());
             if (apiUrl === api.getApiUrl()) {
-                console.log('44444444444');
                 // Reuse session ID if requested API URL has not changed
                 if (sidRef.current) return sidRef.current;
                 if (resolvedSessionId) {
