@@ -29,6 +29,7 @@
     ],
     "scripts": {
         "build": "vite build",
+        "prepare": "vite build",
         "build:docs": "vite build --mode docs",
         "build:github-pages": "vite build --mode github-pages",
         "dev": "vite",
