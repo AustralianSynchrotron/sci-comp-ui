@@ -76,7 +76,7 @@ For your local yalc package to be built with docker compose, update your dev Doc
 ```bash
 # Make a .yalc directory wherever your dockerfile will run the package install command
 RUN mkdir .yalc
-COPY services/acquisition-ui/.yalc .yalc
+COPY services/${PACKAGE_NAME}.yalc .yalc
 
 # RUN npm i (or your respective package install command should happen afterwards)
 ```

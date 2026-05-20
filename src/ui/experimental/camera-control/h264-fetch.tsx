@@ -31,6 +31,9 @@ export function h264FetchApi(url: string): H264Api {
     const websocketUrl = generateWebsocketUrl(baseUrl);
 
     return {
+        getApiUrl() {
+            return apiUrl.href;
+        },
         async createSession(signal) {
             const res = await fetch(apiUrl + '/sessions', {
                 method: 'POST',

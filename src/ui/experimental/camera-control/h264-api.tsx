@@ -48,6 +48,9 @@ export const DEFAULT_COLOUR_MAPPING = 'none';
 export type ColourMappingOptionsKey = (typeof COLOUR_MAPPING_OPTIONS)[number];
 
 export interface H264Api {
+    /** Get generated API Url */
+    getApiUrl: () => string;
+
     /** Create a session if needed. Return the session ID. */
     createSession: (signal?: AbortSignal) => Promise<string>;
 
