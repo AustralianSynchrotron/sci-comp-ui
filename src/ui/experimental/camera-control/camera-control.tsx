@@ -73,7 +73,7 @@ export const CameraControl: React.FC<CameraControlProps> = ({
     sizeFollowsImage = false,
     debugFPS = false,
 }) => {
-    const { image, reportSize, reportZoom, reportDrag, clearZoom }: ImageSource = useContext(ImageContext);
+    const { image, timestamp, reportSize, reportZoom, reportDrag, clearZoom }: ImageSource = useContext(ImageContext);
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const [popupPos, setPopupPos] = useState<{ x: number; y: number } | null>(null);
     const [pixelValue, setPixelValue] = useState<string | null>(null);
@@ -318,8 +318,21 @@ export const CameraControl: React.FC<CameraControlProps> = ({
         e.currentTarget.focus();
     };
 
+    
+    const formatter = new Intl.DateTimeFormat('en-AU', {
+    day: '2-digit',
+    month: 'short',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    fractionalSecondDigits: 3, // milliseconds
+    hour12: false
+    });
+
+
     return (
         <div className={cn('space-y-4 relative inline-block w-full h-full', className)}>
+            <div>{timestamp ? "Last frame:" + formatter.format(timestamp) : null}</div>
             <canvas
                 ref={canvasRef}
                 onMouseMove={handleMouseMove}
