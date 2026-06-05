@@ -15,19 +15,32 @@ export const Route = createFileRoute('/experimental/camera-control-h264')({
     component: CameraControlWebsocketH264Page,
 });
 
+const formatter = new Intl.DateTimeFormat('en-AU', {
+    day: '2-digit',
+    month: 'short',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    fractionalSecondDigits: 3, // milliseconds
+    hour12: false
+    });
+
 /* DEMO_START */
 function CameraControlWebsocketH264Demo() {
     const [mousePos, setMousePos] = useState<CameraMousePosition | null>(null);
     const [clickPos, setClickPos] = useState<CameraMousePosition | null>(null);
+    const [timestamp, setTimestamp] = useState<Date | undefined>(undefined);
     const api = useMemo(() => h264FetchApi('http://localhost:9999/test'), []);
     return (
         <div className="w-full h-full">
+            <div>{timestamp ? "Last frame: " + formatter.format(timestamp) : null}</div>
             <WebsocketH264Provider api={api}>
                 <CameraControl
                     className="border"
                     onMousePositionChange={setMousePos}
                     onClick={setClickPos}
                     showIntensity={true}
+                    onTimestamp={setTimestamp}
                 />
             </WebsocketH264Provider>
             <TypographyH1>
@@ -64,7 +77,7 @@ function CameraControlWebsocketH264Page() {
                 <div className="space-y-6">
                     <Card>
                         <CardHeader>
-                            <CardTitle>Position Control</CardTitle>
+                            <CardTitle>Camera Control</CardTitle>
                             <CardDescription>
                                 <p>
                                     Video display for h264 over websocket streams. Source is the AS Websocket Stream
