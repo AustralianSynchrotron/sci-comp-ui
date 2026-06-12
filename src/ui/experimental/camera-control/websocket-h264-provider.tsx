@@ -40,6 +40,8 @@ export const WebsocketH264Provider: React.FC<WebsocketH264ProviderProps> = ({
     const [currentCropStartY, setCurrentCropStartY] = useState<number>(0);
     const [paddingWidth, setPaddingWidth] = useState<number>(0);
     const [paddingHeight, setPaddingHeight] = useState<number>(0);
+    const [timestamp, setTimestamp] = useState<Date | null>(null);
+    const [timestampDisabled, setTimestampDisabled] = useState<boolean>(false);
 
     // ==================
     // Refs
@@ -98,6 +100,76 @@ export const WebsocketH264Provider: React.FC<WebsocketH264ProviderProps> = ({
 
     const nalType = (nal: Uint8Array) => nal[0] & 0x1f;
     const isKeyframe = (nals: Uint8Array[]) => nals.some((n) => nalType(n) === 5);
+
+    const parseSeiMetadataString = (metadataString: string) => {
+        const metadata: Record<string, string> = {};
+        const pairs = metadataString.split(/[,;\n]+/);
+        for (const pair of pairs) {
+            const trimmed = pair.trim();
+            if (!trimmed || !trimmed.includes('=')) continue;
+            const [key, ...rest] = trimmed.split('=');
+            const value = rest.join('=');
+            if (!key) continue;
+            metadata[key.trim()] = value.trim();
+        }
+        return metadata;
+    };
+
+    // Decode SEI metadata from SEI NAL unit
+    const decodeSeiMetadata = (nal: Uint8Array) => {
+        try {
+            // Skip NAL header byte
+            let offset = 1;
+            
+            // Parse payload_type (variable length, VLC encoding)
+            let payloadType = 0;
+            while (offset < nal.length) {
+                const byte = nal[offset];
+                payloadType += byte;
+                offset++;
+                if (byte !== 0xff) break;
+            }
+            
+            // Parse payload_size (variable length, VLC encoding)
+            let payloadSize = 0;
+            while (offset < nal.length) {
+                const byte = nal[offset];
+                payloadSize += byte;
+                offset++;
+                if (byte !== 0xff) break;
+            }
+            
+            // Check bounds
+            if (offset + payloadSize > nal.length) {
+                console.debug('SEI: payload size', payloadSize, 'exceeds available data');
+                return;
+            }
+            
+            // Extract payload data
+            const payloadData = nal.subarray(offset, offset + payloadSize);
+            
+            // Process unregistered SEI (type 5)
+            if (payloadType === 5 && payloadData.length > 16) {
+                const metadataBytes = payloadData.subarray(16);
+                const metadataString = new TextDecoder().decode(metadataBytes);
+                
+                // Filter out x264 encoder info
+                if (!metadataString.includes('x264') && !metadataString.includes('x265')) {
+                    const metadata = parseSeiMetadataString(metadataString);
+                    if ('timestamp' in metadata) {
+                        const parsed = new Date(metadata.timestamp);
+                        if (!Number.isNaN(parsed.getTime())) {
+                            setTimestamp(parsed);
+                        }
+                    }
+                } else {
+                    console.debug('SEI Encoder Info:', metadataString.substring(0, 50) + '...');
+                }
+            }
+        } catch (e) {
+            console.warn('Failed to decode SEI metadata:', e);
+        }
+    };
 
     const buildAvcC = (spsNal: Uint8Array, ppsNal: Uint8Array): Uint8Array => {
         const spsLen = spsNal.length,
@@ -222,6 +294,7 @@ export const WebsocketH264Provider: React.FC<WebsocketH264ProviderProps> = ({
             const t = nalType(n);
             if (t === 7) spsRef.current = n.slice();
             else if (t === 8) ppsRef.current = n.slice();
+            else if (t === 6 && !timestampDisabled) decodeSeiMetadata(n); // Process SEI metadata
         }
 
         if (!configuredRef.current && spsRef.current && ppsRef.current) {
@@ -273,6 +346,7 @@ export const WebsocketH264Provider: React.FC<WebsocketH264ProviderProps> = ({
                             setCurrentCropHeight(meta.crop_height);
                             setCurrentCropStartX(meta.crop_x);
                             setCurrentCropStartY(meta.crop_y);
+                            setTimestampDisabled(meta.sei_timestamp_disabled);
 
                             const last = lastConfigRef.current;
                             const changed = !last || last.width !== meta.width || last.height !== meta.height;
@@ -502,12 +576,13 @@ export const WebsocketH264Provider: React.FC<WebsocketH264ProviderProps> = ({
     const contextValue = useMemo(
         () => ({
             image: imageBitmap,
+            timestamp: timestampDisabled ? null : timestamp,
             reportSize,
             reportZoom,
             reportDrag,
             clearZoom,
         }),
-        [imageBitmap, reportSize, reportZoom, reportDrag, clearZoom],
+        [imageBitmap, timestamp, reportSize, reportZoom, reportDrag, clearZoom, timestampDisabled],
     );
 
     return <ImageContext.Provider value={contextValue}>{children}</ImageContext.Provider>;

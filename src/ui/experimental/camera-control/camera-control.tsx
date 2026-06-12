@@ -43,6 +43,7 @@ export interface CameraControlProps {
     showIntensity?: boolean;
     onZoom?: (box: BoundingBox) => void;
     sizeFollowsImage?: boolean;
+    onTimestamp?: (timestamp: Date | undefined) => void;
     debugFPS?: boolean;
 }
 
@@ -58,6 +59,7 @@ export interface CameraControlProps {
  * @param showIntensity - Whether to show the pixel intensity at mouse position as a tooltip.
  * @param onZoom - Callback called after a bounding box is drawn.
  * @param sizeFollowsImage - Resize the canvas if the image size changes.
+ * @param onTimestamp - Updates with each new timestamp.
  * @param debugFPS - Whether to calculate and display FPS in console log, for debug purposes.
  * @returns
  */
@@ -71,9 +73,10 @@ export const CameraControl: React.FC<CameraControlProps> = ({
     showIntensity = false,
     onZoom,
     sizeFollowsImage = false,
+    onTimestamp,
     debugFPS = false,
 }) => {
-    const { image, reportSize, reportZoom, reportDrag, clearZoom }: ImageSource = useContext(ImageContext);
+    const { image, timestamp, reportSize, reportZoom, reportDrag, clearZoom }: ImageSource = useContext(ImageContext);
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const [popupPos, setPopupPos] = useState<{ x: number; y: number } | null>(null);
     const [pixelValue, setPixelValue] = useState<string | null>(null);
@@ -173,6 +176,10 @@ export const CameraControl: React.FC<CameraControlProps> = ({
             setStartTime(now);
         }
     }, [image, startTime, debugFPS]);
+
+    useEffect(() => {
+        onTimestamp?.(timestamp)
+    }, [timestamp, onTimestamp])
 
     // Throttle mouse move
     let lastMove = 0;
@@ -318,8 +325,10 @@ export const CameraControl: React.FC<CameraControlProps> = ({
         e.currentTarget.focus();
     };
 
+
     return (
         <div className={cn('space-y-4 relative inline-block w-full h-full', className)}>
+            
             <canvas
                 ref={canvasRef}
                 onMouseMove={handleMouseMove}
