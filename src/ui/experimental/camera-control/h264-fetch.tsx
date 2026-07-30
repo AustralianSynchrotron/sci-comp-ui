@@ -179,8 +179,8 @@ export function h264FetchApi(url: string): H264Api {
                 throw new Error(`Failed to clear colour mapping: ${JSON.stringify(json)}`);
             return;
         },
-        async getDataIntensity(signal?: AbortSignal) {
-            const res = await fetch(apiUrl + '/data_intensity_range', {
+        async getDataIntensity(sessionId: string, signal?: AbortSignal) {
+            const res = await fetch(apiUrl + '/sessions/' + sessionId + '/data_intensity_range', {
                 method: 'GET',
                 signal: signal,
             });
@@ -195,8 +195,8 @@ export function h264FetchApi(url: string): H264Api {
             };
             return range;
         },
-        async setDataIntensity(min: number, max: number, signal?: AbortSignal) {
-            const res = await fetch(apiUrl + '/data_intensity_range', {
+        async setDataIntensity(sessionId: string, min: number, max: number, signal?: AbortSignal) {
+            const res = await fetch(apiUrl + '/sessions/' + sessionId + '/data_intensity_range', {
                 method: 'POST',
                 signal: signal,
                 headers: {
@@ -217,8 +217,8 @@ export function h264FetchApi(url: string): H264Api {
                 throw new Error(`Failed to set data intensity range: ${JSON.stringify(json)}`);
             return;
         },
-        async clearDataIntensity(signal?: AbortSignal) {
-            const res = await fetch(apiUrl + '/data_intensity_range', {
+        async clearDataIntensity(sessionId: string, signal?: AbortSignal) {
+            const res = await fetch(apiUrl + '/sessions/' + sessionId + '/data_intensity_range', {
                 method: 'POST',
                 signal: signal,
                 headers: {
@@ -232,8 +232,8 @@ export function h264FetchApi(url: string): H264Api {
             if (!res.ok) throw new Error(`Failed to clear data intensity range: ${res.status} ${res.statusText}`);
             return;
         },
-        async getDataScaling(signal?: AbortSignal) {
-            const res = await fetch(apiUrl + '/data_scaling_power', {
+        async getDataScaling(sessionId: string, signal?: AbortSignal) {
+            const res = await fetch(apiUrl + '/sessions/' + sessionId + '/data_scaling_power', {
                 method: 'GET',
                 signal: signal,
             });
@@ -241,8 +241,8 @@ export function h264FetchApi(url: string): H264Api {
             const scaling: DataScaling = await res.json();
             return scaling;
         },
-        async setDataScaling(value: number, signal?: AbortSignal) {
-            const res = await fetch(apiUrl + '/data_scaling_power', {
+        async setDataScaling(sessionId: string, value: number, signal?: AbortSignal) {
+            const res = await fetch(apiUrl + '/sessions/' + sessionId + '/data_scaling_power', {
                 method: 'POST',
                 signal: signal,
                 headers: {
@@ -258,8 +258,8 @@ export function h264FetchApi(url: string): H264Api {
             if (scaling.value !== value) throw new Error(`Failed to set data scaling power ${JSON.stringify(scaling)}`);
             return;
         },
-        async clearDataScaling(signal?: AbortSignal) {
-            const res = await fetch(apiUrl + '/data_scaling_power', {
+        async clearDataScaling(sessionId: string, signal?: AbortSignal) {
+            const res = await fetch(apiUrl + '/sessions/' + sessionId + '/data_scaling_power', {
                 method: 'POST',
                 signal: signal,
                 headers: {
