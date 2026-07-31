@@ -81,23 +81,23 @@ export interface H264Api {
     /** Clear colour mapping. */
     clearColourMapping: (sessionId: string, signal?: AbortSignal) => Promise<void>;
 
-    /** Get current data intensity range - currently, this is shared between all sessions, not per session */
-    getDataIntensity: (signal?: AbortSignal) => Promise<DataIntensity>;
+    /** Get current data intensity range. */
+    getDataIntensity: (sessionId: string, signal?: AbortSignal) => Promise<DataIntensity>;
 
-    /** Set data intensity range - currently, this is shared between all sessions, not per session */
-    setDataIntensity: (min: number, max: number, signal?: AbortSignal) => Promise<void>;
+    /** Set data intensity range. */
+    setDataIntensity: (sessionId: string, min: number, max: number, signal?: AbortSignal) => Promise<void>;
 
-    /** Clear data intensity range - currently, this is shared between all sessions, not per session */
-    clearDataIntensity: (signal?: AbortSignal) => Promise<void>;
+    /** Clear data intensity range. */
+    clearDataIntensity: (sessionId: string, signal?: AbortSignal) => Promise<DataIntensity>;    
 
-    /** Get current data scaling power - currently, this is shared between all sessions, not per session */
-    getDataScaling: (signal?: AbortSignal) => Promise<DataScaling>;
+    /** Get current data scaling power. */
+    getDataScaling: (sessionId: string, signal?: AbortSignal) => Promise<DataScaling>;
 
-    /** Set data scaling power - currently, this is shared between all sessions, not per session */
-    setDataScaling: (value: number, signal?: AbortSignal) => Promise<void>;
+    /** Set data scaling power. */
+    setDataScaling: (sessionId: string, value: number, signal?: AbortSignal) => Promise<void>;
 
-    /** Clear data scaling power - currently, this is shared between all sessions, not per session */
-    clearDataScaling: (signal?: AbortSignal) => Promise<void>;
+    /** Clear data scaling power. */
+    clearDataScaling: (sessionId: string, signal?: AbortSignal) => Promise<void>;
 
     /** Optional: customize WebSocket construction (auth headers, subprotocols, polyfills). */
     wsFactory: (sessionId: string) => WebSocket;
