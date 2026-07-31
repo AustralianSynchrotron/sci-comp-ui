@@ -88,7 +88,7 @@ export interface H264Api {
     setDataIntensity: (sessionId: string, min: number, max: number, signal?: AbortSignal) => Promise<void>;
 
     /** Clear data intensity range. */
-    clearDataIntensity: (sessionId: string, signal?: AbortSignal) => Promise<void>;
+    clearDataIntensity: (sessionId: string, signal?: AbortSignal) => Promise<DataIntensity>;    
 
     /** Get current data scaling power. */
     getDataScaling: (sessionId: string, signal?: AbortSignal) => Promise<DataScaling>;

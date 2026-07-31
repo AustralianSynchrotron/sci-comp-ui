@@ -218,19 +218,13 @@ export function h264FetchApi(url: string): H264Api {
             return;
         },
         async clearDataIntensity(sessionId: string, signal?: AbortSignal) {
-            const res = await fetch(apiUrl + '/sessions/' + sessionId + '/data_intensity_range', {
+            const res = await fetch(apiUrl + '/sessions/' + sessionId + '/data_intensity_range/reset', {
                 method: 'POST',
                 signal: signal,
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    min_intensity: 0, // TODO: We need an endpoint to get the OG intensities
-                    max_intensity: 0, // TODO: We need an endpoint to get the OG intensities
-                }),
             });
             if (!res.ok) throw new Error(`Failed to clear data intensity range: ${res.status} ${res.statusText}`);
-            return;
+            const intensity: DataIntensity = await res.json();
+            return intensity;
         },
         async getDataScaling(sessionId: string, signal?: AbortSignal) {
             const res = await fetch(apiUrl + '/sessions/' + sessionId + '/data_scaling_power', {
