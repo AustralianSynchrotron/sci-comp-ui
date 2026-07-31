@@ -40,7 +40,7 @@ export const WebsocketH264Provider: React.FC<WebsocketH264ProviderProps> = ({
     const [currentCropStartY, setCurrentCropStartY] = useState<number>(0);
     const [paddingWidth, setPaddingWidth] = useState<number>(0);
     const [paddingHeight, setPaddingHeight] = useState<number>(0);
-    const [timestamp, setTimestamp] = useState<Date | null>(null);
+    const [timestamp, setTimestamp] = useState<Date | undefined>(undefined);
     const [timestampDisabled, setTimestampDisabled] = useState<boolean>(false);
 
     // ==================
@@ -576,7 +576,7 @@ export const WebsocketH264Provider: React.FC<WebsocketH264ProviderProps> = ({
     const contextValue = useMemo(
         () => ({
             image: imageBitmap,
-            timestamp: timestampDisabled ? null : timestamp,
+            timestamp: timestampDisabled ? undefined : timestamp,
             reportSize,
             reportZoom,
             reportDrag,

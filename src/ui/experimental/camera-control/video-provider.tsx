@@ -45,6 +45,7 @@ export const VideoProvider: React.FC<VideoProviderProps> = ({ children, videoUrl
     const contextValue = useMemo(
         () => ({
             image: { video: videoRef.current, frameId } as VideoFrame,
+            timestamp: undefined,
             reportSize: () => {},
             reportZoom: () => {},
             reportDrag: () => {},
