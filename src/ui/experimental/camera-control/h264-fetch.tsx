@@ -223,8 +223,15 @@ export function h264FetchApi(url: string): H264Api {
                 signal: signal,
             });
             if (!res.ok) throw new Error(`Failed to clear data intensity range: ${res.status} ${res.statusText}`);
-            const intensity: DataIntensity = await res.json();
-            return intensity;
+            const json = await res.json();
+
+            if (!('min_intensity' in json) || !('max_intensity' in json))
+                throw new Error(`Failed to get current data intensity range: ${JSON.stringify(json)}`);
+            const range: DataIntensity = {
+                min: json['min_intensity'],
+                max: json['max_intensity'],
+            };
+            return range;
         },
         async getDataScaling(sessionId: string, signal?: AbortSignal) {
             const res = await fetch(apiUrl + '/sessions/' + sessionId + '/data_scaling_power', {
