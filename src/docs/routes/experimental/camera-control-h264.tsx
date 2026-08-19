@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { createFileRoute } from '@tanstack/react-router';
 
 import { PageHeader } from '@/docs/components/page-header';
@@ -10,6 +10,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/ui/
 import { CameraControl, type CameraMousePosition } from '@/ui/experimental/camera-control/camera-control';
 import { WebsocketH264Provider } from '@/ui/experimental/camera-control/websocket-h264-provider';
 import { h264FetchApi } from '@/ui/experimental/camera-control/h264-fetch';
+import {type PlotDataset} from '@/ui/experimental/camera-control/image-context';
 
 export const Route = createFileRoute('/experimental/camera-control-h264')({
     component: CameraControlWebsocketH264Page,
@@ -30,7 +31,20 @@ function CameraControlWebsocketH264Demo() {
     const [mousePos, setMousePos] = useState<CameraMousePosition | null>(null);
     const [clickPos, setClickPos] = useState<CameraMousePosition | null>(null);
     const [timestamp, setTimestamp] = useState<Date | undefined>(undefined);
+    const [plotData, setPlotData] = useState<PlotDataset|null>(null);
+    const [firstPoint, setFirstPoint] = useState<string[]>(["0","0","0"]);
     const api = useMemo(() => h264FetchApi('http://localhost:9999/test'), []);
+    
+    useEffect(() => {
+      if (plotData && plotData?.x.length) {
+        setFirstPoint([
+          (plotData.x[0]).toFixed(3),
+          (plotData.y[0]).toFixed(3),
+          (plotData.e[0]).toFixed(3),
+        ]);
+      }
+    }, [plotData]);
+    
     return (
         <div className="w-full h-full">
             <div>{timestamp ? "Last frame: " + formatter.format(timestamp) : null}</div>
@@ -41,6 +55,7 @@ function CameraControlWebsocketH264Demo() {
                     onClick={setClickPos}
                     showIntensity={true}
                     onTimestamp={setTimestamp}
+                    onPlotData={setPlotData}
                 />
             </WebsocketH264Provider>
             <TypographyH1>
@@ -52,6 +67,12 @@ function CameraControlWebsocketH264Demo() {
                 {clickPos
                     ? `Cursor: x=${Math.round(clickPos.x)}, y=${Math.round(clickPos.y)}, intensity=${clickPos.intensity}`
                     : 'Click on the image'}
+            </TypographyH1>
+            <TypographyH1>
+                {firstPoint
+                    ? `First Point is ${firstPoint}`
+                    : 'Waiting...'
+                }
             </TypographyH1>
         </div>
     );

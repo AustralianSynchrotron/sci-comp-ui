@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 
-import { ImageContext } from './image-context';
+import { ImageContext, type PlotDataset } from './image-context';
 
 import { type H264Api, DEFAULT_RESOLUTION } from './h264-api';
 
@@ -42,6 +42,7 @@ export const WebsocketH264Provider: React.FC<WebsocketH264ProviderProps> = ({
     const [paddingHeight, setPaddingHeight] = useState<number>(0);
     const [timestamp, setTimestamp] = useState<Date | undefined>(undefined);
     const [timestampDisabled, setTimestampDisabled] = useState<boolean>(false);
+    const [plotData, setPlotData] = useState<PlotDataset>({x: [], y: [], e: []});
 
     // ==================
     // Refs
@@ -64,6 +65,17 @@ export const WebsocketH264Provider: React.FC<WebsocketH264ProviderProps> = ({
 
     // Internal resolved session ID. We mirror the prop; if null, we create and then set it here.
     const [resolvedSessionId, setResolvedSessionId] = useState<string | null>(sessionId);
+
+    // UUIDs used by custom SEI metadata.
+    const TIMESTAMP_UUID = new Uint8Array([
+        0x12, 0x34, 0x56, 0x78, 0x9a, 0xbc, 0xde, 0xf0, 0x11, 0x22, 0x33, 0x44,
+        0x55, 0x66, 0x77, 0x88,
+    ]);
+    const REDUCTION_UUID = new Uint8Array([
+        0x88, 0x77, 0x66, 0x55, 0x44, 0x33, 0x22, 0x11, 0xf0, 0xde, 0xbc, 0x9a,
+        0x78, 0x56, 0x34, 0x12,
+    ]);
+
 
     useEffect(() => {
         setResolvedSessionId(sessionId ?? null);
@@ -115,27 +127,59 @@ export const WebsocketH264Provider: React.FC<WebsocketH264ProviderProps> = ({
         return metadata;
     };
 
+    const removeEmulationPreventionBytes = (bytes: Uint8Array) => {
+    /* 0x03 bytes are inserted into sequences of bytes that might be mistaken for start codes.
+        This is handled by the encoder/decoder for the video data, but has to be handled manually
+        For the custom header data. This function removes these "Emulation Prevention Bytes"
+    */
+
+        const out = [];
+        for (let i = 0; i < bytes.length; i++) {
+            if (
+            i >= 2 &&
+            bytes[i] === 0x03 &&
+            bytes[i - 1] === 0x00 &&
+            bytes[i - 2] === 0x00
+            ) {
+            continue;
+            }
+            out.push(bytes[i]);
+        }
+        return new Uint8Array(out);
+    };
+
+
+    const uuidMatches = (actual: Uint8Array, expected: Uint8Array): boolean => {
+        if (actual.length < 16) return false;
+        for (let i = 0; i < 16; i++) {
+            if (actual[i] !== expected[i]) {
+            return false;
+            }
+        }
+        return true;
+    }
+
+
     // Decode SEI metadata from SEI NAL unit
     const decodeSeiMetadata = (nal: Uint8Array) => {
         try {
-            // Skip NAL header byte
-            let offset = 1;
-            
+
+            const rbsp = removeEmulationPreventionBytes(nal.subarray(1));
+            let offset = 0;
+
             // Parse payload_type (variable length, VLC encoding)
             let payloadType = 0;
-            while (offset < nal.length) {
-                const byte = nal[offset];
+            while (offset < rbsp.length) {
+                const byte = rbsp[offset++];
                 payloadType += byte;
-                offset++;
                 if (byte !== 0xff) break;
             }
             
             // Parse payload_size (variable length, VLC encoding)
             let payloadSize = 0;
-            while (offset < nal.length) {
-                const byte = nal[offset];
+            while (offset < rbsp.length) {
+                const byte = rbsp[offset++];
                 payloadSize += byte;
-                offset++;
                 if (byte !== 0xff) break;
             }
             
@@ -146,13 +190,19 @@ export const WebsocketH264Provider: React.FC<WebsocketH264ProviderProps> = ({
             }
             
             // Extract payload data
-            const payloadData = nal.subarray(offset, offset + payloadSize);
+            const payloadData = rbsp.subarray(offset, offset + payloadSize);
+            
+            if (payloadType !== 5 || payloadData.length <= 16) {
+                return;
+              }
             
             // Process unregistered SEI (type 5)
-            if (payloadType === 5 && payloadData.length > 16) {
-                const metadataBytes = payloadData.subarray(16);
-                const metadataString = new TextDecoder().decode(metadataBytes);
-                
+            
+            const uuid = payloadData.subarray(0, 16);
+            
+            const data = payloadData.subarray(16);
+              if (uuidMatches(uuid, TIMESTAMP_UUID)) {
+                const metadataString = new TextDecoder().decode(data);
                 // Filter out x264 encoder info
                 if (!metadataString.includes('x264') && !metadataString.includes('x265')) {
                     const metadata = parseSeiMetadataString(metadataString);
@@ -162,9 +212,17 @@ export const WebsocketH264Provider: React.FC<WebsocketH264ProviderProps> = ({
                             setTimestamp(parsed);
                         }
                     }
-                } else {
-                    console.debug('SEI Encoder Info:', metadataString.substring(0, 50) + '...');
                 }
+            } else if (uuidMatches(uuid, REDUCTION_UUID)){
+                const reducedBytes = data;
+                const values = new Float32Array(reducedBytes.slice().buffer);
+
+                const n = values.length / 3;
+                setPlotData({
+                    x: Array.from(values.subarray(0, n)),
+                    y: Array.from(values.subarray(n, 2 * n)),
+                    e: Array.from(values.subarray(2 * n)),
+                });
             }
         } catch (e) {
             console.warn('Failed to decode SEI metadata:', e);
@@ -574,15 +632,25 @@ export const WebsocketH264Provider: React.FC<WebsocketH264ProviderProps> = ({
     }, [api]);
 
     const contextValue = useMemo(
-        () => ({
-            image: imageBitmap,
-            timestamp: timestampDisabled ? undefined : timestamp,
-            reportSize,
-            reportZoom,
-            reportDrag,
-            clearZoom,
-        }),
-        [imageBitmap, timestamp, reportSize, reportZoom, reportDrag, clearZoom, timestampDisabled],
+      () => ({
+        image: imageBitmap,
+        timestamp: timestampDisabled ? undefined : timestamp,
+        reportSize,
+        reportZoom,
+        reportDrag,
+        clearZoom,
+        plotData,
+      }),
+      [
+        imageBitmap,
+        timestamp,
+        reportSize,
+        reportZoom,
+        reportDrag,
+        clearZoom,
+        timestampDisabled,
+        plotData,
+      ],
     );
 
     return <ImageContext.Provider value={contextValue}>{children}</ImageContext.Provider>;
