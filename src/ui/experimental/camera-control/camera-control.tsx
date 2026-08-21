@@ -61,7 +61,7 @@ export interface CameraControlProps {
  * @param onZoom - Callback called after a bounding box is drawn.
  * @param sizeFollowsImage - Resize the canvas if the image size changes.
  * @param onTimestamp - Updates with each new timestamp.
- * @param onPlotData
+ * @param onPlotData - Updates with each new XYE plot data.
  * @param debugFPS - Whether to calculate and display FPS in console log, for debug purposes.
  * @returns
  */
