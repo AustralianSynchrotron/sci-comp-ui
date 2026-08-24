@@ -12,6 +12,7 @@ export type ImageSource = {
     reportZoom: (startX: number, startY: number, width: number, height: number) => void;
     reportDrag: (totalX: number, totalY: number, active: boolean) => void;
     clearZoom: () => void;
+    plotData: PlotDataset | null;
 };
 
 export const ImageContext = createContext<ImageSource>({
@@ -21,4 +22,11 @@ export const ImageContext = createContext<ImageSource>({
     reportZoom: () => {},
     reportDrag: () => {},
     clearZoom: () => {},
+    plotData: null
 });
+
+export interface PlotDataset {
+    x: number[],
+    y: number[],
+    e: number[]
+}

@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState, useMemo, useContext, useCallback } 
 
 import { cn } from '@/lib/utils';
 
-import { ImageContext, type VideoFrame, type ImageSource } from './image-context';
+import { ImageContext, type VideoFrame, type ImageSource, type PlotDataset } from './image-context';
 
 function debounceResize(fn: (entry: ResizeObserverEntry) => void, delay: number = 100) {
     let timer: ReturnType<typeof setTimeout> | undefined;
@@ -44,6 +44,7 @@ export interface CameraControlProps {
     onZoom?: (box: BoundingBox) => void;
     sizeFollowsImage?: boolean;
     onTimestamp?: (timestamp: Date | undefined) => void;
+    onPlotData?: (plotData: PlotDataset | null) => void;
     debugFPS?: boolean;
 }
 
@@ -60,6 +61,7 @@ export interface CameraControlProps {
  * @param onZoom - Callback called after a bounding box is drawn.
  * @param sizeFollowsImage - Resize the canvas if the image size changes.
  * @param onTimestamp - Updates with each new timestamp.
+ * @param onPlotData - Updates with each new XYE plot data.
  * @param debugFPS - Whether to calculate and display FPS in console log, for debug purposes.
  * @returns
  */
@@ -74,9 +76,10 @@ export const CameraControl: React.FC<CameraControlProps> = ({
     onZoom,
     sizeFollowsImage = false,
     onTimestamp,
+    onPlotData,
     debugFPS = false,
 }) => {
-    const { image, timestamp, reportSize, reportZoom, reportDrag, clearZoom }: ImageSource = useContext(ImageContext);
+    const { image, timestamp, reportSize, reportZoom, reportDrag, clearZoom, plotData }: ImageSource = useContext(ImageContext);
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const [popupPos, setPopupPos] = useState<{ x: number; y: number } | null>(null);
     const [pixelValue, setPixelValue] = useState<string | null>(null);
@@ -180,6 +183,10 @@ export const CameraControl: React.FC<CameraControlProps> = ({
     useEffect(() => {
         onTimestamp?.(timestamp)
     }, [timestamp, onTimestamp])
+
+    useEffect(() => {
+        onPlotData?.(plotData)
+    }, [plotData, onPlotData])
 
     // Throttle mouse move
     let lastMove = 0;
