@@ -50,6 +50,7 @@ export const VideoProvider: React.FC<VideoProviderProps> = ({ children, videoUrl
             reportZoom: () => {},
             reportDrag: () => {},
             clearZoom: () => {},
+            plotData: null,
         }),
         [videoRef, frameId],
     );
