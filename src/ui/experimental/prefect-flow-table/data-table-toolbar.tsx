@@ -1,37 +1,55 @@
-import type { Table } from "@tanstack/react-table"
-import { X, Plus } from "lucide-react"
+import type { Table } from "@tanstack/react-table";
+import { X, Plus } from "lucide-react";
 
-import { Button } from "../../elements/button"
-import { Input } from "../../elements/input"
-import { DataTableViewOptions } from "./data-table-view-options"
+import { Button } from "../../elements/button";
+import { Input } from "../../elements/input";
+import { DataTableViewOptions } from "./data-table-view-options";
 
-import { flowStates, queueNames } from "./data/data"
-import { DataTableFacetedFilter } from "./data-table-faceted-filter"
+import { flowStates, queueNames } from "./data/data";
+import { DataTableFacetedFilter } from "./data-table-faceted-filter";
 
 interface DataTableToolbarProps<TData> {
-  table: Table<TData>
+  table: Table<TData>;
 }
 
-export function DataTableToolbar<TData>({ table }: DataTableToolbarProps<TData>) {
-  const isFiltered = table.getState().columnFilters.length > 0
+export function DataTableToolbar<TData>({
+  table,
+}: DataTableToolbarProps<TData>) {
+  const isFiltered = table.getState().columnFilters.length > 0;
 
   return (
     <div className="flex items-center justify-between">
       <div className="flex flex-1 items-center gap-2">
         <Input
           placeholder="Filter flows..."
-          value={(table.getColumn("flowName")?.getFilterValue() as string) ?? ""}
-          onChange={(event) => table.getColumn("flowName")?.setFilterValue(event.target.value)}
+          value={
+            (table.getColumn("flowName")?.getFilterValue() as string) ?? ""
+          }
+          onChange={(event) =>
+            table.getColumn("flowName")?.setFilterValue(event.target.value)
+          }
           className="h-8 w-[150px] lg:w-[250px]"
         />
         {table.getColumn("state") && (
-          <DataTableFacetedFilter column={table.getColumn("state")} title="State" options={flowStates} />
+          <DataTableFacetedFilter
+            column={table.getColumn("state")}
+            title="State"
+            options={flowStates}
+          />
         )}
         {table.getColumn("queueName") && (
-          <DataTableFacetedFilter column={table.getColumn("queueName")} title="Queue" options={queueNames} />
+          <DataTableFacetedFilter
+            column={table.getColumn("queueName")}
+            title="Queue"
+            options={queueNames}
+          />
         )}
         {isFiltered && (
-          <Button variant="ghost" size="sm" onClick={() => table.resetColumnFilters()}>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => table.resetColumnFilters()}
+          >
             Reset
             <X />
           </Button>
@@ -45,5 +63,5 @@ export function DataTableToolbar<TData>({ table }: DataTableToolbarProps<TData>)
         </Button>
       </div>
     </div>
-  )
+  );
 }

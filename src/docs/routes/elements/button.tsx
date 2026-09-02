@@ -1,12 +1,18 @@
-import { createFileRoute } from "@tanstack/react-router"
-import { PageHeader } from "../../components/page-header"
-import { Button } from "../../../ui/elements/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../../ui/layout/card"
-import { DemoContainer } from "@/docs/components/demo-container"
+import { createFileRoute } from "@tanstack/react-router";
+import { PageHeader } from "../../components/page-header";
+import { Button } from "../../../ui/elements/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../../../ui/layout/card";
+import { DemoContainer } from "@/docs/components/demo-container";
 
-export const Route = createFileRoute('/elements/button')({
+export const Route = createFileRoute("/elements/button")({
   component: ButtonPage,
-})
+});
 
 /* DEMO_START */
 function BasicButtonDemo() {
@@ -21,12 +27,12 @@ function BasicButtonDemo() {
       <Button variant="ghost">Ghost</Button>
       <Button variant="link">Link</Button>
     </div>
-  )
+  );
 }
 /* DEMO_END */
 
 // This gets replaced at build time with the actual source code
-const basicButtonSource = __SOURCE__
+const basicButtonSource = __SOURCE__;
 
 /* DEMO_START */
 function ButtonSizesDemo() {
@@ -36,11 +42,11 @@ function ButtonSizesDemo() {
       <Button size="default">Default</Button>
       <Button size="lg">Large</Button>
     </div>
-  )
+  );
 }
 /* DEMO_END */
 
-const buttonSizesSource = __SOURCE__
+const buttonSizesSource = __SOURCE__;
 
 /* DEMO_START */
 function ButtonStatesDemo() {
@@ -50,17 +56,20 @@ function ButtonStatesDemo() {
       <Button disabled>Disabled</Button>
       <Button loading>Loading</Button>
     </div>
-  )
+  );
 }
 /* DEMO_END */
 
-const buttonStatesSource = __SOURCE__
+const buttonStatesSource = __SOURCE__;
 
 function ButtonPage() {
   return (
     <>
-      <PageHeader 
-        breadcrumbs={[{ title: "Elements", href: "/elements" }, { title: "Button" }]}
+      <PageHeader
+        breadcrumbs={[
+          { title: "Elements", href: "/elements" },
+          { title: "Button" },
+        ]}
         pageHeading="Button"
         pageSubheading="Displays a button or a component that looks like a button."
       />
@@ -69,7 +78,9 @@ function ButtonPage() {
           <Card>
             <CardHeader>
               <CardTitle>Variants</CardTitle>
-              <CardDescription>Different button styles for various use cases</CardDescription>
+              <CardDescription>
+                Different button styles for various use cases
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <DemoContainer
@@ -107,5 +118,5 @@ function ButtonPage() {
         </div>
       </div>
     </>
-  )
+  );
 }

@@ -1,20 +1,26 @@
-import { createFileRoute } from '@tanstack/react-router'
-import { PageHeader } from "../../components/page-header"
-import { 
-  Select, 
-  SelectContent, 
-  SelectGroup, 
-  SelectItem, 
-  SelectLabel, 
-  SelectTrigger, 
-  SelectValue 
-} from "../../../ui/elements/select"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../../ui/layout/card"
-import { DemoContainer } from "@/docs/components/demo-container"
+import { createFileRoute } from "@tanstack/react-router";
+import { PageHeader } from "../../components/page-header";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "../../../ui/elements/select";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../../../ui/layout/card";
+import { DemoContainer } from "@/docs/components/demo-container";
 
-export const Route = createFileRoute('/elements/select')({
+export const Route = createFileRoute("/elements/select")({
   component: SelectPage,
-})
+});
 
 /* DEMO_START */
 function BasicSelectDemo() {
@@ -35,17 +41,20 @@ function BasicSelectDemo() {
         </SelectGroup>
       </SelectContent>
     </Select>
-  )
+  );
 }
 /* DEMO_END */
 
-const basicSelectSource = __SOURCE__
+const basicSelectSource = __SOURCE__;
 
 function SelectPage() {
   return (
     <>
-      <PageHeader 
-        breadcrumbs={[{ title: "Elements", href: "/elements" }, { title: "Select" }]}
+      <PageHeader
+        breadcrumbs={[
+          { title: "Elements", href: "/elements" },
+          { title: "Select" },
+        ]}
         pageHeading="Select"
         pageSubheading="A form control that allows users to choose from a list of options."
       />
@@ -54,7 +63,9 @@ function SelectPage() {
           <Card>
             <CardHeader>
               <CardTitle>Basic Select</CardTitle>
-              <CardDescription>Simple selection from a list of options</CardDescription>
+              <CardDescription>
+                Simple selection from a list of options
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <DemoContainer
@@ -66,5 +77,5 @@ function SelectPage() {
         </div>
       </div>
     </>
-  )
+  );
 }

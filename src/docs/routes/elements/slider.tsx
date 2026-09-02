@@ -1,13 +1,19 @@
-import { createFileRoute } from '@tanstack/react-router'
-import { PageHeader } from "../../components/page-header"
-import { Slider } from "../../../ui/elements/slider"
-import { Label } from "../../../ui/elements/label"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../../ui/layout/card"
-import { DemoContainer } from "@/docs/components/demo-container"
+import { createFileRoute } from "@tanstack/react-router";
+import { PageHeader } from "../../components/page-header";
+import { Slider } from "../../../ui/elements/slider";
+import { Label } from "../../../ui/elements/label";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../../../ui/layout/card";
+import { DemoContainer } from "@/docs/components/demo-container";
 
-export const Route = createFileRoute('/elements/slider')({
+export const Route = createFileRoute("/elements/slider")({
   component: SliderPage,
-})
+});
 
 /* DEMO_START */
 function BasicSliderDemo() {
@@ -19,12 +25,12 @@ function BasicSliderDemo() {
         <p className="text-xs text-muted-foreground">Range: 5.0 - 25.0 keV</p>
       </div>
     </div>
-  )
+  );
 }
 /* DEMO_END */
 
 // This gets replaced at build time with the actual source code
-const basicSliderSource = __SOURCE__
+const basicSliderSource = __SOURCE__;
 
 /* DEMO_START */
 function RangeSliderDemo() {
@@ -36,11 +42,11 @@ function RangeSliderDemo() {
         <p className="text-xs text-muted-foreground">Range: 50 - 500 mm</p>
       </div>
     </div>
-  )
+  );
 }
 /* DEMO_END */
 
-const rangeSliderSource = __SOURCE__
+const rangeSliderSource = __SOURCE__;
 
 /* DEMO_START */
 function SliderStatesDemo() {
@@ -57,17 +63,20 @@ function SliderStatesDemo() {
         <p className="text-xs text-muted-foreground">Cryostat offline</p>
       </div>
     </div>
-  )
+  );
 }
 /* DEMO_END */
 
-const sliderStatesSource = __SOURCE__
+const sliderStatesSource = __SOURCE__;
 
 function SliderPage() {
   return (
     <>
-      <PageHeader 
-        breadcrumbs={[{ title: "Elements", href: "/elements" }, { title: "Slider" }]}
+      <PageHeader
+        breadcrumbs={[
+          { title: "Elements", href: "/elements" },
+          { title: "Slider" },
+        ]}
         pageHeading="Slider"
         pageSubheading="A form control that allows users to select a value or range of values from a given range."
       />
@@ -76,7 +85,9 @@ function SliderPage() {
           <Card>
             <CardHeader>
               <CardTitle>Basic Slider</CardTitle>
-              <CardDescription>Single value slider for X-ray energy control</CardDescription>
+              <CardDescription>
+                Single value slider for X-ray energy control
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <DemoContainer
@@ -89,7 +100,9 @@ function SliderPage() {
           <Card>
             <CardHeader>
               <CardTitle>Range Slider</CardTitle>
-              <CardDescription>Dual-thumb slider for setting distance ranges</CardDescription>
+              <CardDescription>
+                Dual-thumb slider for setting distance ranges
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <DemoContainer
@@ -102,7 +115,9 @@ function SliderPage() {
           <Card>
             <CardHeader>
               <CardTitle>Slider States</CardTitle>
-              <CardDescription>Different slider states including disabled</CardDescription>
+              <CardDescription>
+                Different slider states including disabled
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <DemoContainer
@@ -114,5 +129,5 @@ function SliderPage() {
         </div>
       </div>
     </>
-  )
+  );
 }

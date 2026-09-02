@@ -1,48 +1,63 @@
-import { createFileRoute } from '@tanstack/react-router'
-import { PageHeader } from '../../components/page-header'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../../ui/layout/card'
-import { Alert, AlertDescription } from '../../../ui/components/alert'
-import { CodeBlock } from '../../../ui/components/code-block'
-import { InfoIcon, ArrowRight } from 'lucide-react'
+import { createFileRoute } from "@tanstack/react-router";
+import { PageHeader } from "../../components/page-header";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../../../ui/layout/card";
+import { Alert, AlertDescription } from "../../../ui/components/alert";
+import { CodeBlock } from "../../../ui/components/code-block";
+import { InfoIcon, ArrowRight } from "lucide-react";
 
-export const Route = createFileRoute('/docs/zod-pydantic-analogy')({
+export const Route = createFileRoute("/docs/zod-pydantic-analogy")({
   component: ZodPydanticAnalogyPage,
-})
-
+});
 
 function ZodPydanticAnalogyPage() {
   return (
     <>
-      <PageHeader 
-        breadcrumbs={[{ title: "Docs", href: "/docs" }, { title: "Zod for Pydantic Users" }]}
+      <PageHeader
+        breadcrumbs={[
+          { title: "Docs", href: "/docs" },
+          { title: "Zod for Pydantic Users" },
+        ]}
         pageHeading="Zod for Pydantic Users"
         pageSubheading="A guide to Zod schema validation for those familiar with Python's Pydantic."
       />
       <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
         <div className="space-y-6">
-
           <Alert>
             <InfoIcon className="h-4 w-4" />
             <AlertDescription>
-              <strong>TL;DR:</strong> Zod is TypeScript's equivalent to Pydantic - both provide runtime validation with compile-time type inference, but with language-specific APIs and patterns.
+              <strong>TL;DR:</strong> Zod is TypeScript's equivalent to Pydantic
+              - both provide runtime validation with compile-time type
+              inference, but with language-specific APIs and patterns.
             </AlertDescription>
           </Alert>
 
           <Card>
             <CardHeader>
               <CardTitle>Basic Schema Definition</CardTitle>
-              <CardDescription>How to define schemas in both libraries</CardDescription>
+              <CardDescription>
+                How to define schemas in both libraries
+              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div>
-                <h4 className="font-semibold mb-3 flex items-center gap-2">
+                <h4 className="mb-3 flex items-center gap-2 font-semibold">
                   Simple Models
                   <ArrowRight className="h-4 w-4" />
                 </h4>
-                <div className="grid md:grid-cols-2 gap-4">
+                <div className="grid gap-4 md:grid-cols-2">
                   <div>
-                    <p className="text-sm font-medium mb-2">Pydantic (Python)</p>
-                    <CodeBlock language="python" code={`from pydantic import BaseModel, Field
+                    <p className="mb-2 text-sm font-medium">
+                      Pydantic (Python)
+                    </p>
+                    <CodeBlock
+                      language="python"
+                      code={`from pydantic import BaseModel, Field
 from typing import Optional
 
 class User(BaseModel):
@@ -54,11 +69,14 @@ class User(BaseModel):
 
 # Usage
 user_data = {"id": 1, "name": "John", "email": "john@example.com"}
-user = User(**user_data)  # Validates and creates instance`} />
+user = User(**user_data)  # Validates and creates instance`}
+                    />
                   </div>
                   <div>
-                    <p className="text-sm font-medium mb-2">Zod (TypeScript)</p>
-                    <CodeBlock language="typescript" code={`import { z } from "zod"
+                    <p className="mb-2 text-sm font-medium">Zod (TypeScript)</p>
+                    <CodeBlock
+                      language="typescript"
+                      code={`import { z } from "zod"
 
 const UserSchema = z.object({
   id: z.number(),
@@ -72,20 +90,25 @@ type User = z.infer<typeof UserSchema>
 
 // Usage
 const userData = { id: 1, name: "John", email: "john@example.com" }
-const user = UserSchema.parse(userData)  // Validates and returns typed data`} />
+const user = UserSchema.parse(userData)  // Validates and returns typed data`}
+                    />
                   </div>
                 </div>
               </div>
 
               <div>
-                <h4 className="font-semibold mb-3 flex items-center gap-2">
+                <h4 className="mb-3 flex items-center gap-2 font-semibold">
                   Nested Objects
                   <ArrowRight className="h-4 w-4" />
                 </h4>
-                <div className="grid md:grid-cols-2 gap-4">
+                <div className="grid gap-4 md:grid-cols-2">
                   <div>
-                    <p className="text-sm font-medium mb-2">Pydantic (Python)</p>
-                    <CodeBlock language="python" code={`class Address(BaseModel):
+                    <p className="mb-2 text-sm font-medium">
+                      Pydantic (Python)
+                    </p>
+                    <CodeBlock
+                      language="python"
+                      code={`class Address(BaseModel):
     street: str
     city: str
     postal_code: str = Field(..., pattern=r'^\\d{5}$')
@@ -104,11 +127,14 @@ data = {
         "postal_code": "02101"
     }
 }
-user = User(**data)`} />
+user = User(**data)`}
+                    />
                   </div>
                   <div>
-                    <p className="text-sm font-medium mb-2">Zod (TypeScript)</p>
-                    <CodeBlock language="typescript" code={`const AddressSchema = z.object({
+                    <p className="mb-2 text-sm font-medium">Zod (TypeScript)</p>
+                    <CodeBlock
+                      language="typescript"
+                      code={`const AddressSchema = z.object({
   street: z.string(),
   city: z.string(),
   postal_code: z.string().regex(/^\\d{5}$/)
@@ -129,7 +155,8 @@ const data = {
     postal_code: "02101"
   }
 }
-const user = UserSchema.parse(data)`} />
+const user = UserSchema.parse(data)`}
+                    />
                   </div>
                 </div>
               </div>
@@ -139,15 +166,23 @@ const user = UserSchema.parse(data)`} />
           <Card>
             <CardHeader>
               <CardTitle>Validation Patterns</CardTitle>
-              <CardDescription>Common validation scenarios and error handling</CardDescription>
+              <CardDescription>
+                Common validation scenarios and error handling
+              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div>
-                <h4 className="font-semibold mb-3">Custom Validation & Refinements</h4>
-                <div className="grid md:grid-cols-2 gap-4">
+                <h4 className="mb-3 font-semibold">
+                  Custom Validation & Refinements
+                </h4>
+                <div className="grid gap-4 md:grid-cols-2">
                   <div>
-                    <p className="text-sm font-medium mb-2">Pydantic Validators</p>
-                    <CodeBlock language="python" code={`from pydantic import BaseModel, field_validator, model_validator
+                    <p className="mb-2 text-sm font-medium">
+                      Pydantic Validators
+                    </p>
+                    <CodeBlock
+                      language="python"
+                      code={`from pydantic import BaseModel, field_validator, model_validator
 
 class UserRegistration(BaseModel):
     username: str
@@ -164,11 +199,14 @@ class UserRegistration(BaseModel):
     def passwords_match(self):
         if self.password != self.confirm_password:
             raise ValueError('Passwords do not match')
-        return self`} />
+        return self`}
+                    />
                   </div>
                   <div>
-                    <p className="text-sm font-medium mb-2">Zod Refinements</p>
-                    <CodeBlock language="typescript" code={`const UserRegistrationSchema = z.object({
+                    <p className="mb-2 text-sm font-medium">Zod Refinements</p>
+                    <CodeBlock
+                      language="typescript"
+                      code={`const UserRegistrationSchema = z.object({
   username: z.string()
     .regex(/^[a-zA-Z0-9]+$/, "Username must be alphanumeric"),
   password: z.string(),
@@ -188,17 +226,20 @@ const schema = z.object({ /* ... */ })
         path: ["confirm_password"]
       })
     }
-  })`} />
+  })`}
+                    />
                   </div>
                 </div>
               </div>
 
               <div>
-                <h4 className="font-semibold mb-3">Error Handling</h4>
-                <div className="grid md:grid-cols-2 gap-4">
+                <h4 className="mb-3 font-semibold">Error Handling</h4>
+                <div className="grid gap-4 md:grid-cols-2">
                   <div>
-                    <p className="text-sm font-medium mb-2">Pydantic Errors</p>
-                    <CodeBlock language="python" code={`from pydantic import ValidationError
+                    <p className="mb-2 text-sm font-medium">Pydantic Errors</p>
+                    <CodeBlock
+                      language="python"
+                      code={`from pydantic import ValidationError
 
 try:
     user = User(name="", email="invalid-email")
@@ -216,11 +257,14 @@ except ValidationError as e:
     #     "msg": "ensure this value has at least 1 characters",
     #     "type": "value_error.any_str.min_length"
     #   }
-    # ]`} />
+    # ]`}
+                    />
                   </div>
                   <div>
-                    <p className="text-sm font-medium mb-2">Zod Errors</p>
-                    <CodeBlock language="typescript" code={`import { ZodError } from "zod"
+                    <p className="mb-2 text-sm font-medium">Zod Errors</p>
+                    <CodeBlock
+                      language="typescript"
+                      code={`import { ZodError } from "zod"
 
 const result = UserSchema.safeParse({
   name: "",
@@ -246,7 +290,8 @@ if (!result.success) {
   // ]
 } else {
   const validData = result.data // Fully typed!
-}`} />
+}`}
+                    />
                   </div>
                 </div>
               </div>
@@ -256,15 +301,23 @@ if (!result.success) {
           <Card>
             <CardHeader>
               <CardTitle>Data Transformation</CardTitle>
-              <CardDescription>Converting and preprocessing data during validation</CardDescription>
+              <CardDescription>
+                Converting and preprocessing data during validation
+              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div>
-                <h4 className="font-semibold mb-3">Preprocessing & Transforms</h4>
-                <div className="grid md:grid-cols-2 gap-4">
+                <h4 className="mb-3 font-semibold">
+                  Preprocessing & Transforms
+                </h4>
+                <div className="grid gap-4 md:grid-cols-2">
                   <div>
-                    <p className="text-sm font-medium mb-2">Pydantic Field Validators</p>
-                    <CodeBlock language="python" code={`from pydantic import BaseModel, field_validator
+                    <p className="mb-2 text-sm font-medium">
+                      Pydantic Field Validators
+                    </p>
+                    <CodeBlock
+                      language="python"
+                      code={`from pydantic import BaseModel, field_validator
 from datetime import datetime
 
 class UserProfile(BaseModel):
@@ -289,11 +342,14 @@ data = {
     "created_at": "2023-01-01T00:00:00"
 }
 user = UserProfile(**data)
-print(user.name)  # "John Doe"`} />
+print(user.name)  # "John Doe"`}
+                    />
                   </div>
                   <div>
-                    <p className="text-sm font-medium mb-2">Zod Transforms</p>
-                    <CodeBlock language="typescript" code={`const UserProfileSchema = z.object({
+                    <p className="mb-2 text-sm font-medium">Zod Transforms</p>
+                    <CodeBlock
+                      language="typescript"
+                      code={`const UserProfileSchema = z.object({
   name: z.string()
     .transform(val => val.trim())
     .transform(val => val.split(' ')
@@ -317,7 +373,8 @@ const data = {
   created_at: "2023-01-01T00:00:00"
 }
 const user = UserProfileSchema.parse(data)
-console.log(user.name)  // "John Doe"`} />
+console.log(user.name)  // "John Doe"`}
+                    />
                   </div>
                 </div>
               </div>
@@ -326,5 +383,5 @@ console.log(user.name)  // "John Doe"`} />
         </div>
       </div>
     </>
-  )
+  );
 }

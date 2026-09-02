@@ -1,18 +1,24 @@
-import { createFileRoute } from '@tanstack/react-router'
-import { useState } from "react"
-import { PageHeader } from "../../components/page-header"
-import { PeriodicTable } from '../../../ui/experimental/periodic-table'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../../ui/layout/card"
-import { Badge } from "../../../ui/elements/badge"
-import { DemoContainer } from "@/docs/components/demo-container"
+import { createFileRoute } from "@tanstack/react-router";
+import { useState } from "react";
+import { PageHeader } from "../../components/page-header";
+import { PeriodicTable } from "../../../ui/experimental/periodic-table";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../../../ui/layout/card";
+import { Badge } from "../../../ui/elements/badge";
+import { DemoContainer } from "@/docs/components/demo-container";
 
-export const Route = createFileRoute('/experimental/periodic-table')({
+export const Route = createFileRoute("/experimental/periodic-table")({
   component: PeriodicTablePage,
-})
+});
 
 /* DEMO_START */
 function DefaultPeriodicTableDemo() {
-  const [selectedElement, setSelectedElement] = useState<any>(null)
+  const [selectedElement, setSelectedElement] = useState<any>(null);
 
   return (
     <div className="space-y-4">
@@ -27,12 +33,12 @@ function DefaultPeriodicTableDemo() {
       {selectedElement && (
         <div className="space-y-2">
           <h4 className="font-medium">Selected Element:</h4>
-          <div className="p-3 bg-muted rounded-md">
-            <div className="flex items-center space-x-2 mb-2">
+          <div className="rounded-md bg-muted p-3">
+            <div className="mb-2 flex items-center space-x-2">
               <Badge variant="secondary">{selectedElement.symbol}</Badge>
               <span className="font-medium">{selectedElement.name}</span>
             </div>
-            <div className="text-sm text-muted-foreground space-y-1">
+            <div className="space-y-1 text-sm text-muted-foreground">
               <p>Atomic Number: {selectedElement.atomicNumber}</p>
               <p>Atomic Mass: {selectedElement.atomicMass} u</p>
               <p>Category: {selectedElement.category.replace("-", " ")}</p>
@@ -41,16 +47,16 @@ function DefaultPeriodicTableDemo() {
         </div>
       )}
     </div>
-  )
+  );
 }
 /* DEMO_END */
 
 // This gets replaced at build time with the actual source code
-const defaultPeriodicTableSource = __SOURCE__
+const defaultPeriodicTableSource = __SOURCE__;
 
 /* DEMO_START */
 function CompactPeriodicTableDemo() {
-  const [compactValue, setCompactValue] = useState<string>("")
+  const [compactValue, setCompactValue] = useState<string>("");
 
   return (
     <div className="space-y-4">
@@ -65,22 +71,24 @@ function CompactPeriodicTableDemo() {
       {compactValue && (
         <div className="space-y-2">
           <h4 className="font-medium">Selected Symbol:</h4>
-          <Badge variant="outline" className="text-lg px-3 py-1">
+          <Badge variant="outline" className="px-3 py-1 text-lg">
             {compactValue}
           </Badge>
         </div>
       )}
     </div>
-  )
+  );
 }
 /* DEMO_END */
 
-const compactPeriodicTableSource = __SOURCE__
+const compactPeriodicTableSource = __SOURCE__;
 
 /* DEMO_START */
 function OutputTypesDemo() {
-  const [atomicNumberValue, setAtomicNumberValue] = useState<number | null>(null)
-  const [elementNameValue, setElementNameValue] = useState<string>("")
+  const [atomicNumberValue, setAtomicNumberValue] = useState<number | null>(
+    null
+  );
+  const [elementNameValue, setElementNameValue] = useState<string>("");
 
   return (
     <div className="grid gap-4 md:grid-cols-2">
@@ -116,25 +124,85 @@ function OutputTypesDemo() {
         )}
       </div>
     </div>
-  )
+  );
 }
 /* DEMO_END */
 
-const outputTypesSource = __SOURCE__
+const outputTypesSource = __SOURCE__;
 
 /* DEMO_START */
 function EnabledSymbolsDemo() {
-  const [selectedElement, setSelectedElement] = useState<any>(null)
+  const [selectedElement, setSelectedElement] = useState<any>(null);
 
   const enabledSymbols = [
-    "Mn", "Fe", "Co", "Ni", "Cu", "Zn", "Ga", "Ge", "As", "Se",
-    "Br", "Kr", "Rb", "Sr", "Y", "Zr", "Nb", "Mo", "Tc", "Ru",
-    "Rh", "Pd", "Ag", "Cd", "In", "Sn", "Sb", "Pr", "Nd", "Pm",
-    "Sm", "Eu", "Gd", "Tb", "Dy", "Ho", "Er", "Tm", "Yb", "Lu",
-    "Hf", "Ta", "W", "Re", "Os", "Ir", "Pt", "Au", "Hg", "Tl",
-    "Pb", "Bi", "Po", "At", "Rn", "Fr", "Ra", "Ac", "Th", "Pa",
-    "U", "Np", "Pu", "Am", "Cm", "Bk", "Cf",
-  ]
+    "Mn",
+    "Fe",
+    "Co",
+    "Ni",
+    "Cu",
+    "Zn",
+    "Ga",
+    "Ge",
+    "As",
+    "Se",
+    "Br",
+    "Kr",
+    "Rb",
+    "Sr",
+    "Y",
+    "Zr",
+    "Nb",
+    "Mo",
+    "Tc",
+    "Ru",
+    "Rh",
+    "Pd",
+    "Ag",
+    "Cd",
+    "In",
+    "Sn",
+    "Sb",
+    "Pr",
+    "Nd",
+    "Pm",
+    "Sm",
+    "Eu",
+    "Gd",
+    "Tb",
+    "Dy",
+    "Ho",
+    "Er",
+    "Tm",
+    "Yb",
+    "Lu",
+    "Hf",
+    "Ta",
+    "W",
+    "Re",
+    "Os",
+    "Ir",
+    "Pt",
+    "Au",
+    "Hg",
+    "Tl",
+    "Pb",
+    "Bi",
+    "Po",
+    "At",
+    "Rn",
+    "Fr",
+    "Ra",
+    "Ac",
+    "Th",
+    "Pa",
+    "U",
+    "Np",
+    "Pu",
+    "Am",
+    "Cm",
+    "Bk",
+    "Cf",
+  ];
 
   return (
     <div className="space-y-4">
@@ -151,23 +219,24 @@ function EnabledSymbolsDemo() {
         <div className="space-y-2">
           <h4 className="font-medium">Selected Element:</h4>
           <Badge variant="secondary">{selectedElement.symbol}</Badge>
-          <span className="font-medium ml-2">{selectedElement.name}</span>
+          <span className="ml-2 font-medium">{selectedElement.name}</span>
         </div>
       )}
     </div>
-  )
+  );
 }
 /* DEMO_END */
 
-const enabledSymbolsSource = __SOURCE__
+const enabledSymbolsSource = __SOURCE__;
 
 function PeriodicTablePage() {
-
-
   return (
     <>
-      <PageHeader 
-        breadcrumbs={[{ title: "Components", href: "/components" }, { title: "Periodic Table" }]}
+      <PageHeader
+        breadcrumbs={[
+          { title: "Components", href: "/components" },
+          { title: "Periodic Table" },
+        ]}
         pageHeading="Periodic Table"
         pageSubheading="A chemical element picker with compact and grid variants."
       />
@@ -176,7 +245,9 @@ function PeriodicTablePage() {
           <Card>
             <CardHeader>
               <CardTitle>Compact Variant</CardTitle>
-              <CardDescription>Compact searchable dropdown with categorised elements</CardDescription>
+              <CardDescription>
+                Compact searchable dropdown with categorised elements
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <DemoContainer
@@ -189,7 +260,9 @@ function PeriodicTablePage() {
           <Card>
             <CardHeader>
               <CardTitle>Grid Variant</CardTitle>
-              <CardDescription>Grid layout with category filtering and hover details</CardDescription>
+              <CardDescription>
+                Grid layout with category filtering and hover details
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <DemoContainer
@@ -202,7 +275,9 @@ function PeriodicTablePage() {
           <Card>
             <CardHeader>
               <CardTitle>Grid Variant with Enabled Symbols</CardTitle>
-              <CardDescription>Restrict selectable elements to a subset using enabledSymbols</CardDescription>
+              <CardDescription>
+                Restrict selectable elements to a subset using enabledSymbols
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <DemoContainer
@@ -215,7 +290,9 @@ function PeriodicTablePage() {
           <Card>
             <CardHeader>
               <CardTitle>Output Types</CardTitle>
-              <CardDescription>Different output configurations for various use cases</CardDescription>
+              <CardDescription>
+                Different output configurations for various use cases
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <DemoContainer
@@ -227,5 +304,5 @@ function PeriodicTablePage() {
         </div>
       </div>
     </>
-  )
+  );
 }

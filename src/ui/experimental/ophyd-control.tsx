@@ -1,29 +1,35 @@
-import { useState, useEffect, useRef, useCallback } from "react"
-import { Minus, Plus, Copy } from "lucide-react"
-import { cn } from "../../lib/utils"
-import { Slider } from "../elements/slider"
-import { Button } from "../elements/button"
-import { Card, CardContent, CardHeader, CardTitle } from "../layout/card"
-import { Label } from "../elements/label"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../elements/select"
+import { useState, useEffect, useRef, useCallback } from "react";
+import { Minus, Plus, Copy } from "lucide-react";
+import { cn } from "../../lib/utils";
+import { Slider } from "../elements/slider";
+import { Button } from "../elements/button";
+import { Card, CardContent, CardHeader, CardTitle } from "../layout/card";
+import { Label } from "../elements/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../elements/select";
 
 interface OphydPositionControlProps {
-  className?: string
-  min?: number
-  max?: number
-  defaultValue?: number
-  defaultTarget?: number
-  motorId?: string
-  onPositionChange?: (newPosition: number) => void
-  onTargetChange?: (newTarget: number) => void
-  onMoveStart?: () => void
-  onMoveComplete?: () => void
+  className?: string;
+  min?: number;
+  max?: number;
+  defaultValue?: number;
+  defaultTarget?: number;
+  motorId?: string;
+  onPositionChange?: (newPosition: number) => void;
+  onTargetChange?: (newTarget: number) => void;
+  onMoveStart?: () => void;
+  onMoveComplete?: () => void;
   /** External movement status (e.g., RMOV from Ophyd API) - if not provided, internal state is used */
-  isMoving?: boolean
-  currentPosition?: number
-  targetPosition?: number
-  disabled?: boolean
-  readOnly?: boolean
+  isMoving?: boolean;
+  currentPosition?: number;
+  targetPosition?: number;
+  disabled?: boolean;
+  readOnly?: boolean;
 }
 
 export function OphydPositionControl({
@@ -43,65 +49,69 @@ export function OphydPositionControl({
   disabled = false,
   readOnly = false,
 }: OphydPositionControlProps) {
-  const [internalCurrentValue, setInternalCurrentValue] = useState(defaultValue)
-  const [internalTargetValue, setInternalTargetValue] = useState(defaultTarget)
-  const [incrementSize, setIncrementSize] = useState("1")
-  const [internalIsMoving, setInternalIsMoving] = useState(false)
-  const intervalRef = useRef<NodeJS.Timeout | null>(null)
+  const [internalCurrentValue, setInternalCurrentValue] =
+    useState(defaultValue);
+  const [internalTargetValue, setInternalTargetValue] = useState(defaultTarget);
+  const [incrementSize, setIncrementSize] = useState("1");
+  const [internalIsMoving, setInternalIsMoving] = useState(false);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   // Use external values if provided, otherwise use internal state
-  const currentValue = externalCurrentPosition ?? internalCurrentValue
-  const targetValue = externalTargetPosition ?? internalTargetValue
-  const isMoving = externalIsMoving ?? internalIsMoving
+  const currentValue = externalCurrentPosition ?? internalCurrentValue;
+  const targetValue = externalTargetPosition ?? internalTargetValue;
+  const isMoving = externalIsMoving ?? internalIsMoving;
 
   // Calculate the increment size as a number
-  const increment = Number(incrementSize)
+  const increment = Number(incrementSize);
 
   // Mock API simulation for motor movement (replace with real API calls)
   const simulateOphydMovement = useCallback(() => {
     if (intervalRef.current) {
-      clearInterval(intervalRef.current)
+      clearInterval(intervalRef.current);
     }
 
-    const newIsMoving = true
-    setInternalIsMoving(newIsMoving)
-    onMoveStart?.()
+    const newIsMoving = true;
+    setInternalIsMoving(newIsMoving);
+    onMoveStart?.();
 
     intervalRef.current = setInterval(() => {
       setInternalCurrentValue((prev) => {
-        const difference = targetValue - prev
-        const tolerance = 0.1
+        const difference = targetValue - prev;
+        const tolerance = 0.1;
 
         if (Math.abs(difference) <= tolerance) {
-          const finalIsMoving = false
-          setInternalIsMoving(finalIsMoving)
-          onMoveComplete?.()
+          const finalIsMoving = false;
+          setInternalIsMoving(finalIsMoving);
+          onMoveComplete?.();
           if (intervalRef.current) {
-            clearInterval(intervalRef.current)
+            clearInterval(intervalRef.current);
           }
-          const finalValue = targetValue
-          onPositionChange?.(finalValue)
-          return finalValue
+          const finalValue = targetValue;
+          onPositionChange?.(finalValue);
+          return finalValue;
         }
 
         // Move 10% of the remaining distance each step (exponential approach)
-        const step = difference * 0.1
-        const newValue = prev + step
-        onPositionChange?.(newValue)
-        return newValue
-      })
-    }, 100) // Update every 100ms
-  }, [targetValue, onPositionChange, onMoveStart, onMoveComplete])
+        const step = difference * 0.1;
+        const newValue = prev + step;
+        onPositionChange?.(newValue);
+        return newValue;
+      });
+    }, 100); // Update every 100ms
+  }, [targetValue, onPositionChange, onMoveStart, onMoveComplete]);
 
   // Handle increment/decrement of target value (does not trigger movement)
-  const adjustTarget = useCallback((amount: number) => {
-    const newValue = Math.min(Math.max(targetValue + amount, min), max)
-    if (!readOnly) {
-      setInternalTargetValue(newValue)
-      onTargetChange?.(newValue)
-      // Note: Movement is not automatically triggered - user must click "Move to Target"
-    }
-  }, [targetValue, min, max, readOnly, onTargetChange])
+  const adjustTarget = useCallback(
+    (amount: number) => {
+      const newValue = Math.min(Math.max(targetValue + amount, min), max);
+      if (!readOnly) {
+        setInternalTargetValue(newValue);
+        onTargetChange?.(newValue);
+        // Note: Movement is not automatically triggered - user must click "Move to Target"
+      }
+    },
+    [targetValue, min, max, readOnly, onTargetChange]
+  );
 
   // Note: Movement is now only triggered by the "Move to Target" button
   // External RMOV status can be passed via the isMoving prop
@@ -110,32 +120,30 @@ export function OphydPositionControl({
   useEffect(() => {
     return () => {
       if (intervalRef.current) {
-        clearInterval(intervalRef.current)
+        clearInterval(intervalRef.current);
       }
-    }
-  }, [])
+    };
+  }, []);
 
   // Generate tick marks for the slider
-  const tickMarks = []
-  const tickInterval = max <= 100 ? 10 : Math.floor(max / 10)
+  const tickMarks = [];
+  const tickInterval = max <= 100 ? 10 : Math.floor(max / 10);
   for (let i = min; i <= max; i += tickInterval) {
-    tickMarks.push(i)
+    tickMarks.push(i);
   }
 
   // Note: Position percentages are now handled by the dual-thumb slider
 
   const handleCopyMotorId = () => {
-    navigator.clipboard.writeText(motorId)
-  }
-
-
+    navigator.clipboard.writeText(motorId);
+  };
 
   // This is the ONLY function that triggers movement - called by "Move to Target" button
   const handleManualMove = () => {
     if (!readOnly && !disabled) {
-      simulateOphydMovement()
+      simulateOphydMovement();
     }
-  }
+  };
 
   return (
     <Card className={cn("w-full max-w-md", className)}>
@@ -144,7 +152,7 @@ export function OphydPositionControl({
         <button
           onClick={handleCopyMotorId}
           disabled={disabled}
-          className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-primary transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="flex items-center gap-1.5 text-xs text-muted-foreground transition-colors hover:text-primary disabled:cursor-not-allowed disabled:opacity-50"
         >
           <Copy className="h-3.5 w-3.5" />
           <span>copy motor PV</span>
@@ -152,24 +160,28 @@ export function OphydPositionControl({
       </CardHeader>
       <CardContent className="space-y-6">
         {/* Current and Target Value Display */}
-        <div className="grid grid-cols-2 gap-4 items-end">
-  <div className="text-center">
-    <Label className="block">Current Position:</Label>
-    <div className={cn("text-3xl font-bold", isMoving && "text-orange-500")}>
-      {currentValue.toFixed(1)}
-    </div>
-  </div>
-  <div className="text-center">
-    <Label className="block">Target Position:</Label>
-    <div className="text-3xl font-bold text-primary">
-      {targetValue.toFixed(1)}
-    </div>
-  </div>
-</div>
-
+        <div className="grid grid-cols-2 items-end gap-4">
+          <div className="text-center">
+            <Label className="block">Current Position:</Label>
+            <div
+              className={cn(
+                "text-3xl font-bold",
+                isMoving && "text-orange-500"
+              )}
+            >
+              {currentValue.toFixed(1)}
+            </div>
+          </div>
+          <div className="text-center">
+            <Label className="block">Target Position:</Label>
+            <div className="text-3xl font-bold text-primary">
+              {targetValue.toFixed(1)}
+            </div>
+          </div>
+        </div>
 
         {/* Dual-thumb slider with target and current position */}
-        <div className="pt-2 mb-10">
+        <div className="mb-10 pt-2">
           <div className="relative">
             {/* Dual-thumb slider: [currentPosition, targetPosition] */}
             <Slider
@@ -182,11 +194,13 @@ export function OphydPositionControl({
                 // Allow target to move freely on either side of current position
                 if (values.length === 2 && !readOnly) {
                   // Find which value changed (the one that's not the current position)
-                  const newTarget = values.find(v => Math.abs(v - currentValue) >= 0.01)
-                  
+                  const newTarget = values.find(
+                    (v) => Math.abs(v - currentValue) >= 0.01
+                  );
+
                   if (newTarget !== undefined) {
-                    setInternalTargetValue(newTarget)
-                    onTargetChange?.(newTarget)
+                    setInternalTargetValue(newTarget);
+                    onTargetChange?.(newTarget);
                   }
                 }
               }}
@@ -195,10 +209,10 @@ export function OphydPositionControl({
             />
 
             {/* Tick marks */}
-            <div className="absolute top-5 left-0 right-0 flex justify-between px-1 text-xs text-muted-foreground">
+            <div className="absolute top-5 right-0 left-0 flex justify-between px-1 text-xs text-muted-foreground">
               {tickMarks.map((tick) => (
                 <div key={tick} className="flex flex-col items-center">
-                  <div className="h-1 w-0.5 bg-muted-foreground/50 mb-1"></div>
+                  <div className="mb-1 h-1 w-0.5 bg-muted-foreground/50"></div>
                   {tick}
                 </div>
               ))}
@@ -210,7 +224,11 @@ export function OphydPositionControl({
         <div className="space-y-4 pt-4">
           <div className="flex items-center justify-between">
             <Label>Adjustment Increment:</Label>
-            <Select value={incrementSize} onValueChange={setIncrementSize} disabled={disabled || readOnly}>
+            <Select
+              value={incrementSize}
+              onValueChange={setIncrementSize}
+              disabled={disabled || readOnly}
+            >
               <SelectTrigger className="w-24">
                 <SelectValue placeholder="Increment" />
               </SelectTrigger>
@@ -251,12 +269,17 @@ export function OphydPositionControl({
           <Button
             className="w-full"
             onClick={handleManualMove}
-            disabled={disabled || readOnly || isMoving || Math.abs(targetValue - currentValue) < 0.1}
+            disabled={
+              disabled ||
+              readOnly ||
+              isMoving ||
+              Math.abs(targetValue - currentValue) < 0.1
+            }
           >
             {isMoving ? "Moving..." : "Move to Target"}
           </Button>
         </div>
       </CardContent>
     </Card>
-  )
+  );
 }

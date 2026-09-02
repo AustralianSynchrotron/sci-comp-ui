@@ -1,7 +1,7 @@
-import * as React from 'react'
-import { Check, ChevronsUpDown, Search } from 'lucide-react'
-import { cn } from '../../lib/utils'
-import { Button } from '@/ui/elements/button'
+import * as React from "react";
+import { Check, ChevronsUpDown, Search } from "lucide-react";
+import { cn } from "../../lib/utils";
+import { Button } from "@/ui/elements/button";
 import {
   Command,
   CommandEmpty,
@@ -9,40 +9,36 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from '@/ui/elements/command'
-import { Popover, PopoverContent, PopoverTrigger } from '@/ui/elements/popover'
+} from "@/ui/elements/command";
+import { Popover, PopoverContent, PopoverTrigger } from "@/ui/elements/popover";
 import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
-} from '@/ui/elements/hover-card'
-import { Badge } from '@/ui/elements/badge'
-import { Separator } from '@/ui/elements/separator'
+} from "@/ui/elements/hover-card";
+import { Badge } from "@/ui/elements/badge";
+import { Separator } from "@/ui/elements/separator";
 import {
   type Element,
   type ElementCategory,
   PERIODIC_TABLE_DATA,
   ELEMENT_CATEGORIES,
   getElementBySymbol,
-} from '../../lib/periodic-table-data'
+} from "../../lib/periodic-table-data";
 
 export type PeriodicTableOutputType =
-  | 'element'
-  | 'symbol'
-  | 'name'
-  | 'atomicNumber'
-  | 'atomicMass'
+  "element" | "symbol" | "name" | "atomicNumber" | "atomicMass";
 
 export interface PeriodicTableProps {
-  variant?: 'compact' | 'grid'
-  outputType?: PeriodicTableOutputType
-  outputFormat?: 'string' | 'number' | 'object'
-  onElementSelect?: (value: any) => void
-  value?: string
-  placeholder?: string
-  className?: string
-  disabled?: boolean
-  enabledSymbols?: string[]
+  variant?: "compact" | "grid";
+  outputType?: PeriodicTableOutputType;
+  outputFormat?: "string" | "number" | "object";
+  onElementSelect?: (value: any) => void;
+  value?: string;
+  placeholder?: string;
+  className?: string;
+  disabled?: boolean;
+  enabledSymbols?: string[];
 }
 
 function ElementCard({
@@ -50,40 +46,42 @@ function ElementCard({
   onClick,
   disabled,
 }: {
-  element: Element
-  onClick?: () => void
-  disabled?: boolean
+  element: Element;
+  onClick?: () => void;
+  disabled?: boolean;
 }) {
-  const categoryInfo = ELEMENT_CATEGORIES[element.category]
+  const categoryInfo = ELEMENT_CATEGORIES[element.category];
 
   const truncatedName =
-    element.name.length > 10 ? element.name.slice(0, 9) + '...' : element.name
+    element.name.length > 10 ? element.name.slice(0, 9) + "..." : element.name;
 
   return (
     <HoverCard>
       <HoverCardTrigger>
         <div
           className={cn(
-            'relative w-12 h-12 border border-border rounded transition-all',
+            "relative h-12 w-12 rounded border border-border transition-all",
             categoryInfo.lightColor,
-            'font-medium text-center flex flex-col justify-center items-center',
+            "flex flex-col items-center justify-center text-center font-medium",
             disabled
-              ? 'opacity-40 cursor-not-allowed'
-              : 'cursor-pointer hover:scale-105 hover:shadow-md',
-            !disabled && onClick && 'hover:ring-1 hover:ring-ring hover:ring-offset-1'
+              ? "cursor-not-allowed opacity-40"
+              : "cursor-pointer hover:scale-105 hover:shadow-md",
+            !disabled &&
+              onClick &&
+              "hover:ring-1 hover:ring-ring hover:ring-offset-1"
           )}
           onClick={disabled ? undefined : onClick}
         >
-          <div className="font-bold absolute top-0.5 left-0.5 text-[8px] opacity-80 leading-none">
+          <div className="absolute top-0.5 left-0.5 text-[8px] leading-none font-bold opacity-80">
             {element.atomicNumber}
           </div>
-          <div className="text-[10px] font-bold leading-none">
+          <div className="text-[10px] leading-none font-bold">
             {element.symbol}
           </div>
-          <div className="text-[7px] text-center leading-none">
+          <div className="text-center text-[7px] leading-none">
             {truncatedName}
           </div>
-          <div className=" font-bold absolute bottom-0.5 left-0.5 right-0.5 text-[7px] opacity-90 truncate leading-none">
+          <div className="absolute right-0.5 bottom-0.5 left-0.5 truncate text-[7px] leading-none font-bold opacity-90">
             {element.atomicMass.toFixed(element.atomicMass % 1 === 0 ? 0 : 1)}
           </div>
         </div>
@@ -93,7 +91,7 @@ function ElementCard({
           <div className="flex items-center space-x-3">
             <div
               className={cn(
-                'w-12 h-12 rounded-md flex items-center justify-center text-white font-bold',
+                "flex h-12 w-12 items-center justify-center rounded-md font-bold text-white",
                 categoryInfo.color
               )}
             >
@@ -150,40 +148,40 @@ function ElementCard({
         </div>
       </HoverCardContent>
     </HoverCard>
-  )
+  );
 }
 
 function CategoryLegend({
   selectedCategories,
   onCategoryToggle,
 }: {
-  selectedCategories: Set<ElementCategory>
-  onCategoryToggle: (category: ElementCategory) => void
+  selectedCategories: Set<ElementCategory>;
+  onCategoryToggle: (category: ElementCategory) => void;
 }) {
   return (
-    <div className="flex flex-wrap gap-2 mb-4">
+    <div className="mb-4 flex flex-wrap gap-2">
       {Object.entries(ELEMENT_CATEGORIES).map(([key, info]) => {
-        const category = key as ElementCategory
-        const isSelected = selectedCategories.has(category)
+        const category = key as ElementCategory;
+        const isSelected = selectedCategories.has(category);
 
         return (
           <Badge
             key={category}
-            variant={isSelected ? 'default' : 'outline'}
+            variant={isSelected ? "default" : "outline"}
             className={cn(
-              'cursor-pointer transition-all hover:scale-105',
+              "cursor-pointer transition-all hover:scale-105",
               isSelected && info.lightColor,
-              isSelected && 'border-transparent text-foreground'
+              isSelected && "border-transparent text-foreground"
             )}
             onClick={() => onCategoryToggle(category)}
           >
-            <div className={cn('w-3 h-3 rounded-full mr-2', info.lightColor)} />
+            <div className={cn("mr-2 h-3 w-3 rounded-full", info.lightColor)} />
             {info.name}
           </Badge>
-        )
+        );
       })}
     </div>
-  )
+  );
 }
 
 function PeriodicTableGrid({
@@ -191,29 +189,29 @@ function PeriodicTableGrid({
   onElementSelect,
   selectedCategories,
   enabledSymbols,
-  searchQuery = '',
+  searchQuery = "",
 }: {
-  elements: Element[]
-  onElementSelect: (element: Element) => void
-  selectedCategories: Set<ElementCategory>
-  enabledSymbols?: string[]
-  searchQuery?: string
+  elements: Element[];
+  onElementSelect: (element: Element) => void;
+  selectedCategories: Set<ElementCategory>;
+  enabledSymbols?: string[];
+  searchQuery?: string;
 }) {
   const availableSet = React.useMemo(
     () => new Set(enabledSymbols ?? []),
     [enabledSymbols]
-  )
+  );
   const filteredElements = elements.filter((element) => {
     const matchesCategory =
-      selectedCategories.size === 0 || selectedCategories.has(element.category)
-    const query = searchQuery.toLowerCase().trim()
+      selectedCategories.size === 0 || selectedCategories.has(element.category);
+    const query = searchQuery.toLowerCase().trim();
     const matchesSearch =
-      query === '' ||
+      query === "" ||
       element.name.toLowerCase().includes(query) ||
       element.symbol.toLowerCase().includes(query) ||
-      String(element.atomicNumber).includes(query)
-    return matchesCategory && matchesSearch
-  })
+      String(element.atomicNumber).includes(query);
+    return matchesCategory && matchesSearch;
+  });
 
   // Create the classic periodic table layout
   // Each array represents the atomic numbers for that period, with null for empty spaces
@@ -289,7 +287,7 @@ function PeriodicTableGrid({
     [
       55,
       56,
-      'La-Lu',
+      "La-Lu",
       72,
       73,
       74,
@@ -310,7 +308,7 @@ function PeriodicTableGrid({
     [
       87,
       88,
-      'Ac-Lr',
+      "Ac-Lr",
       104,
       105,
       106,
@@ -327,42 +325,43 @@ function PeriodicTableGrid({
       117,
       118,
     ],
-  ]
+  ];
 
   const lanthanides = [
     57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71,
-  ]
+  ];
 
   const actinides = [
     89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103,
-  ]
+  ];
 
   const renderElement = (atomicNumber: number | string | null) => {
     if (atomicNumber === null) {
-      return <div key={`empty-${Math.random()}`} className="w-12 h-12" />
+      return <div key={`empty-${Math.random()}`} className="h-12 w-12" />;
     }
 
-    if (typeof atomicNumber === 'string') {
+    if (typeof atomicNumber === "string") {
       return (
         <div
           key={atomicNumber}
-          className="w-12 h-12 border border-dashed border-gray-400 rounded flex items-center justify-center"
+          className="flex h-12 w-12 items-center justify-center rounded border border-dashed border-gray-400"
         >
-          <span className="text-[8px] text-gray-500 font-medium">
+          <span className="text-[8px] font-medium text-gray-500">
             {atomicNumber}
           </span>
         </div>
-      )
+      );
     }
 
     const element = filteredElements.find(
       (el) => el.atomicNumber === atomicNumber
-    )
+    );
     if (!element) {
-      return <div key={atomicNumber} className="w-12 h-12" />
+      return <div key={atomicNumber} className="h-12 w-12" />;
     }
 
-    const isDisabled = availableSet.size > 0 && !availableSet.has(element.symbol)
+    const isDisabled =
+      availableSet.size > 0 && !availableSet.has(element.symbol);
 
     return (
       <ElementCard
@@ -371,8 +370,8 @@ function PeriodicTableGrid({
         onClick={() => onElementSelect(element)}
         disabled={isDisabled}
       />
-    )
-  }
+    );
+  };
 
   return (
     <div className="space-y-1">
@@ -391,7 +390,7 @@ function PeriodicTableGrid({
       <div className="mt-4 space-y-1">
         {/* Lanthanides */}
         <div className="flex gap-0.5">
-          <div className="w-12 h-12 flex items-center justify-center">
+          <div className="flex h-12 w-12 items-center justify-center">
             <span className="text-xs font-medium text-gray-600">La-Lu</span>
           </div>
           {lanthanides.map((atomicNumber) => (
@@ -401,7 +400,7 @@ function PeriodicTableGrid({
 
         {/* Actinides */}
         <div className="flex gap-0.5">
-          <div className="w-12 h-12 flex items-center justify-center">
+          <div className="flex h-12 w-12 items-center justify-center">
             <span className="text-xs font-medium text-gray-600">Ac-Lr</span>
           </div>
           {actinides.map((atomicNumber) => (
@@ -410,81 +409,81 @@ function PeriodicTableGrid({
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 export function PeriodicTable({
-  variant = 'compact',
-  outputType = 'element',
-  outputFormat = 'object',
+  variant = "compact",
+  outputType = "element",
+  outputFormat = "object",
   onElementSelect,
   value,
-  placeholder = 'Select element...',
+  placeholder = "Select element...",
   className,
   disabled = false,
   enabledSymbols,
 }: PeriodicTableProps) {
-  const [open, setOpen] = React.useState(false)
+  const [open, setOpen] = React.useState(false);
   const [selectedElement, setSelectedElement] = React.useState<Element | null>(
     value ? getElementBySymbol(value) || null : null
-  )
+  );
   const [selectedCategories, setSelectedCategories] = React.useState<
     Set<ElementCategory>
-  >(new Set())
-  const [searchQuery, setSearchQuery] = React.useState('')
+  >(new Set());
+  const [searchQuery, setSearchQuery] = React.useState("");
 
   const availableSet = React.useMemo(
     () => new Set(enabledSymbols ?? []),
     [enabledSymbols]
-  )
+  );
 
   const handleElementSelect = (element: Element) => {
-    setSelectedElement(element)
-    setOpen(false)
+    setSelectedElement(element);
+    setOpen(false);
 
     if (onElementSelect) {
-      let outputValue: any
+      let outputValue: any;
 
       switch (outputType) {
-        case 'symbol':
-          outputValue = element.symbol
-          break
-        case 'name':
-          outputValue = element.name
-          break
-        case 'atomicNumber':
-          outputValue = element.atomicNumber
-          break
-        case 'atomicMass':
-          outputValue = element.atomicMass
-          break
-        case 'element':
+        case "symbol":
+          outputValue = element.symbol;
+          break;
+        case "name":
+          outputValue = element.name;
+          break;
+        case "atomicNumber":
+          outputValue = element.atomicNumber;
+          break;
+        case "atomicMass":
+          outputValue = element.atomicMass;
+          break;
+        case "element":
         default:
-          outputValue = element
-          break
+          outputValue = element;
+          break;
       }
 
-      if (outputFormat === 'string') {
-        outputValue = String(outputValue)
-      } else if (outputFormat === 'number' && typeof outputValue !== 'number') {
-        outputValue = Number(outputValue) || 0
+      if (outputFormat === "string") {
+        outputValue = String(outputValue);
+      } else if (outputFormat === "number" && typeof outputValue !== "number") {
+        outputValue = Number(outputValue) || 0;
       }
 
-      onElementSelect(outputValue)
+      onElementSelect(outputValue);
     }
-  }
+  };
 
   const handleCategoryToggle = (category: ElementCategory) => {
-    const newCategories = new Set(selectedCategories)
+    const newCategories = new Set(selectedCategories);
     if (newCategories.has(category)) {
-      newCategories.delete(category)
+      newCategories.delete(category);
     } else {
-      newCategories.add(category)
+      newCategories.add(category);
     }
-    setSelectedCategories(newCategories)
-  }
+    setSelectedCategories(newCategories);
+  };
 
-  if (variant === 'compact') {
+  if (variant === "compact") {
     return (
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
@@ -492,14 +491,14 @@ export function PeriodicTable({
             variant="outline"
             role="combobox"
             aria-expanded={open}
-            className={cn('w-full justify-between', className)}
+            className={cn("w-full justify-between", className)}
             disabled={disabled}
           >
             {selectedElement ? (
               <div className="flex items-center space-x-2">
                 <div
                   className={cn(
-                    'w-6 h-6 rounded flex items-center justify-center text-xs font-bold text-white',
+                    "flex h-6 w-6 items-center justify-center rounded text-xs font-bold text-white",
                     ELEMENT_CATEGORIES[selectedElement.category].color
                   )}
                 >
@@ -520,12 +519,12 @@ export function PeriodicTable({
               <CommandEmpty>No element found.</CommandEmpty>
               {Object.entries(ELEMENT_CATEGORIES).map(
                 ([categoryKey, categoryInfo]) => {
-                  const category = categoryKey as ElementCategory
+                  const category = categoryKey as ElementCategory;
                   const categoryElements = PERIODIC_TABLE_DATA.filter(
                     (el) => el.category === category
-                  )
+                  );
 
-                  if (categoryElements.length === 0) return null
+                  if (categoryElements.length === 0) return null;
 
                   return (
                     <CommandGroup key={category} heading={categoryInfo.name}>
@@ -534,12 +533,15 @@ export function PeriodicTable({
                           key={element.atomicNumber}
                           value={`${element.name} ${element.symbol} ${element.atomicNumber}`}
                           onSelect={() => handleElementSelect(element)}
-                          disabled={availableSet.size > 0 && !availableSet.has(element.symbol)}
+                          disabled={
+                            availableSet.size > 0 &&
+                            !availableSet.has(element.symbol)
+                          }
                         >
-                          <div className="flex items-center space-x-3 w-full">
+                          <div className="flex w-full items-center space-x-3">
                             <div
                               className={cn(
-                                'w-8 h-8 rounded flex items-center justify-center text-xs font-bold text-white',
+                                "flex h-8 w-8 items-center justify-center rounded text-xs font-bold text-white",
                                 categoryInfo.color
                               )}
                             >
@@ -553,45 +555,48 @@ export function PeriodicTable({
                             </div>
                             <Check
                               className={cn(
-                                'ml-auto h-4 w-4',
+                                "ml-auto h-4 w-4",
                                 selectedElement?.atomicNumber ===
                                   element.atomicNumber
-                                  ? 'opacity-100'
-                                  : 'opacity-0'
+                                  ? "opacity-100"
+                                  : "opacity-0"
                               )}
                             />
                           </div>
                         </CommandItem>
                       ))}
                     </CommandGroup>
-                  )
+                  );
                 }
               )}
             </CommandList>
           </Command>
         </PopoverContent>
       </Popover>
-    )
+    );
   }
-  if (variant === 'grid') {
+  if (variant === "grid") {
     return (
-      <Popover open={open} onOpenChange={(isOpen) => {
-        setOpen(isOpen)
-        if (!isOpen) setSearchQuery('')
-      }}>
+      <Popover
+        open={open}
+        onOpenChange={(isOpen) => {
+          setOpen(isOpen);
+          if (!isOpen) setSearchQuery("");
+        }}
+      >
         <PopoverTrigger asChild>
           <Button
             variant="outline"
             role="combobox"
             aria-expanded={open}
-            className={cn('w-full justify-between', className)}
+            className={cn("w-full justify-between", className)}
             disabled={disabled}
           >
             {selectedElement ? (
               <div className="flex items-center space-x-2">
                 <div
                   className={cn(
-                    'w-6 h-6 rounded flex items-center justify-center text-xs font-bold text-white',
+                    "flex h-6 w-6 items-center justify-center rounded text-xs font-bold text-white",
                     ELEMENT_CATEGORIES[selectedElement.category].color
                   )}
                 >
@@ -606,7 +611,7 @@ export function PeriodicTable({
           </Button>
         </PopoverTrigger>
         <PopoverContent
-          className="w-[950px] p-4 max-h-[80vh] overflow-y-auto"
+          className="max-h-[80vh] w-[950px] overflow-y-auto p-4"
           align="start"
         >
           <div className="space-y-3">
@@ -635,7 +640,7 @@ export function PeriodicTable({
           </div>
         </PopoverContent>
       </Popover>
-    )
+    );
   }
-  return null
+  return null;
 }

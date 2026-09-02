@@ -1,7 +1,7 @@
-import * as React from "react"
-import { Slot } from "@radix-ui/react-slot"
-import { cva, type VariantProps } from "class-variance-authority"
-import { cn } from "../../lib/utils"
+import * as React from "react";
+import { Slot } from "@radix-ui/react-slot";
+import { cva, type VariantProps } from "class-variance-authority";
+import { cn } from "../../lib/utils";
 
 const stackVariants = cva("flex", {
   variants: {
@@ -54,59 +54,75 @@ const stackVariants = cva("flex", {
     justifyContent: "flex-start",
     wrap: "nowrap",
   },
-})
+});
 
-interface StackProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof stackVariants> {
-  asChild?: boolean
-  component?: React.ElementType
-  divider?: React.ReactNode
+interface StackProps
+  extends
+    React.HTMLAttributes<HTMLDivElement>,
+    VariantProps<typeof stackVariants> {
+  asChild?: boolean;
+  component?: React.ElementType;
+  divider?: React.ReactNode;
 }
 
 const Stack = React.forwardRef<HTMLDivElement, StackProps>(
-  ({ 
-    className, 
-    direction, 
-    spacing, 
-    alignItems, 
-    justifyContent, 
-    wrap, 
-    asChild = false, 
-    component,
-    divider,
-    children,
-    ...props 
-  }, ref) => {
-    const Comp = asChild ? Slot : component || "div"
-    
+  (
+    {
+      className,
+      direction,
+      spacing,
+      alignItems,
+      justifyContent,
+      wrap,
+      asChild = false,
+      component,
+      divider,
+      children,
+      ...props
+    },
+    ref
+  ) => {
+    const Comp = asChild ? Slot : component || "div";
+
     // Handle divider logic
-    const childrenArray = React.Children.toArray(children)
-    const childrenWithDividers = divider && childrenArray.length > 1
-      ? childrenArray.reduce<React.ReactNode[]>((acc, child, index) => {
-          acc.push(child)
-          if (index < childrenArray.length - 1) {
-            acc.push(
-              <div key={`divider-${index}`} className="shrink-0">
-                {divider}
-              </div>
-            )
-          }
-          return acc
-        }, [])
-      : children
-    
+    const childrenArray = React.Children.toArray(children);
+    const childrenWithDividers =
+      divider && childrenArray.length > 1
+        ? childrenArray.reduce<React.ReactNode[]>((acc, child, index) => {
+            acc.push(child);
+            if (index < childrenArray.length - 1) {
+              acc.push(
+                <div key={`divider-${index}`} className="shrink-0">
+                  {divider}
+                </div>
+              );
+            }
+            return acc;
+          }, [])
+        : children;
+
     return (
       <Comp
         ref={ref}
         data-slot="stack"
-        className={cn(stackVariants({ direction, spacing, alignItems, justifyContent, wrap, className }))}
+        className={cn(
+          stackVariants({
+            direction,
+            spacing,
+            alignItems,
+            justifyContent,
+            wrap,
+            className,
+          })
+        )}
         {...props}
       >
         {childrenWithDividers}
       </Comp>
-    )
+    );
   }
-)
-Stack.displayName = "Stack"
+);
+Stack.displayName = "Stack";
 
-export { Stack, stackVariants }
-export type { StackProps }
+export { Stack, stackVariants };
+export type { StackProps };

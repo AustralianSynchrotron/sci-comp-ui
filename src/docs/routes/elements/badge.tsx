@@ -1,13 +1,19 @@
-import { createFileRoute } from '@tanstack/react-router'
-import { PageHeader } from "../../components/page-header"
-import { Badge } from "../../../ui/elements/badge"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../../ui/layout/card"
-import { DemoContainer } from "@/docs/components/demo-container"
-import { CheckCircle, Info, AlertTriangle } from "lucide-react"
+import { createFileRoute } from "@tanstack/react-router";
+import { PageHeader } from "../../components/page-header";
+import { Badge } from "../../../ui/elements/badge";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../../../ui/layout/card";
+import { DemoContainer } from "@/docs/components/demo-container";
+import { CheckCircle, Info, AlertTriangle } from "lucide-react";
 
-export const Route = createFileRoute('/elements/badge')({
+export const Route = createFileRoute("/elements/badge")({
   component: BadgePage,
-})
+});
 
 /* DEMO_START */
 function BadgeVariantsDemo() {
@@ -20,12 +26,12 @@ function BadgeVariantsDemo() {
       <Badge variant="destructive">Interlock Tripped</Badge>
       <Badge variant="outline">Current: 200 mA</Badge>
     </div>
-  )
+  );
 }
 /* DEMO_END */
 
 // This gets replaced at build time with the actual source code
-const badgeVariantsSource = __SOURCE__
+const badgeVariantsSource = __SOURCE__;
 
 /* DEMO_START */
 function BadgeWithIconsDemo() {
@@ -52,11 +58,11 @@ function BadgeWithIconsDemo() {
         RF Fault
       </Badge>
     </div>
-  )
+  );
 }
 /* DEMO_END */
 
-const badgeWithIconsSource = __SOURCE__
+const badgeWithIconsSource = __SOURCE__;
 
 /* DEMO_START */
 function StatusBadgesDemo() {
@@ -67,17 +73,20 @@ function StatusBadgesDemo() {
       <Badge variant="destructive">Critical</Badge>
       <Badge variant="secondary">Standby</Badge>
     </div>
-  )
+  );
 }
 /* DEMO_END */
 
-const statusBadgesSource = __SOURCE__
+const statusBadgesSource = __SOURCE__;
 
 function BadgePage() {
   return (
     <>
-      <PageHeader 
-        breadcrumbs={[{ title: "Elements", href: "/elements" }, { title: "Badge" }]}
+      <PageHeader
+        breadcrumbs={[
+          { title: "Elements", href: "/elements" },
+          { title: "Badge" },
+        ]}
         pageHeading="Badge"
         pageSubheading="Displays a badge or a component that looks like a badge."
       />
@@ -86,7 +95,9 @@ function BadgePage() {
           <Card>
             <CardHeader>
               <CardTitle>Variants</CardTitle>
-              <CardDescription>Different badge styles for various use cases</CardDescription>
+              <CardDescription>
+                Different badge styles for various use cases
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <DemoContainer
@@ -99,7 +110,9 @@ function BadgePage() {
           <Card>
             <CardHeader>
               <CardTitle>With Icons</CardTitle>
-              <CardDescription>Badges with icons for enhanced visual communication</CardDescription>
+              <CardDescription>
+                Badges with icons for enhanced visual communication
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <DemoContainer
@@ -112,7 +125,9 @@ function BadgePage() {
           <Card>
             <CardHeader>
               <CardTitle>Status Badges</CardTitle>
-              <CardDescription>Badges for indicating system status</CardDescription>
+              <CardDescription>
+                Badges for indicating system status
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <DemoContainer
@@ -124,5 +139,5 @@ function BadgePage() {
         </div>
       </div>
     </>
-  )
+  );
 }

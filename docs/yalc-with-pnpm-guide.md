@@ -8,7 +8,7 @@ This guide explains how to test the `@australiansynchrotron/sci-comp-ui` package
 - Both projects cloned locally:
   - Package source: `/home/user/apps/sci-comp-ui`
   - Consumer project: `/home/user/apps/xas-web-ui`
-   - (in this example, xas-web-ui uses pnpm)
+  - (in this example, xas-web-ui uses pnpm)
 
 ## Step-by-Step Guide
 
@@ -44,6 +44,7 @@ yalc add @australiansynchrotron/sci-comp-ui
 ```
 
 This will:
+
 - Create a `.yalc` folder in your project
 - Update `package.json` to point to the local version
 - Update `yalc.lock` file
@@ -59,6 +60,7 @@ pnpm install
 When making changes to the sci-comp-ui package:
 
 1. **In the package directory** (`/home/user/apps/sci-comp-ui`):
+
    ```bash
    npm run build
    yalc push
@@ -85,6 +87,7 @@ nodemon --watch src --ext ts,tsx,css,json --exec "npm run build && yalc push"
 #### Force Update
 
 If changes aren't reflecting:
+
 ```bash
 # In consumer project
 yalc update
@@ -96,6 +99,7 @@ pnpm install
 When you're done testing and want to restore the npm registry version:
 
 1. Remove the yalc link:
+
    ```bash
    cd /home/user/apps/xas-web-ui
    yalc remove @australiansynchrotron/sci-comp-ui
@@ -121,6 +125,7 @@ This will restore the package.json to use the npm registry version.
 ### Version conflicts
 
 If you encounter version conflicts:
+
 ```bash
 yalc remove --all
 yalc add @australiansynchrotron/sci-comp-ui --pure
@@ -129,6 +134,7 @@ yalc add @australiansynchrotron/sci-comp-ui --pure
 ### Clean yalc cache
 
 To completely clean yalc installations:
+
 ```bash
 # Remove from project
 yalc remove --all
@@ -140,6 +146,7 @@ yalc installations clean
 ## Current Status
 
 As of the last check:
+
 - yalc is already linked (see `yalc.lock` and `package.json`)
 - The package.json shows: `"@australiansynchrotron/sci-comp-ui": "file:.yalc/@australiansynchrotron/sci-comp-ui"`
 - This indicates the local version is currently being used
@@ -154,11 +161,11 @@ As of the last check:
 
 ## Common Commands Reference
 
-| Command | Description |
-|---------|-------------|
-| `yalc publish` | Publish package to local yalc store |
-| `yalc push` | Update package in all linked projects |
-| `yalc add <package>` | Add package to current project |
-| `yalc remove <package>` | Remove package from current project |
-| `yalc update` | Update linked packages to latest |
-| `yalc installations show` | Show all yalc installations |
+| Command                   | Description                           |
+| ------------------------- | ------------------------------------- |
+| `yalc publish`            | Publish package to local yalc store   |
+| `yalc push`               | Update package in all linked projects |
+| `yalc add <package>`      | Add package to current project        |
+| `yalc remove <package>`   | Remove package from current project   |
+| `yalc update`             | Update linked packages to latest      |
+| `yalc installations show` | Show all yalc installations           |

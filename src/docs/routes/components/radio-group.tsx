@@ -1,14 +1,20 @@
-import { createFileRoute } from "@tanstack/react-router"
-import { PageHeader } from "../../components/page-header"
-import { RadioGroup, RadioGroupItem } from "../../../ui/components/radio-group"
-import { Label } from "../../../ui/elements/label"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../../ui/layout/card"
-import { DemoContainer } from "@/docs/components/demo-container"
-import { CodeBlock } from "../../../ui/components/code-block"
+import { createFileRoute } from "@tanstack/react-router";
+import { PageHeader } from "../../components/page-header";
+import { RadioGroup, RadioGroupItem } from "../../../ui/components/radio-group";
+import { Label } from "../../../ui/elements/label";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../../../ui/layout/card";
+import { DemoContainer } from "@/docs/components/demo-container";
+import { CodeBlock } from "../../../ui/components/code-block";
 
 export const Route = createFileRoute("/components/radio-group")({
   component: RadioGroupPage,
-})
+});
 
 /* DEMO_START */
 function BasicRadioGroupDemo() {
@@ -27,12 +33,12 @@ function BasicRadioGroupDemo() {
         <Label htmlFor="r3">Compact</Label>
       </div>
     </RadioGroup>
-  )
+  );
 }
 /* DEMO_END */
 
 // This gets replaced at build time with the actual source code
-const basicRadioGroupSource = __SOURCE__
+const basicRadioGroupSource = __SOURCE__;
 
 /* DEMO_START */
 function RadioGroupWithDescriptionsDemo() {
@@ -42,22 +48,26 @@ function RadioGroupWithDescriptionsDemo() {
         <RadioGroupItem value="option-one" id="option-one" />
         <div className="grid gap-1.5 leading-none">
           <Label htmlFor="option-one">Option One</Label>
-          <p className="text-xs text-muted-foreground">This is the first option with a description.</p>
+          <p className="text-xs text-muted-foreground">
+            This is the first option with a description.
+          </p>
         </div>
       </div>
       <div className="flex items-center space-x-2">
         <RadioGroupItem value="option-two" id="option-two" />
         <div className="grid gap-1.5 leading-none">
           <Label htmlFor="option-two">Option Two</Label>
-          <p className="text-xs text-muted-foreground">This is the second option with a description.</p>
+          <p className="text-xs text-muted-foreground">
+            This is the second option with a description.
+          </p>
         </div>
       </div>
     </RadioGroup>
-  )
+  );
 }
 /* DEMO_END */
 
-const radioGroupWithDescriptionsSource = __SOURCE__
+const radioGroupWithDescriptionsSource = __SOURCE__;
 
 /* DEMO_START */
 function DisabledRadioGroupDemo() {
@@ -74,17 +84,20 @@ function DisabledRadioGroupDemo() {
         </Label>
       </div>
     </RadioGroup>
-  )
+  );
 }
 /* DEMO_END */
 
-const disabledRadioGroupSource = __SOURCE__
+const disabledRadioGroupSource = __SOURCE__;
 
 function RadioGroupPage() {
   return (
     <>
-      <PageHeader 
-        breadcrumbs={[{ title: "Components", href: "/components" }, { title: "Radio Group" }]}
+      <PageHeader
+        breadcrumbs={[
+          { title: "Components", href: "/components" },
+          { title: "Radio Group" },
+        ]}
         pageHeading="Radio Group"
         pageSubheading="A set of checkable buttons, where no more than one of the buttons can be checked at a time."
       />
@@ -93,7 +106,9 @@ function RadioGroupPage() {
           <Card>
             <CardHeader>
               <CardTitle>Basic Radio Group</CardTitle>
-              <CardDescription>A simple radio group with options</CardDescription>
+              <CardDescription>
+                A simple radio group with options
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <DemoContainer
@@ -106,7 +121,9 @@ function RadioGroupPage() {
           <Card>
             <CardHeader>
               <CardTitle>Radio Group with Descriptions</CardTitle>
-              <CardDescription>Radio options with additional descriptions</CardDescription>
+              <CardDescription>
+                Radio options with additional descriptions
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <DemoContainer
@@ -119,7 +136,9 @@ function RadioGroupPage() {
           <Card>
             <CardHeader>
               <CardTitle>Disabled State</CardTitle>
-              <CardDescription>Radio group with disabled options</CardDescription>
+              <CardDescription>
+                Radio group with disabled options
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <DemoContainer
@@ -132,10 +151,14 @@ function RadioGroupPage() {
           <Card>
             <CardHeader>
               <CardTitle>Usage</CardTitle>
-              <CardDescription>How to use the Radio Group component</CardDescription>
+              <CardDescription>
+                How to use the Radio Group component
+              </CardDescription>
             </CardHeader>
             <CardContent>
-              <CodeBlock language="jsx" code={`import { RadioGroup, RadioGroupItem } from "sci-comp-ui/radio-group"
+              <CodeBlock
+                language="jsx"
+                code={`import { RadioGroup, RadioGroupItem } from "sci-comp-ui/radio-group"
 import { Label } from "sci-comp-ui/label"
 
 <RadioGroup defaultValue="option-one">
@@ -147,11 +170,12 @@ import { Label } from "sci-comp-ui/label"
     <RadioGroupItem value="option-two" id="option-two" />
     <Label htmlFor="option-two">Option Two</Label>
   </div>
-</RadioGroup>`} />
+</RadioGroup>`}
+              />
             </CardContent>
           </Card>
         </div>
       </div>
     </>
-  )
+  );
 }

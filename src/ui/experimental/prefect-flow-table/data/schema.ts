@@ -1,4 +1,4 @@
-import { z } from "zod"
+import { z } from "zod";
 
 export const flowSchema = z.object({
   flowRunId: z.string(),
@@ -6,6 +6,6 @@ export const flowSchema = z.object({
   state: z.string(),
   scheduledStartTime: z.string(),
   queueName: z.string(),
-})
+});
 
-export type Flow = z.infer<typeof flowSchema>
+export type Flow = z.infer<typeof flowSchema>;

@@ -1,14 +1,26 @@
-import { createFileRoute } from "@tanstack/react-router"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
-import { PageHeader } from "../../components/page-header"
-import { Button } from "../../../ui/elements/button"
-import { Input } from "../../../ui/elements/input"
-import { Textarea } from "../../../ui/elements/textarea"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../../ui/elements/select"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../../ui/layout/card"
-import { DemoContainer } from "@/docs/components/demo-container"
+import { createFileRoute } from "@tanstack/react-router";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { PageHeader } from "../../components/page-header";
+import { Button } from "../../../ui/elements/button";
+import { Input } from "../../../ui/elements/input";
+import { Textarea } from "../../../ui/elements/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../../../ui/elements/select";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../../../ui/layout/card";
+import { DemoContainer } from "@/docs/components/demo-container";
 
 import {
   Form,
@@ -18,22 +30,27 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "../../../ui/components/form"
-import { toast } from "sonner"
+} from "../../../ui/components/form";
+import { toast } from "sonner";
 
 export const Route = createFileRoute("/components/form")({
   component: FormPage,
-})
+});
 
 /* DEMO_START */
 const sampleFormSchema = z.object({
   sampleId: z.string().min(3, "Sample ID must be at least 3 characters"),
-  researcher: z.string().min(2, "Researcher name must be at least 2 characters"),
-  temperature: z.number().min(-273.15, "Temperature cannot be below absolute zero").max(1000, "Temperature cannot exceed 1000°C"),
+  researcher: z
+    .string()
+    .min(2, "Researcher name must be at least 2 characters"),
+  temperature: z
+    .number()
+    .min(-273.15, "Temperature cannot be below absolute zero")
+    .max(1000, "Temperature cannot exceed 1000°C"),
   notes: z.string().optional(),
-})
+});
 
-type SampleFormData = z.infer<typeof sampleFormSchema>
+type SampleFormData = z.infer<typeof sampleFormSchema>;
 
 function SampleDataForm() {
   const form = useForm<SampleFormData>({
@@ -44,13 +61,13 @@ function SampleDataForm() {
       temperature: 0,
       notes: "",
     },
-  })
+  });
 
   function onSubmit(values: SampleFormData) {
     toast.success("Sample data submitted successfully!", {
       description: `Sample ${values.sampleId} recorded by ${values.researcher}`,
-    })
-    console.log(values)
+    });
+    console.log(values);
   }
 
   return (
@@ -95,11 +112,13 @@ function SampleDataForm() {
             <FormItem>
               <FormLabel>Temperature (°C)</FormLabel>
               <FormControl>
-                <Input 
-                  type="number" 
-                  placeholder="25.0" 
+                <Input
+                  type="number"
+                  placeholder="25.0"
                   {...field}
-                  onChange={(e) => field.onChange(e.target.value ? Number(e.target.value) : 0)}
+                  onChange={(e) =>
+                    field.onChange(e.target.value ? Number(e.target.value) : 0)
+                  }
                 />
               </FormControl>
               <FormDescription>
@@ -116,9 +135,9 @@ function SampleDataForm() {
             <FormItem>
               <FormLabel>Notes</FormLabel>
               <FormControl>
-                <Textarea 
-                  placeholder="Additional observations or comments..." 
-                  {...field} 
+                <Textarea
+                  placeholder="Additional observations or comments..."
+                  {...field}
                 />
               </FormControl>
               <FormDescription>
@@ -131,27 +150,36 @@ function SampleDataForm() {
         <Button type="submit">Submit Sample Data</Button>
       </form>
     </Form>
-  )
+  );
 }
 /* DEMO_END */
 
 // This gets replaced at build time with the actual source code
-const basicFormSource = __SOURCE__
+const basicFormSource = __SOURCE__;
 
 /* DEMO_START */
 const experimentFormSchema = z.object({
-  experimentId: z.string().min(5, "Experiment ID must be at least 5 characters").regex(/^EXP-\d{3}$/, "Format must be EXP-XXX"),
+  experimentId: z
+    .string()
+    .min(5, "Experiment ID must be at least 5 characters")
+    .regex(/^EXP-\d{3}$/, "Format must be EXP-XXX"),
   hypothesis: z.string().min(10, "Hypothesis must be at least 10 characters"),
   substance: z.enum(["water", "ethanol", "acetone", "benzene", "other"]),
-  concentration: z.number().min(0, "Concentration must be positive").max(100, "Concentration cannot exceed 100%"),
+  concentration: z
+    .number()
+    .min(0, "Concentration must be positive")
+    .max(100, "Concentration cannot exceed 100%"),
   pH: z.number().min(0, "pH cannot be negative").max(14, "pH cannot exceed 14"),
-  duration: z.number().min(1, "Duration must be at least 1 minute").max(1440, "Duration cannot exceed 24 hours"),
+  duration: z
+    .number()
+    .min(1, "Duration must be at least 1 minute")
+    .max(1440, "Duration cannot exceed 24 hours"),
   safetyChecked: z.boolean().refine((val) => val === true, {
     message: "Safety protocols must be acknowledged",
   }),
-})
+});
 
-type ExperimentFormData = z.infer<typeof experimentFormSchema>
+type ExperimentFormData = z.infer<typeof experimentFormSchema>;
 
 function ExperimentForm() {
   const form = useForm<ExperimentFormData>({
@@ -165,13 +193,13 @@ function ExperimentForm() {
       duration: 60,
       safetyChecked: false,
     },
-  })
+  });
 
   function onSubmit(values: ExperimentFormData) {
     toast.success("Experiment logged successfully!", {
       description: `${values.experimentId} - ${values.substance} at ${values.concentration}% concentration`,
-    })
-    console.log(values)
+    });
+    console.log(values);
   }
 
   return (
@@ -220,7 +248,7 @@ function ExperimentForm() {
             )}
           />
         </div>
-        
+
         <FormField
           control={form.control}
           name="hypothesis"
@@ -228,9 +256,9 @@ function ExperimentForm() {
             <FormItem>
               <FormLabel>Hypothesis</FormLabel>
               <FormControl>
-                <Textarea 
-                  placeholder="State your hypothesis for this experiment..." 
-                  {...field} 
+                <Textarea
+                  placeholder="State your hypothesis for this experiment..."
+                  {...field}
                 />
               </FormControl>
               <FormDescription>
@@ -249,12 +277,16 @@ function ExperimentForm() {
               <FormItem>
                 <FormLabel>Concentration (%)</FormLabel>
                 <FormControl>
-                  <Input 
-                    type="number" 
+                  <Input
+                    type="number"
                     step="0.1"
-                    placeholder="50.0" 
+                    placeholder="50.0"
                     {...field}
-                    onChange={(e) => field.onChange(e.target.value ? Number(e.target.value) : 0)}
+                    onChange={(e) =>
+                      field.onChange(
+                        e.target.value ? Number(e.target.value) : 0
+                      )
+                    }
                   />
                 </FormControl>
                 <FormMessage />
@@ -268,12 +300,16 @@ function ExperimentForm() {
               <FormItem>
                 <FormLabel>pH Level</FormLabel>
                 <FormControl>
-                  <Input 
-                    type="number" 
+                  <Input
+                    type="number"
                     step="0.1"
-                    placeholder="7.0" 
+                    placeholder="7.0"
                     {...field}
-                    onChange={(e) => field.onChange(e.target.value ? Number(e.target.value) : 7)}
+                    onChange={(e) =>
+                      field.onChange(
+                        e.target.value ? Number(e.target.value) : 7
+                      )
+                    }
                   />
                 </FormControl>
                 <FormMessage />
@@ -287,11 +323,15 @@ function ExperimentForm() {
               <FormItem>
                 <FormLabel>Duration (min)</FormLabel>
                 <FormControl>
-                  <Input 
-                    type="number" 
-                    placeholder="60" 
+                  <Input
+                    type="number"
+                    placeholder="60"
                     {...field}
-                    onChange={(e) => field.onChange(e.target.value ? Number(e.target.value) : 60)}
+                    onChange={(e) =>
+                      field.onChange(
+                        e.target.value ? Number(e.target.value) : 60
+                      )
+                    }
                   />
                 </FormControl>
                 <FormMessage />
@@ -304,7 +344,7 @@ function ExperimentForm() {
           control={form.control}
           name="safetyChecked"
           render={({ field }) => (
-            <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+            <FormItem className="flex flex-row items-start space-y-0 space-x-3">
               <FormControl>
                 <input
                   type="checkbox"
@@ -314,11 +354,10 @@ function ExperimentForm() {
                 />
               </FormControl>
               <div className="space-y-1 leading-none">
-                <FormLabel>
-                  Safety protocols acknowledged
-                </FormLabel>
+                <FormLabel>Safety protocols acknowledged</FormLabel>
                 <FormDescription>
-                  I confirm that all safety measures have been reviewed and proper PPE will be used.
+                  I confirm that all safety measures have been reviewed and
+                  proper PPE will be used.
                 </FormDescription>
                 <FormMessage />
               </div>
@@ -334,17 +373,20 @@ function ExperimentForm() {
         </div>
       </form>
     </Form>
-  )
+  );
 }
 /* DEMO_END */
 
-const formLayoutSource = __SOURCE__
+const formLayoutSource = __SOURCE__;
 
 function FormPage() {
   return (
     <>
-      <PageHeader 
-        breadcrumbs={[{ title: "Components", href: "/components" }, { title: "Form" }]}
+      <PageHeader
+        breadcrumbs={[
+          { title: "Components", href: "/components" },
+          { title: "Form" },
+        ]}
         pageHeading="Form"
         pageSubheading="A form component with validation and layout options."
       />
@@ -366,7 +408,9 @@ function FormPage() {
           <Card>
             <CardHeader>
               <CardTitle>Validation Form with Multiple Rules</CardTitle>
-              <CardDescription>A form with multiple validation rules</CardDescription>
+              <CardDescription>
+                A form with multiple validation rules
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <DemoContainer
@@ -378,6 +422,5 @@ function FormPage() {
         </div>
       </div>
     </>
-  )
+  );
 }
-

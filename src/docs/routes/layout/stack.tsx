@@ -1,43 +1,49 @@
-import { createFileRoute } from "@tanstack/react-router"
-import { PageHeader } from "../../components/page-header"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../../ui/layout/card"
-import { Button } from "../../../ui/elements/button"
-import { DemoContainer } from "@/docs/components/demo-container"
-import { CodeBlock } from "../../../ui/components/code-block"
+import { createFileRoute } from "@tanstack/react-router";
+import { PageHeader } from "../../components/page-header";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../../../ui/layout/card";
+import { Button } from "../../../ui/elements/button";
+import { DemoContainer } from "@/docs/components/demo-container";
+import { CodeBlock } from "../../../ui/components/code-block";
 
 export const Route = createFileRoute("/layout/stack")({
   component: StackPage,
-})
+});
 
 /* DEMO_START */
 function VerticalStackDemo() {
   return (
     <div className="space-y-4">
-      <div className="p-3 bg-blue-50 border rounded">Item 1</div>
-      <div className="p-3 bg-green-50 border rounded">Item 2</div>
-      <div className="p-3 bg-yellow-50 border rounded">Item 3</div>
-      <div className="p-3 bg-red-50 border rounded">Item 4</div>
+      <div className="rounded border bg-blue-50 p-3">Item 1</div>
+      <div className="rounded border bg-green-50 p-3">Item 2</div>
+      <div className="rounded border bg-yellow-50 p-3">Item 3</div>
+      <div className="rounded border bg-red-50 p-3">Item 4</div>
     </div>
-  )
+  );
 }
 /* DEMO_END */
 
 // This gets replaced at build time with the actual source code
-const verticalStackSource = __SOURCE__
+const verticalStackSource = __SOURCE__;
 
 /* DEMO_START */
 function HorizontalStackDemo() {
   return (
     <div className="flex gap-4">
-      <div className="p-3 bg-blue-50 border rounded flex-1">Item 1</div>
-      <div className="p-3 bg-green-50 border rounded flex-1">Item 2</div>
-      <div className="p-3 bg-yellow-50 border rounded flex-1">Item 3</div>
+      <div className="flex-1 rounded border bg-blue-50 p-3">Item 1</div>
+      <div className="flex-1 rounded border bg-green-50 p-3">Item 2</div>
+      <div className="flex-1 rounded border bg-yellow-50 p-3">Item 3</div>
     </div>
-  )
+  );
 }
 /* DEMO_END */
 
-const horizontalStackSource = __SOURCE__
+const horizontalStackSource = __SOURCE__;
 
 /* DEMO_START */
 function ButtonStackDemo() {
@@ -63,43 +69,43 @@ function ButtonStackDemo() {
         </div>
       </div>
     </div>
-  )
+  );
 }
 /* DEMO_END */
 
-const buttonStackSource = __SOURCE__
+const buttonStackSource = __SOURCE__;
 
 /* DEMO_START */
 function StackSpacingDemo() {
   return (
     <div className="space-y-6">
       <div>
-        <h4 className="font-semibold mb-2">Tight spacing (space-y-1)</h4>
+        <h4 className="mb-2 font-semibold">Tight spacing (space-y-1)</h4>
         <div className="space-y-1">
-          <div className="p-2 bg-muted rounded text-sm">Item 1</div>
-          <div className="p-2 bg-muted rounded text-sm">Item 2</div>
-          <div className="p-2 bg-muted rounded text-sm">Item 3</div>
+          <div className="rounded bg-muted p-2 text-sm">Item 1</div>
+          <div className="rounded bg-muted p-2 text-sm">Item 2</div>
+          <div className="rounded bg-muted p-2 text-sm">Item 3</div>
         </div>
       </div>
       <div>
-        <h4 className="font-semibold mb-2">Loose spacing (space-y-8)</h4>
+        <h4 className="mb-2 font-semibold">Loose spacing (space-y-8)</h4>
         <div className="space-y-8">
-          <div className="p-2 bg-muted rounded text-sm">Item 1</div>
-          <div className="p-2 bg-muted rounded text-sm">Item 2</div>
-          <div className="p-2 bg-muted rounded text-sm">Item 3</div>
+          <div className="rounded bg-muted p-2 text-sm">Item 1</div>
+          <div className="rounded bg-muted p-2 text-sm">Item 2</div>
+          <div className="rounded bg-muted p-2 text-sm">Item 3</div>
         </div>
       </div>
     </div>
-  )
+  );
 }
 /* DEMO_END */
 
-const stackSpacingSource = __SOURCE__
+const stackSpacingSource = __SOURCE__;
 
 function StackPage() {
   return (
     <>
-      <PageHeader 
+      <PageHeader
         breadcrumbs={[{ title: "Layout", href: "/layout" }, { title: "Stack" }]}
         pageHeading="Stack"
         pageSubheading="Arrange elements in vertical or horizontal stacks with consistent spacing."
@@ -109,7 +115,9 @@ function StackPage() {
           <Card>
             <CardHeader>
               <CardTitle>Vertical Stack</CardTitle>
-              <CardDescription>Elements stacked vertically with consistent spacing</CardDescription>
+              <CardDescription>
+                Elements stacked vertically with consistent spacing
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <DemoContainer
@@ -122,7 +130,9 @@ function StackPage() {
           <Card>
             <CardHeader>
               <CardTitle>Horizontal Stack</CardTitle>
-              <CardDescription>Elements arranged horizontally with spacing</CardDescription>
+              <CardDescription>
+                Elements arranged horizontally with spacing
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <DemoContainer
@@ -135,7 +145,9 @@ function StackPage() {
           <Card>
             <CardHeader>
               <CardTitle>Button Stack</CardTitle>
-              <CardDescription>Common pattern for stacking buttons</CardDescription>
+              <CardDescription>
+                Common pattern for stacking buttons
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <DemoContainer
@@ -148,7 +160,9 @@ function StackPage() {
           <Card>
             <CardHeader>
               <CardTitle>Different Spacing</CardTitle>
-              <CardDescription>Stacks with various spacing options</CardDescription>
+              <CardDescription>
+                Stacks with various spacing options
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <DemoContainer
@@ -164,7 +178,9 @@ function StackPage() {
               <CardDescription>How to create stack layouts</CardDescription>
             </CardHeader>
             <CardContent>
-              <CodeBlock language="jsx" code={`// Vertical stack
+              <CodeBlock
+                language="jsx"
+                code={`// Vertical stack
 <div className="space-y-4">
   <div>Item 1</div>
   <div>Item 2</div>
@@ -182,11 +198,12 @@ function StackPage() {
 <div className="space-y-2">
   <Button className="w-full">Primary</Button>
   <Button variant="outline" className="w-full bg-transparent">Secondary</Button>
-</div>`} />
+</div>`}
+              />
             </CardContent>
           </Card>
         </div>
       </div>
     </>
-  )
+  );
 }

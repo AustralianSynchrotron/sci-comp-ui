@@ -1,7 +1,7 @@
-import * as React from "react"
-import { Slot } from "@radix-ui/react-slot"
-import { cva, type VariantProps } from "class-variance-authority"
-import { cn } from "../../lib/utils"
+import * as React from "react";
+import { Slot } from "@radix-ui/react-slot";
+import { cva, type VariantProps } from "class-variance-authority";
+import { cn } from "../../lib/utils";
 
 const gridVariants = cva("grid", {
   variants: {
@@ -161,98 +161,106 @@ const gridVariants = cva("grid", {
     container: false,
     item: false,
   },
-})
+});
 
-interface GridProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof gridVariants> {
-  asChild?: boolean
-  component?: React.ElementType
+interface GridProps
+  extends
+    React.HTMLAttributes<HTMLDivElement>,
+    VariantProps<typeof gridVariants> {
+  asChild?: boolean;
+  component?: React.ElementType;
   // MUI Grid props for compatibility
-  xs?: number
-  sm?: number
-  md?: number
-  lg?: number
-  xl?: number
-  size?: number | { xs?: number; sm?: number; md?: number; lg?: number; xl?: number }
+  xs?: number;
+  sm?: number;
+  md?: number;
+  lg?: number;
+  xl?: number;
+  size?:
+    | number
+    | { xs?: number; sm?: number; md?: number; lg?: number; xl?: number };
 }
 
 const Grid = React.forwardRef<HTMLDivElement, GridProps>(
-  ({ 
-    className, 
-    container,
-    item,
-    columns,
-    rows,
-    gap,
-    gapX,
-    gapY,
-    colSpan,
-    rowSpan,
-    colStart,
-    colEnd,
-    rowStart,
-    rowEnd,
-    asChild = false, 
-    component,
-    xs,
-    sm,
-    md,
-    lg,
-    xl,
-    size,
-    ...props 
-  }, ref) => {
-    const Comp = asChild ? Slot : component || "div"
-    
+  (
+    {
+      className,
+      container,
+      item,
+      columns,
+      rows,
+      gap,
+      gapX,
+      gapY,
+      colSpan,
+      rowSpan,
+      colStart,
+      colEnd,
+      rowStart,
+      rowEnd,
+      asChild = false,
+      component,
+      xs,
+      sm,
+      md,
+      lg,
+      xl,
+      size,
+      ...props
+    },
+    ref
+  ) => {
+    const Comp = asChild ? Slot : component || "div";
+
     // Handle responsive grid sizing similar to MUI
-    let responsiveClasses = ""
-    
+    let responsiveClasses = "";
+
     // Handle size prop (can be number or object)
     if (typeof size === "number") {
-      responsiveClasses += ` col-span-${size}`
+      responsiveClasses += ` col-span-${size}`;
     } else if (typeof size === "object" && size) {
-      if (size.xs) responsiveClasses += ` col-span-${size.xs}`
-      if (size.sm) responsiveClasses += ` sm:col-span-${size.sm}`
-      if (size.md) responsiveClasses += ` md:col-span-${size.md}`
-      if (size.lg) responsiveClasses += ` lg:col-span-${size.lg}`
-      if (size.xl) responsiveClasses += ` xl:col-span-${size.xl}`
+      if (size.xs) responsiveClasses += ` col-span-${size.xs}`;
+      if (size.sm) responsiveClasses += ` sm:col-span-${size.sm}`;
+      if (size.md) responsiveClasses += ` md:col-span-${size.md}`;
+      if (size.lg) responsiveClasses += ` lg:col-span-${size.lg}`;
+      if (size.xl) responsiveClasses += ` xl:col-span-${size.xl}`;
     }
-    
+
     // Handle individual breakpoint props
-    if (xs) responsiveClasses += ` col-span-${xs}`
-    if (sm) responsiveClasses += ` sm:col-span-${sm}`
-    if (md) responsiveClasses += ` md:col-span-${md}`
-    if (lg) responsiveClasses += ` lg:col-span-${lg}`
-    if (xl) responsiveClasses += ` xl:col-span-${xl}`
-    
+    if (xs) responsiveClasses += ` col-span-${xs}`;
+    if (sm) responsiveClasses += ` sm:col-span-${sm}`;
+    if (md) responsiveClasses += ` md:col-span-${md}`;
+    if (lg) responsiveClasses += ` lg:col-span-${lg}`;
+    if (xl) responsiveClasses += ` xl:col-span-${xl}`;
+
     return (
       <Comp
         ref={ref}
         data-slot="grid"
         className={cn(
-          gridVariants({ 
-            container, 
-            item, 
-            columns, 
-            rows, 
-            gap, 
-            gapX, 
-            gapY, 
-            colSpan, 
-            rowSpan, 
-            colStart, 
-            colEnd, 
-            rowStart, 
+          gridVariants({
+            container,
+            item,
+            columns,
+            rows,
+            gap,
+            gapX,
+            gapY,
+            colSpan,
+            rowSpan,
+            colStart,
+            colEnd,
+            rowStart,
             rowEnd,
-            className 
+            className,
           }),
           responsiveClasses
         )}
         {...props}
       />
-    )
+    );
   }
-)
-Grid.displayName = "Grid"
+);
+Grid.displayName = "Grid";
 
-export { Grid, gridVariants }
-export type { GridProps }
+export { Grid, gridVariants };
+export type { GridProps };

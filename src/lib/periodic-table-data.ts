@@ -8,36 +8,79 @@ export type ElementCategory =
   | "halogens"
   | "noble-gases"
   | "lanthanides"
-  | "actinides"
+  | "actinides";
 
 export interface Element {
-  atomicNumber: number
-  symbol: string
-  name: string
-  atomicMass: number
-  category: ElementCategory
-  period: number
-  group: number
-  electronConfiguration?: string
-  meltingPoint?: number
-  boilingPoint?: number
-  density?: number
-  discoveryYear?: number
-  discoveredBy?: string
+  atomicNumber: number;
+  symbol: string;
+  name: string;
+  atomicMass: number;
+  category: ElementCategory;
+  period: number;
+  group: number;
+  electronConfiguration?: string;
+  meltingPoint?: number;
+  boilingPoint?: number;
+  density?: number;
+  discoveryYear?: number;
+  discoveredBy?: string;
 }
 
-export const ELEMENT_CATEGORIES: Record<ElementCategory, { name: string; color: string, lightColor: string }> = {
-  "alkali-metals": { name: "Alkali metals", color: "bg-red-700", lightColor: "bg-red-200" },
-  "alkaline-earth-metals": { name: "Alkaline earth metals", color: "bg-orange-500", lightColor: "bg-orange-200" },
-  "transition-metals": { name: "Transition metals", color: "bg-slate-800", lightColor: "bg-slate-200" },
-  "post-transition-metals": { name: "Post-transition metals", color: "bg-sky-800", lightColor: "bg-sky-200" },
-  metalloids: { name: "Metalloids", color: "bg-pink-700", lightColor: "bg-pink-200" },
-  "reactive-non-metals": { name: "Reactive non-metals", color: "bg-green-700", lightColor: "bg-green-200" },
-  "halogens": { name: "Halogens", color: "bg-purple-700", lightColor: "bg-purple-200" },
-  "noble-gases": { name: "Noble gases", color: "bg-lime-700", lightColor: "bg-lime-200" },
-  lanthanides: { name: "Lanthanides", color: "bg-blue-400", lightColor: "bg-blue-200" },
-  actinides: { name: "Actinides", color: "bg-teal-700", lightColor: "bg-teal-200" },
-}
+export const ELEMENT_CATEGORIES: Record<
+  ElementCategory,
+  { name: string; color: string; lightColor: string }
+> = {
+  "alkali-metals": {
+    name: "Alkali metals",
+    color: "bg-red-700",
+    lightColor: "bg-red-200",
+  },
+  "alkaline-earth-metals": {
+    name: "Alkaline earth metals",
+    color: "bg-orange-500",
+    lightColor: "bg-orange-200",
+  },
+  "transition-metals": {
+    name: "Transition metals",
+    color: "bg-slate-800",
+    lightColor: "bg-slate-200",
+  },
+  "post-transition-metals": {
+    name: "Post-transition metals",
+    color: "bg-sky-800",
+    lightColor: "bg-sky-200",
+  },
+  metalloids: {
+    name: "Metalloids",
+    color: "bg-pink-700",
+    lightColor: "bg-pink-200",
+  },
+  "reactive-non-metals": {
+    name: "Reactive non-metals",
+    color: "bg-green-700",
+    lightColor: "bg-green-200",
+  },
+  halogens: {
+    name: "Halogens",
+    color: "bg-purple-700",
+    lightColor: "bg-purple-200",
+  },
+  "noble-gases": {
+    name: "Noble gases",
+    color: "bg-lime-700",
+    lightColor: "bg-lime-200",
+  },
+  lanthanides: {
+    name: "Lanthanides",
+    color: "bg-blue-400",
+    lightColor: "bg-blue-200",
+  },
+  actinides: {
+    name: "Actinides",
+    color: "bg-teal-700",
+    lightColor: "bg-teal-200",
+  },
+};
 
 export const PERIODIC_TABLE_DATA: Element[] = [
   {
@@ -51,7 +94,7 @@ export const PERIODIC_TABLE_DATA: Element[] = [
     electronConfiguration: "1s1",
     meltingPoint: 13.81,
     boilingPoint: 20.28,
-    density: 8.988e-05,
+    density: 8.988e-5,
     discoveryYear: 1766,
   },
   {
@@ -1617,17 +1660,20 @@ export const PERIODIC_TABLE_DATA: Element[] = [
     electronConfiguration: "[Rn]7s2 7p6 5f14 6d10 (predicted)",
     discoveryYear: 2006,
   },
-]
-
+];
 
 export function getElementBySymbol(symbol: string): Element | undefined {
-  return PERIODIC_TABLE_DATA.find((element) => element.symbol === symbol)
+  return PERIODIC_TABLE_DATA.find((element) => element.symbol === symbol);
 }
 
-export function getElementByAtomicNumber(atomicNumber: number): Element | undefined {
-  return PERIODIC_TABLE_DATA.find((element) => element.atomicNumber === atomicNumber)
+export function getElementByAtomicNumber(
+  atomicNumber: number
+): Element | undefined {
+  return PERIODIC_TABLE_DATA.find(
+    (element) => element.atomicNumber === atomicNumber
+  );
 }
 
 export function getElementsByCategory(category: ElementCategory): Element[] {
-  return PERIODIC_TABLE_DATA.filter((element) => element.category === category)
+  return PERIODIC_TABLE_DATA.filter((element) => element.category === category);
 }

@@ -1,13 +1,19 @@
-import { createFileRoute } from '@tanstack/react-router'
-import { PageHeader } from "../../components/page-header"
-import { Checkbox } from "../../../ui/elements/checkbox"
-import { Label } from "../../../ui/elements/label"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../../ui/layout/card"
-import { DemoContainer } from "@/docs/components/demo-container"
+import { createFileRoute } from "@tanstack/react-router";
+import { PageHeader } from "../../components/page-header";
+import { Checkbox } from "../../../ui/elements/checkbox";
+import { Label } from "../../../ui/elements/label";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../../../ui/layout/card";
+import { DemoContainer } from "@/docs/components/demo-container";
 
-export const Route = createFileRoute('/elements/checkbox')({
+export const Route = createFileRoute("/elements/checkbox")({
   component: CheckboxPage,
-})
+});
 
 /* DEMO_START */
 function BasicCheckboxDemo() {
@@ -26,12 +32,12 @@ function BasicCheckboxDemo() {
         <Label htmlFor="monochromator">Si(111) Monochromator</Label>
       </div>
     </div>
-  )
+  );
 }
 /* DEMO_END */
 
 // This gets replaced at build time with the actual source code
-const basicCheckboxSource = __SOURCE__
+const basicCheckboxSource = __SOURCE__;
 
 /* DEMO_START */
 function CheckboxStatesDemo() {
@@ -43,18 +49,20 @@ function CheckboxStatesDemo() {
       </div>
       <div className="flex items-center space-x-2">
         <Checkbox id="disabled" disabled />
-        <Label htmlFor="disabled" className="text-muted-foreground">Safety Interlock (Disabled)</Label>
+        <Label htmlFor="disabled" className="text-muted-foreground">
+          Safety Interlock (Disabled)
+        </Label>
       </div>
       <div className="flex items-center space-x-2">
         <Checkbox id="indeterminate" />
         <Label htmlFor="indeterminate">Sample Stage Position</Label>
       </div>
     </div>
-  )
+  );
 }
 /* DEMO_END */
 
-const checkboxStatesSource = __SOURCE__
+const checkboxStatesSource = __SOURCE__;
 
 /* DEMO_START */
 function CheckboxWithDescriptionDemo() {
@@ -64,28 +72,35 @@ function CheckboxWithDescriptionDemo() {
         <Checkbox id="data-collection" className="mt-1" />
         <div className="grid gap-1.5 leading-none">
           <Label htmlFor="data-collection">Data Collection Mode</Label>
-          <p className="text-xs text-muted-foreground">Enable continuous data collection at 10Hz</p>
+          <p className="text-xs text-muted-foreground">
+            Enable continuous data collection at 10Hz
+          </p>
         </div>
       </div>
       <div className="flex items-start space-x-2">
         <Checkbox id="auto-calibration" className="mt-1" />
         <div className="grid gap-1.5 leading-none">
           <Label htmlFor="auto-calibration">Auto-calibration</Label>
-          <p className="text-xs text-muted-foreground">Automatically calibrate detector every 100 frames</p>
+          <p className="text-xs text-muted-foreground">
+            Automatically calibrate detector every 100 frames
+          </p>
         </div>
       </div>
     </div>
-  )
+  );
 }
 /* DEMO_END */
 
-const checkboxWithDescriptionSource = __SOURCE__
+const checkboxWithDescriptionSource = __SOURCE__;
 
 function CheckboxPage() {
   return (
     <>
-      <PageHeader 
-        breadcrumbs={[{ title: "Elements", href: "/elements" }, { title: "Checkbox" }]}
+      <PageHeader
+        breadcrumbs={[
+          { title: "Elements", href: "/elements" },
+          { title: "Checkbox" },
+        ]}
         pageHeading="Checkbox"
         pageSubheading="A control that allows the user to toggle between checked and unchecked states."
       />
@@ -94,7 +109,9 @@ function CheckboxPage() {
           <Card>
             <CardHeader>
               <CardTitle>Basic Checkbox</CardTitle>
-              <CardDescription>Simple checkbox controls for synchrotron beamline settings</CardDescription>
+              <CardDescription>
+                Simple checkbox controls for synchrotron beamline settings
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <DemoContainer
@@ -107,7 +124,9 @@ function CheckboxPage() {
           <Card>
             <CardHeader>
               <CardTitle>Checkbox States</CardTitle>
-              <CardDescription>Different checkbox states and interactions</CardDescription>
+              <CardDescription>
+                Different checkbox states and interactions
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <DemoContainer
@@ -120,7 +139,9 @@ function CheckboxPage() {
           <Card>
             <CardHeader>
               <CardTitle>Checkbox with Descriptions</CardTitle>
-              <CardDescription>Checkboxes with additional context and descriptions</CardDescription>
+              <CardDescription>
+                Checkboxes with additional context and descriptions
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <DemoContainer
@@ -132,5 +153,5 @@ function CheckboxPage() {
         </div>
       </div>
     </>
-  )
+  );
 }

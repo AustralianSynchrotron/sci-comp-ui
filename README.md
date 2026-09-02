@@ -12,13 +12,13 @@ npm run dev:docs
 Either add the Radix-UI required CSS variables into your consumer UI's main `index.css` file, or import the ones included with this package with:
 
 ```js
-import '@australiansynchrotron/sci-comp-ui/styles';
+import "@australiansynchrotron/sci-comp-ui/styles";
 ```
 
 Import the components you want:
 
 ```js
-import { StepColumns } from '@australiansynchrotron/sci-comp-ui';
+import { StepColumns } from "@australiansynchrotron/sci-comp-ui";
 ```
 
 ## Development
@@ -143,10 +143,10 @@ To make sure that docs are consistent and can embed derived information like sou
 Use the `__PACKAGE_VERSION__` macro anywhere in your TypeScript/JavaScript files:
 
 ```tsx
-import { Badge } from './ui/badge';
+import { Badge } from "./ui/badge";
 
 export function AppVersion() {
-    return <Badge>{__PACKAGE_VERSION__}</Badge>;
+  return <Badge>{__PACKAGE_VERSION__}</Badge>;
 }
 ```
 
@@ -155,18 +155,18 @@ export function AppVersion() {
 Use the `__SOURCE__` macro to embed source code at build time. This is particularly useful for documentation components:
 
 ```tsx
-import { Button } from './ui/elements/button';
-import { DemoContainer } from './components/demo-container';
+import { Button } from "./ui/elements/button";
+import { DemoContainer } from "./components/demo-container";
 
 /* DEMO_START */
 function ButtonExample() {
-    return (
-        <div className="flex gap-4">
-            <Button variant="default">Default</Button>
-            <Button variant="outline">Outline</Button>
-            <Button variant="destructive">Destructive</Button>
-        </div>
-    );
+  return (
+    <div className="flex gap-4">
+      <Button variant="default">Default</Button>
+      <Button variant="outline">Outline</Button>
+      <Button variant="destructive">Destructive</Button>
+    </div>
+  );
 }
 /* DEMO_END */
 
@@ -174,7 +174,9 @@ function ButtonExample() {
 const buttonExampleSource = __SOURCE__;
 
 export function ButtonDemo() {
-    return <DemoContainer demo={<ButtonExample />} source={buttonExampleSource} />;
+  return (
+    <DemoContainer demo={<ButtonExample />} source={buttonExampleSource} />
+  );
 }
 ```
 
@@ -186,8 +188,8 @@ The plugin is already configured in `vite.config.ts`. You can customise it with 
 
 ```typescript
 packageVersionPlugin({
-    macro: '__PACKAGE_VERSION__', // Custom macro name
-    packageJsonPath: './package.json', // Path to package.json
-    includeVPrefix: true, // Whether to prefix with 'v'
+  macro: "__PACKAGE_VERSION__", // Custom macro name
+  packageJsonPath: "./package.json", // Path to package.json
+  includeVPrefix: true, // Whether to prefix with 'v'
 });
 ```

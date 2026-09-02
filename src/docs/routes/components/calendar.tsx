@@ -1,36 +1,53 @@
-import { useState } from 'react'
-import { createFileRoute } from '@tanstack/react-router'
-import { PageHeader } from '../../components/page-header'
-import { Calendar } from '../../../ui/components/calendar'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../../ui/layout/card'
-import { DemoContainer } from '@/docs/components/demo-container'
+import { useState } from "react";
+import { createFileRoute } from "@tanstack/react-router";
+import { PageHeader } from "../../components/page-header";
+import { Calendar } from "../../../ui/components/calendar";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../../../ui/layout/card";
+import { DemoContainer } from "@/docs/components/demo-container";
 
-export const Route = createFileRoute('/components/calendar')({
+export const Route = createFileRoute("/components/calendar")({
   component: CalendarPage,
-})
+});
 
 /* DEMO_START */
 function BasicCalendarDemo() {
-  const [date, setDate] = useState<Date | undefined>(new Date())
+  const [date, setDate] = useState<Date | undefined>(new Date());
 
   return (
     <div>
-      <Calendar mode="single" selected={date} onSelect={setDate} className="rounded-md border" />
-      {date && <p className="text-sm text-muted-foreground mt-4">Selected: {date.toLocaleDateString()}</p>}
+      <Calendar
+        mode="single"
+        selected={date}
+        onSelect={setDate}
+        className="rounded-md border"
+      />
+      {date && (
+        <p className="mt-4 text-sm text-muted-foreground">
+          Selected: {date.toLocaleDateString()}
+        </p>
+      )}
     </div>
-  )
+  );
 }
 /* DEMO_END */
 
 // This gets replaced at build time with the actual source code
-const basicCalendarSource = __SOURCE__
+const basicCalendarSource = __SOURCE__;
 
 function CalendarPage() {
-
   return (
     <>
-      <PageHeader 
-        breadcrumbs={[{ title: "Components", href: "/components" }, { title: "Calendar" }]}
+      <PageHeader
+        breadcrumbs={[
+          { title: "Components", href: "/components" },
+          { title: "Calendar" },
+        ]}
         pageHeading="Calendar"
         pageSubheading="A date field component that allows users to enter and edit date."
       />
@@ -39,7 +56,9 @@ function CalendarPage() {
           <Card>
             <CardHeader>
               <CardTitle>Basic Calendar</CardTitle>
-              <CardDescription>A simple calendar for date selection</CardDescription>
+              <CardDescription>
+                A simple calendar for date selection
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <DemoContainer
@@ -51,5 +70,5 @@ function CalendarPage() {
         </div>
       </div>
     </>
-  )
+  );
 }

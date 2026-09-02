@@ -1,13 +1,20 @@
-import { createFileRoute } from "@tanstack/react-router"
-import { PageHeader } from "../../components/page-header"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../../../ui/layout/card"
-import { Button } from "../../../ui/elements/button"
-import { Badge } from "../../../ui/elements/badge"
-import { DemoContainer } from "@/docs/components/demo-container"
+import { createFileRoute } from "@tanstack/react-router";
+import { PageHeader } from "../../components/page-header";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "../../../ui/layout/card";
+import { Button } from "../../../ui/elements/button";
+import { Badge } from "../../../ui/elements/badge";
+import { DemoContainer } from "@/docs/components/demo-container";
 
 export const Route = createFileRoute("/layout/card")({
   component: CardPage,
-})
+});
 
 /* DEMO_START */
 function BasicCardDemo() {
@@ -24,17 +31,17 @@ function BasicCardDemo() {
         <Button>Action</Button>
       </CardFooter>
     </Card>
-  )
+  );
 }
 /* DEMO_END */
 
 // This gets replaced at build time with the actual source code
-const basicCardSource = __SOURCE__
+const basicCardSource = __SOURCE__;
 
 /* DEMO_START */
 function CardVariantsDemo() {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
       <Card>
         <CardHeader>
           <div className="flex items-center justify-between">
@@ -44,11 +51,15 @@ function CardVariantsDemo() {
           <CardDescription>A content showcase card</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="aspect-video bg-muted rounded-md mb-4"></div>
-          <p className="text-sm">This is a content description with an image placeholder above.</p>
+          <div className="mb-4 aspect-video rounded-md bg-muted"></div>
+          <p className="text-sm">
+            This is a content description with an image placeholder above.
+          </p>
         </CardContent>
         <CardFooter className="flex justify-between">
-          <span className="text-sm text-muted-foreground">Last updated: Today</span>
+          <span className="text-sm text-muted-foreground">
+            Last updated: Today
+          </span>
           <Button size="sm">View Details</Button>
         </CardFooter>
       </Card>
@@ -60,20 +71,22 @@ function CardVariantsDemo() {
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold">1,234</div>
-          <p className="text-xs text-muted-foreground">+20.1% from previous period</p>
+          <p className="text-xs text-muted-foreground">
+            +20.1% from previous period
+          </p>
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }
 /* DEMO_END */
 
-const cardVariantsSource = __SOURCE__
+const cardVariantsSource = __SOURCE__;
 
 /* DEMO_START */
 function CardGridDemo() {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
       <Card>
         <CardHeader>
           <CardTitle className="text-base">Feature 1</CardTitle>
@@ -99,16 +112,16 @@ function CardGridDemo() {
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }
 /* DEMO_END */
 
-const cardGridSource = __SOURCE__
+const cardGridSource = __SOURCE__;
 
 function CardPage() {
   return (
     <>
-      <PageHeader 
+      <PageHeader
         breadcrumbs={[{ title: "Layout", href: "/layout" }, { title: "Card" }]}
         pageHeading="Card"
         pageSubheading="Displays a card with header, content, and footer."
@@ -118,7 +131,9 @@ function CardPage() {
           <Card>
             <CardHeader>
               <CardTitle>Basic Card</CardTitle>
-              <CardDescription>A simple card with header, content, and footer</CardDescription>
+              <CardDescription>
+                A simple card with header, content, and footer
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <DemoContainer
@@ -131,7 +146,9 @@ function CardPage() {
           <Card>
             <CardHeader>
               <CardTitle>Card Variants</CardTitle>
-              <CardDescription>Different card styles and layouts</CardDescription>
+              <CardDescription>
+                Different card styles and layouts
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <DemoContainer
@@ -144,17 +161,16 @@ function CardPage() {
           <Card>
             <CardHeader>
               <CardTitle>Card Grid</CardTitle>
-              <CardDescription>Multiple cards in a responsive grid</CardDescription>
+              <CardDescription>
+                Multiple cards in a responsive grid
+              </CardDescription>
             </CardHeader>
             <CardContent>
-              <DemoContainer
-                demo={<CardGridDemo />}
-                source={cardGridSource}
-              />
+              <DemoContainer demo={<CardGridDemo />} source={cardGridSource} />
             </CardContent>
           </Card>
         </div>
       </div>
     </>
-  )
+  );
 }
