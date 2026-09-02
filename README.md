@@ -23,6 +23,21 @@ import { StepColumns } from "@australiansynchrotron/sci-comp-ui";
 
 ## Development
 
+#### Code Formatting
+
+Formatting is handled by [Prettier](https://prettier.io/) and is enforced in two places.
+
+Running `npm i` installs a `pre-commit` hook (via husky). On every commit, staged files are formatted automatically and re-staged, so you normally never have to think about it.
+
+To format or check the whole repo manually:
+
+```bash
+npm run format        # format everything in place
+npm run format:check  # report unformatted files without changing them
+```
+
+The `CI` workflow runs `npm run format:check` on every pull request and on pushes to `main`. If you bypass the hook with `git commit --no-verify`, CI will still catch it.
+
 #### Local Package Publishing/Installation with `yalc`
 
 Install `yalc` globally to your node package management, e.g.:
