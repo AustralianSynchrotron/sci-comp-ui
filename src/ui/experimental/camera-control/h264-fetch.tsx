@@ -19,7 +19,7 @@ export function h264FetchApi(url: string): H264Api {
     }
 
     const apiUrl = new URL(baseUrl.href);
-    apiUrl.pathname += '/api';
+    apiUrl.pathname = apiUrl.pathname.replace(/\/$/, '') + '/api';
 
     const generateWebsocketUrl = (url: URL): string => {
         const { host, pathname, search, hash } = url;
