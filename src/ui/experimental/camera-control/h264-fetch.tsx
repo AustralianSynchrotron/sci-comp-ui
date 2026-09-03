@@ -19,13 +19,13 @@ export function h264FetchApi(url: string): H264Api {
   }
 
   const apiUrl = new URL(baseUrl.href);
-  apiUrl.pathname += "/api";
+  apiUrl.pathname = apiUrl.pathname.replace(/\/$/, "") + "/api";
 
   const generateWebsocketUrl = (url: URL): string => {
     const { host, pathname, search, hash } = url;
     const noProtocolUrl = `${host}${pathname}${search}${hash}`; // Strip http://, https:// protocol from URL
     const protocol = url.protocol === "https:" ? "wss://" : "ws://"; // Add the respective ws://, wss:// protocol
-    return protocol + noProtocolUrl + "/ws";
+    return protocol + noProtocolUrl.replace(/\/$/, "") + "/ws";
   };
 
   const websocketUrl = generateWebsocketUrl(baseUrl);
