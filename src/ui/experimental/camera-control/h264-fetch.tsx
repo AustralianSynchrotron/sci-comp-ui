@@ -25,7 +25,7 @@ export function h264FetchApi(url: string): H264Api {
         const { host, pathname, search, hash } = url;
         const noProtocolUrl = `${host}${pathname}${search}${hash}`; // Strip http://, https:// protocol from URL
         const protocol = url.protocol === 'https:' ? 'wss://' : 'ws://'; // Add the respective ws://, wss:// protocol
-        return protocol + noProtocolUrl + '/ws';
+        return protocol + noProtocolUrl.replace(/\/$/, '') + '/ws';
     };
 
     const websocketUrl = generateWebsocketUrl(baseUrl);
