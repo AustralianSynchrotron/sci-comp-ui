@@ -1,9 +1,9 @@
-declare module '*.css' {
+declare module "*.css" {
   const content: string;
   export default content;
 }
 
-declare module 'prismjs/themes/prism.css';
+declare module "prismjs/themes/prism.css";
 
 /**
  * Global macro for package version injected by Vite plugin

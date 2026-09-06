@@ -1,21 +1,30 @@
-import { createFileRoute } from "@tanstack/react-router"
-import { useState, useEffect } from "react"
-import { PageHeader } from "../../components/page-header"
-import { OphydMonitor } from "../../../ui/components/ophyd-monitor"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../../ui/layout/card"
-import { Button } from "../../../ui/elements/button"
-import { Badge } from "../../../ui/elements/badge"
-import { DemoContainer } from "../../components/demo-container"
-import { toast } from "sonner"
+import { createFileRoute } from "@tanstack/react-router";
+import { useState, useEffect } from "react";
+import { PageHeader } from "../../components/page-header";
+import { OphydMonitor } from "../../../ui/components/ophyd-monitor";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../../../ui/layout/card";
+import { Button } from "../../../ui/elements/button";
+import { Badge } from "../../../ui/elements/badge";
+import { DemoContainer } from "../../components/demo-container";
+import { toast } from "sonner";
 
-export const Route = createFileRoute('/components/ophyd-monitor')({
+export const Route = createFileRoute("/components/ophyd-monitor")({
   component: OphydMonitorPage,
-})
+});
 
 // Mock data generator for demonstration
 const generateMockData = () => {
-  return Array.from({ length: 20 }, () => Math.random() * 100 + Math.sin(Date.now() / 1000) * 20)
-}
+  return Array.from(
+    { length: 20 },
+    () => Math.random() * 100 + Math.sin(Date.now() / 1000) * 20
+  );
+};
 
 /* DEMO_START */
 function BasicVariantsDemo() {
@@ -27,25 +36,25 @@ function BasicVariantsDemo() {
     isConnected: true,
     lastUpdate: new Date(Date.now() - 5000),
     data: [20, 22, 21, 23, 25, 24, 26, 25, 27, 26, 28, 27, 29, 28, 30],
-  }
+  };
 
   const handleCopyPV = (pvname: string) => {
-    toast.success(`PV Copied: ${pvname}`)
-  }
+    toast.success(`PV Copied: ${pvname}`);
+  };
 
   return (
     <div className="space-y-6">
       <div>
-        <h4 className="font-medium mb-3">Compact Variant</h4>
+        <h4 className="mb-3 font-medium">Compact Variant</h4>
         <OphydMonitor
           variant="compact"
           {...mockDevice}
           onCopyPV={handleCopyPV}
         />
       </div>
-      
+
       <div>
-        <h4 className="font-medium mb-3">Grid Variant</h4>
+        <h4 className="mb-3 font-medium">Grid Variant</h4>
         <div className="max-w-sm">
           <OphydMonitor
             variant="grid"
@@ -55,11 +64,11 @@ function BasicVariantsDemo() {
         </div>
       </div>
     </div>
-  )
+  );
 }
 /* DEMO_END */
 
-const basicVariantsSource = __SOURCE__
+const basicVariantsSource = __SOURCE__;
 
 /* DEMO_START */
 function ConnectionStatesDemo() {
@@ -71,7 +80,7 @@ function ConnectionStatesDemo() {
     isConnected: true,
     lastUpdate: new Date(Date.now() - 2000),
     data: [1010, 1012, 1011, 1013, 1015, 1014, 1016, 1015, 1017, 1016],
-  }
+  };
 
   const disconnectedDevice = {
     label: "Flow Meter",
@@ -81,18 +90,20 @@ function ConnectionStatesDemo() {
     isConnected: false,
     lastUpdate: new Date(Date.now() - 120000),
     data: [40, 42, 41, 43, 45, 44, 46, 45, 47, 46],
-  }
+  };
 
   const handleCopyPV = (pvname: string) => {
-    toast.success(`PV Copied: ${pvname}`)
-  }
+    toast.success(`PV Copied: ${pvname}`);
+  };
 
   return (
     <div className="grid gap-4 md:grid-cols-2">
       <div>
-        <h4 className="font-medium mb-3 flex items-center gap-2">
+        <h4 className="mb-3 flex items-center gap-2 font-medium">
           Connected Device
-          <Badge variant="default" className="bg-green-100 text-green-800">Online</Badge>
+          <Badge variant="default" className="bg-green-100 text-green-800">
+            Online
+          </Badge>
         </h4>
         <OphydMonitor
           variant="grid"
@@ -100,9 +111,9 @@ function ConnectionStatesDemo() {
           onCopyPV={handleCopyPV}
         />
       </div>
-      
+
       <div>
-        <h4 className="font-medium mb-3 flex items-center gap-2">
+        <h4 className="mb-3 flex items-center gap-2 font-medium">
           Disconnected Device
           <Badge variant="destructive">Offline</Badge>
         </h4>
@@ -113,15 +124,15 @@ function ConnectionStatesDemo() {
         />
       </div>
     </div>
-  )
+  );
 }
 /* DEMO_END */
 
-const connectionStatesSource = __SOURCE__
+const connectionStatesSource = __SOURCE__;
 
 /* DEMO_START */
 function LiveMonitoringDemo() {
-  const [isRunning, setIsRunning] = useState(false)
+  const [isRunning, setIsRunning] = useState(false);
   const [devices, setDevices] = useState([
     {
       id: "temp-1",
@@ -153,34 +164,34 @@ function LiveMonitoringDemo() {
       lastUpdate: new Date(),
       data: [12, 12.1, 12.2, 12.1, 12.3, 12.2, 12.4, 12.3, 12.5, 12.4],
     },
-  ])
+  ]);
 
   useEffect(() => {
-    if (!isRunning) return
+    if (!isRunning) return;
 
     const interval = setInterval(() => {
-      setDevices(prev =>
-        prev.map(device => {
-          const variation = (Math.random() - 0.5) * 2
-          const newValue = device.value + variation
-          const newDataPoint = newValue + (Math.random() - 0.5) * 5
-          
+      setDevices((prev) =>
+        prev.map((device) => {
+          const variation = (Math.random() - 0.5) * 2;
+          const newValue = device.value + variation;
+          const newDataPoint = newValue + (Math.random() - 0.5) * 5;
+
           return {
             ...device,
             value: newValue,
             lastUpdate: new Date(),
             data: [...device.data.slice(1), newDataPoint],
-          }
+          };
         })
-      )
-    }, 1500)
+      );
+    }, 1500);
 
-    return () => clearInterval(interval)
-  }, [isRunning])
+    return () => clearInterval(interval);
+  }, [isRunning]);
 
   const handleCopyPV = (pvname: string) => {
-    toast.success(`PV Copied: ${pvname}`)
-  }
+    toast.success(`PV Copied: ${pvname}`);
+  };
 
   return (
     <div className="space-y-4">
@@ -194,9 +205,9 @@ function LiveMonitoringDemo() {
           {isRunning ? "Stop Monitoring" : "Start Monitoring"}
         </Button>
       </div>
-      
+
       <div className="space-y-2">
-        {devices.map(device => (
+        {devices.map((device) => (
           <OphydMonitor
             key={device.id}
             variant="compact"
@@ -206,11 +217,11 @@ function LiveMonitoringDemo() {
         ))}
       </div>
     </div>
-  )
+  );
 }
 /* DEMO_END */
 
-const liveMonitoringSource = __SOURCE__
+const liveMonitoringSource = __SOURCE__;
 
 /* DEMO_START */
 function DeviceDashboardDemo() {
@@ -275,15 +286,15 @@ function DeviceDashboardDemo() {
       lastUpdate: new Date(Date.now() - 300000),
       data: generateMockData(),
     },
-  ])
+  ]);
 
   const handleCopyPV = (pvname: string) => {
-    toast.success(`PV Copied: ${pvname}`)
-  }
+    toast.success(`PV Copied: ${pvname}`);
+  };
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-      {dashboardDevices.map(device => (
+    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+      {dashboardDevices.map((device) => (
         <OphydMonitor
           key={device.id}
           variant="grid"
@@ -292,17 +303,20 @@ function DeviceDashboardDemo() {
         />
       ))}
     </div>
-  )
+  );
 }
 /* DEMO_END */
 
-const deviceDashboardSource = __SOURCE__
+const deviceDashboardSource = __SOURCE__;
 
 function OphydMonitorPage() {
   return (
     <>
-      <PageHeader 
-        breadcrumbs={[{ title: "Components", href: "/components" }, { title: "Ophyd Monitor" }]}
+      <PageHeader
+        breadcrumbs={[
+          { title: "Components", href: "/components" },
+          { title: "Ophyd Monitor" },
+        ]}
         pageHeading="Ophyd Monitor"
         pageSubheading="An Ophyd hardware monitor component with various display modes and data visualization options."
       />
@@ -312,7 +326,9 @@ function OphydMonitorPage() {
           <Card>
             <CardHeader>
               <CardTitle>Variants</CardTitle>
-              <CardDescription>Two display modes: compact for lists and grid for dashboards</CardDescription>
+              <CardDescription>
+                Two display modes: compact for lists and grid for dashboards
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <DemoContainer
@@ -326,7 +342,9 @@ function OphydMonitorPage() {
           <Card>
             <CardHeader>
               <CardTitle>Connection States</CardTitle>
-              <CardDescription>Visual indicators for device connectivity and data freshness</CardDescription>
+              <CardDescription>
+                Visual indicators for device connectivity and data freshness
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <DemoContainer
@@ -340,7 +358,9 @@ function OphydMonitorPage() {
           <Card>
             <CardHeader>
               <CardTitle>Live Monitoring</CardTitle>
-              <CardDescription>Real-time data updates with sparkline visualization</CardDescription>
+              <CardDescription>
+                Real-time data updates with sparkline visualization
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <DemoContainer
@@ -354,7 +374,9 @@ function OphydMonitorPage() {
           <Card>
             <CardHeader>
               <CardTitle>Device Dashboard</CardTitle>
-              <CardDescription>Grid layout for monitoring multiple devices simultaneously</CardDescription>
+              <CardDescription>
+                Grid layout for monitoring multiple devices simultaneously
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <DemoContainer
@@ -366,5 +388,5 @@ function OphydMonitorPage() {
         </div>
       </div>
     </>
-  )
+  );
 }

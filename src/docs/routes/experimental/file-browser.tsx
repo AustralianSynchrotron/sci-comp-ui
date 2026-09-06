@@ -1,62 +1,80 @@
-import { createFileRoute } from '@tanstack/react-router'
-import { PageHeader } from '../../components/page-header'
-import { FileBrowser, type FileTreeItem } from '@/ui'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/ui/layout/card'
-import { DemoContainer } from '@/docs/components/demo-container'
-import { Badge } from '@/ui/elements/badge'
-import { Button } from '@/ui/elements/button'
-import { useState } from 'react'
+import { createFileRoute } from "@tanstack/react-router";
+import { PageHeader } from "../../components/page-header";
+import { FileBrowser, type FileTreeItem } from "@/ui";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/ui/layout/card";
+import { DemoContainer } from "@/docs/components/demo-container";
+import { Badge } from "@/ui/elements/badge";
+import { Button } from "@/ui/elements/button";
+import { useState } from "react";
 
-export const Route = createFileRoute('/experimental/file-browser')({
+export const Route = createFileRoute("/experimental/file-browser")({
   component: FileBrowserPage,
-})
+});
 
 // Sample file tree data for demos
 const sampleFileTree: FileTreeItem[] = [
   {
-    name: 'src',
-    type: 'folder',
-    path: '/src',
+    name: "src",
+    type: "folder",
+    path: "/src",
     children: [
       {
-        name: 'components',
-        type: 'folder',
-        path: '/src/components',
+        name: "components",
+        type: "folder",
+        path: "/src/components",
         children: [
-          { name: 'Button.tsx', type: 'file', path: '/src/components/Button.tsx' },
-          { name: 'Input.tsx', type: 'file', path: '/src/components/Input.tsx' },
-          { name: 'Card.tsx', type: 'file', path: '/src/components/Card.tsx' }
-        ]
+          {
+            name: "Button.tsx",
+            type: "file",
+            path: "/src/components/Button.tsx",
+          },
+          {
+            name: "Input.tsx",
+            type: "file",
+            path: "/src/components/Input.tsx",
+          },
+          { name: "Card.tsx", type: "file", path: "/src/components/Card.tsx" },
+        ],
       },
       {
-        name: 'utils',
-        type: 'folder',
-        path: '/src/utils',
+        name: "utils",
+        type: "folder",
+        path: "/src/utils",
         children: [
-          { name: 'helpers.ts', type: 'file', path: '/src/utils/helpers.ts' },
-          { name: 'constants.ts', type: 'file', path: '/src/utils/constants.ts' }
-        ]
+          { name: "helpers.ts", type: "file", path: "/src/utils/helpers.ts" },
+          {
+            name: "constants.ts",
+            type: "file",
+            path: "/src/utils/constants.ts",
+          },
+        ],
       },
-      { name: 'index.ts', type: 'file', path: '/src/index.ts' },
-      { name: 'App.tsx', type: 'file', path: '/src/App.tsx' }
-    ]
+      { name: "index.ts", type: "file", path: "/src/index.ts" },
+      { name: "App.tsx", type: "file", path: "/src/App.tsx" },
+    ],
   },
   {
-    name: 'public',
-    type: 'folder',
-    path: '/public',
+    name: "public",
+    type: "folder",
+    path: "/public",
     children: [
-      { name: 'favicon.ico', type: 'file', path: '/public/favicon.ico' },
-      { name: 'index.html', type: 'file', path: '/public/index.html' }
-    ]
+      { name: "favicon.ico", type: "file", path: "/public/favicon.ico" },
+      { name: "index.html", type: "file", path: "/public/index.html" },
+    ],
   },
-  { name: 'package.json', type: 'file', path: '/package.json' },
-  { name: 'README.md', type: 'file', path: '/README.md' }
-]
+  { name: "package.json", type: "file", path: "/package.json" },
+  { name: "README.md", type: "file", path: "/README.md" },
+];
 
 /* DEMO_START */
 function BasicFileBrowserDemo() {
-  const [selectedFile, setSelectedFile] = useState<string>('')
+  const [selectedFile, setSelectedFile] = useState<string>("");
 
   return (
     <div className="space-y-4">
@@ -70,24 +88,21 @@ function BasicFileBrowserDemo() {
           <span className="text-sm text-muted-foreground">None</span>
         )}
       </div>
-      <div className="border rounded-md p-4 bg-background">
-        <FileBrowser
-          data={sampleFileTree}
-          onFileSelect={setSelectedFile}
-        />
+      <div className="rounded-md border bg-background p-4">
+        <FileBrowser data={sampleFileTree} onFileSelect={setSelectedFile} />
       </div>
     </div>
-  )
+  );
 }
 /* DEMO_END */
 
-const basicFileBrowserSource = __SOURCE__
+const basicFileBrowserSource = __SOURCE__;
 
 /* DEMO_START */
 function CollapsibleOptionsDemo() {
-  const [selectedFile, setSelectedFile] = useState<string>('')
-  const [collapsible, setCollapsible] = useState(true)
-  const [defaultExpanded, setDefaultExpanded] = useState(false)
+  const [selectedFile, setSelectedFile] = useState<string>("");
+  const [collapsible, setCollapsible] = useState(true);
+  const [defaultExpanded, setDefaultExpanded] = useState(false);
 
   return (
     <div className="space-y-4">
@@ -107,7 +122,7 @@ function CollapsibleOptionsDemo() {
           {defaultExpanded ? "Default Expanded" : "Default Collapsed"}
         </Button>
       </div>
-      
+
       <div className="flex items-center gap-2">
         <span className="text-sm text-muted-foreground">Selected file:</span>
         {selectedFile ? (
@@ -118,8 +133,8 @@ function CollapsibleOptionsDemo() {
           <span className="text-sm text-muted-foreground">None</span>
         )}
       </div>
-      
-      <div className="border rounded-md p-4 bg-background">
+
+      <div className="rounded-md border bg-background p-4">
         <FileBrowser
           data={sampleFileTree}
           collapsible={collapsible}
@@ -128,15 +143,15 @@ function CollapsibleOptionsDemo() {
         />
       </div>
     </div>
-  )
+  );
 }
 /* DEMO_END */
 
-const collapsibleOptionsSource = __SOURCE__
+const collapsibleOptionsSource = __SOURCE__;
 
 /* DEMO_START */
 function PrefixDemo() {
-  const [selectedFile, setSelectedFile] = useState<string>('')
+  const [selectedFile, setSelectedFile] = useState<string>("");
 
   return (
     <div className="space-y-4">
@@ -150,21 +165,18 @@ function PrefixDemo() {
           <span className="text-sm text-muted-foreground">None</span>
         )}
       </div>
-      
+
       <div className="grid gap-4 md:grid-cols-2">
         <div className="space-y-2">
-          <h4 className="font-medium text-sm">No Prefix</h4>
-          <div className="border rounded-md p-4 bg-background">
-            <FileBrowser
-              data={sampleFileTree}
-              onFileSelect={setSelectedFile}
-            />
+          <h4 className="text-sm font-medium">No Prefix</h4>
+          <div className="rounded-md border bg-background p-4">
+            <FileBrowser data={sampleFileTree} onFileSelect={setSelectedFile} />
           </div>
         </div>
-        
+
         <div className="space-y-2">
-          <h4 className="font-medium text-sm">With Prefix: "📁 "</h4>
-          <div className="border rounded-md p-4 bg-background">
+          <h4 className="text-sm font-medium">With Prefix: "📁 "</h4>
+          <div className="rounded-md border bg-background p-4">
             <FileBrowser
               data={sampleFileTree}
               prefix="📁 "
@@ -174,19 +186,19 @@ function PrefixDemo() {
         </div>
       </div>
     </div>
-  )
+  );
 }
 /* DEMO_END */
 
-const prefixDemoSource = __SOURCE__
+const prefixDemoSource = __SOURCE__;
 
 function FileBrowserPage() {
   return (
     <>
-      <PageHeader 
+      <PageHeader
         breadcrumbs={[
-          { title: "Experimental", href: "/experimental" }, 
-          { title: "File Browser" }
+          { title: "Experimental", href: "/experimental" },
+          { title: "File Browser" },
         ]}
         pageHeading="File Browser"
         pageSubheading="A hierarchical file tree browser component for displaying and navigating file structures."
@@ -234,14 +246,11 @@ function FileBrowserPage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <DemoContainer
-                demo={<PrefixDemo />}
-                source={prefixDemoSource}
-              />
+              <DemoContainer demo={<PrefixDemo />} source={prefixDemoSource} />
             </CardContent>
           </Card>
         </div>
       </div>
     </>
-  )
+  );
 }

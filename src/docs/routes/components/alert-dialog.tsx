@@ -1,6 +1,6 @@
-import { createFileRoute } from '@tanstack/react-router'
-import { PageHeader } from "../../components/page-header"
-import { 
+import { createFileRoute } from "@tanstack/react-router";
+import { PageHeader } from "../../components/page-header";
+import {
   AlertDialog,
   AlertDialogAction,
   AlertDialogCancel,
@@ -9,15 +9,21 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger
-} from "../../../ui/components/alert-dialog"
-import { Button } from "../../../ui/elements/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../../ui/layout/card"
-import { DemoContainer } from "../../components/demo-container"
+  AlertDialogTrigger,
+} from "../../../ui/components/alert-dialog";
+import { Button } from "../../../ui/elements/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../../../ui/layout/card";
+import { DemoContainer } from "../../components/demo-container";
 
-export const Route = createFileRoute('/components/alert-dialog')({
+export const Route = createFileRoute("/components/alert-dialog")({
   component: AlertDialogPage,
-})
+});
 
 /* DEMO_START */
 function BasicAlertDialogDemo() {
@@ -30,7 +36,7 @@ function BasicAlertDialogDemo() {
         <AlertDialogHeader>
           <AlertDialogTitle>Confirm Beamline Shutdown</AlertDialogTitle>
           <AlertDialogDescription>
-            This will terminate all active experiments and close the beamline. 
+            This will terminate all active experiments and close the beamline.
             Any unsaved data will be lost. Are you sure you want to continue?
           </AlertDialogDescription>
         </AlertDialogHeader>
@@ -40,12 +46,12 @@ function BasicAlertDialogDemo() {
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
-  )
+  );
 }
 /* DEMO_END */
 
 // This gets replaced at build time with the actual source code
-const basicAlertDialogSource = __SOURCE__
+const basicAlertDialogSource = __SOURCE__;
 
 /* DEMO_START */
 function DestructiveAlertDialogDemo() {
@@ -58,7 +64,7 @@ function DestructiveAlertDialogDemo() {
         <AlertDialogHeader>
           <AlertDialogTitle>Emergency Stop Activated</AlertDialogTitle>
           <AlertDialogDescription>
-            This will immediately halt all beamline operations and activate 
+            This will immediately halt all beamline operations and activate
             safety protocols. This action cannot be undone.
           </AlertDialogDescription>
         </AlertDialogHeader>
@@ -70,11 +76,11 @@ function DestructiveAlertDialogDemo() {
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
-  )
+  );
 }
 /* DEMO_END */
 
-const destructiveAlertDialogSource = __SOURCE__
+const destructiveAlertDialogSource = __SOURCE__;
 
 /* DEMO_START */
 function CustomContentAlertDialogDemo() {
@@ -87,8 +93,8 @@ function CustomContentAlertDialogDemo() {
         <AlertDialogHeader>
           <AlertDialogTitle>Detector Calibration Required</AlertDialogTitle>
           <AlertDialogDescription>
-            The X-ray detector has exceeded its calibration tolerance. 
-            Current drift: 0.15° from reference position.
+            The X-ray detector has exceeded its calibration tolerance. Current
+            drift: 0.15° from reference position.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <div className="py-4">
@@ -113,17 +119,20 @@ function CustomContentAlertDialogDemo() {
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
-  )
+  );
 }
 /* DEMO_END */
 
-const customContentAlertDialogSource = __SOURCE__
+const customContentAlertDialogSource = __SOURCE__;
 
 function AlertDialogPage() {
   return (
     <>
-      <PageHeader 
-        breadcrumbs={[{ title: "Components", href: "/components" }, { title: "Alert Dialog" }]}
+      <PageHeader
+        breadcrumbs={[
+          { title: "Components", href: "/components" },
+          { title: "Alert Dialog" },
+        ]}
         pageHeading="Alert Dialog"
         pageSubheading="A modal dialog that interrupts the user with important content and requires a response."
       />
@@ -132,7 +141,9 @@ function AlertDialogPage() {
           <Card>
             <CardHeader>
               <CardTitle>Basic Alert Dialog</CardTitle>
-              <CardDescription>A simple confirmation dialog for important actions</CardDescription>
+              <CardDescription>
+                A simple confirmation dialog for important actions
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <DemoContainer
@@ -145,7 +156,9 @@ function AlertDialogPage() {
           <Card>
             <CardHeader>
               <CardTitle>Destructive Actions</CardTitle>
-              <CardDescription>Alert dialogs for dangerous or irreversible operations</CardDescription>
+              <CardDescription>
+                Alert dialogs for dangerous or irreversible operations
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <DemoContainer
@@ -158,7 +171,9 @@ function AlertDialogPage() {
           <Card>
             <CardHeader>
               <CardTitle>Custom Content</CardTitle>
-              <CardDescription>Alert dialogs with additional information and custom layouts</CardDescription>
+              <CardDescription>
+                Alert dialogs with additional information and custom layouts
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <DemoContainer
@@ -170,5 +185,5 @@ function AlertDialogPage() {
         </div>
       </div>
     </>
-  )
+  );
 }

@@ -1,14 +1,23 @@
-import { createFileRoute } from "@tanstack/react-router"
-import { useState, useEffect } from "react"
-import { PageHeader } from "../../components/page-header"
-import { UnitsField } from "../../../ui/experimental/units-field"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../../ui/layout/card"
-import { DemoContainer } from "../../components/demo-container"
-import { synchrotronMath, type SynchrotronValue } from "../../../lib/units-math"
+import { createFileRoute } from "@tanstack/react-router";
+import { useState, useEffect } from "react";
+import { PageHeader } from "../../components/page-header";
+import { UnitsField } from "../../../ui/experimental/units-field";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../../../ui/layout/card";
+import { DemoContainer } from "../../components/demo-container";
+import {
+  synchrotronMath,
+  type SynchrotronValue,
+} from "../../../lib/units-math";
 
 export const Route = createFileRoute("/experimental/units-field")({
   component: UnitsFieldPage,
-})
+});
 
 /* DEMO_START */
 function BasicUnitsDemo() {
@@ -16,58 +25,68 @@ function BasicUnitsDemo() {
     <div className="space-y-4">
       <UnitsField label="Photon Energy" defaultValue={12.4} defaultUnit="keV" />
       <UnitsField label="Beam Current" defaultValue={200} defaultUnit="mA" />
-      <UnitsField label="Vacuum Pressure" defaultValue={1e-9} defaultUnit="Torr" />
+      <UnitsField
+        label="Vacuum Pressure"
+        defaultValue={1e-9}
+        defaultUnit="Torr"
+      />
       <UnitsField label="Magnetic Field" defaultValue={1.5} defaultUnit="T" />
     </div>
-  )
+  );
 }
 /* DEMO_END */
 
-const basicUnitsSource = __SOURCE__
+const basicUnitsSource = __SOURCE__;
 
 /* DEMO_START */
 function EnergyWavelengthDemo() {
-  const [energyValue, setEnergyValue] = useState<SynchrotronValue>()
-  const [wavelengthValue, setWavelengthValue] = useState<SynchrotronValue>()
+  const [energyValue, setEnergyValue] = useState<SynchrotronValue>();
+  const [wavelengthValue, setWavelengthValue] = useState<SynchrotronValue>();
 
   // Auto-convert energy to wavelength
   useEffect(() => {
     if (energyValue && energyValue.nativeValue > 0) {
-      const wavelength = synchrotronMath.energyToWavelength(energyValue)
-      setWavelengthValue(wavelength)
+      const wavelength = synchrotronMath.energyToWavelength(energyValue);
+      setWavelengthValue(wavelength);
     }
-  }, [energyValue])
+  }, [energyValue]);
 
   return (
     <div className="space-y-4">
-      <UnitsField 
-        label="Photon Energy" 
-        defaultValue={12.4} 
-        defaultUnit="keV" 
-        onChange={setEnergyValue} 
+      <UnitsField
+        label="Photon Energy"
+        defaultValue={12.4}
+        defaultUnit="keV"
+        onChange={setEnergyValue}
       />
 
       {wavelengthValue && (
-        <div className="p-3 bg-muted rounded-lg">
+        <div className="rounded-lg bg-muted p-3">
           <div className="text-sm font-medium">Auto-calculated Wavelength:</div>
           <div className="text-lg">
             {wavelengthValue.value.toExponential(3)} m ={" "}
-            {synchrotronMath.convertForDisplay(wavelengthValue, "angstrom").value.toFixed(3)} Å
+            {synchrotronMath
+              .convertForDisplay(wavelengthValue, "angstrom")
+              .value.toFixed(3)}{" "}
+            Å
           </div>
         </div>
       )}
     </div>
-  )
+  );
 }
 /* DEMO_END */
 
-const energyWavelengthSource = __SOURCE__
+const energyWavelengthSource = __SOURCE__;
 
 function UnitsFieldPage() {
   return (
     <>
-      <PageHeader 
-        breadcrumbs={[{ title: "Experimental", href: "/experimental" }, { title: "Units Field" }]}
+      <PageHeader
+        breadcrumbs={[
+          { title: "Experimental", href: "/experimental" },
+          { title: "Units Field" },
+        ]}
         pageHeading="Units Field"
         pageSubheading="An input field for values with unit conversion."
       />
@@ -76,7 +95,10 @@ function UnitsFieldPage() {
           <Card>
             <CardHeader>
               <CardTitle>Basic Units</CardTitle>
-              <CardDescription>Different types of scientific units commonly used in synchrotron facilities</CardDescription>
+              <CardDescription>
+                Different types of scientific units commonly used in synchrotron
+                facilities
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <DemoContainer
@@ -89,7 +111,10 @@ function UnitsFieldPage() {
           <Card>
             <CardHeader>
               <CardTitle>Energy-Wavelength Conversion</CardTitle>
-              <CardDescription>Automatic conversion between photon energy and wavelength using E = hc/λ</CardDescription>
+              <CardDescription>
+                Automatic conversion between photon energy and wavelength using
+                E = hc/λ
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <DemoContainer
@@ -101,5 +126,5 @@ function UnitsFieldPage() {
         </div>
       </div>
     </>
-  )
+  );
 }

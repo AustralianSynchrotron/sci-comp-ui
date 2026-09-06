@@ -1,76 +1,82 @@
-import { createFileRoute } from "@tanstack/react-router"
-import { PageHeader } from "../../components/page-header"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../../ui/layout/card"
-import { DemoContainer } from "@/docs/components/demo-container"
-import { CodeBlock } from "../../../ui/components/code-block"
+import { createFileRoute } from "@tanstack/react-router";
+import { PageHeader } from "../../components/page-header";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../../../ui/layout/card";
+import { DemoContainer } from "@/docs/components/demo-container";
+import { CodeBlock } from "../../../ui/components/code-block";
 
 export const Route = createFileRoute("/layout/box")({
   component: BoxPage,
-})
+});
 
 /* DEMO_START */
 function BasicBoxDemo() {
   return (
     <div className="space-y-4">
-      <div className="p-4 border rounded-lg">
+      <div className="rounded-lg border p-4">
         <p>This is a basic box with border and padding.</p>
       </div>
-      <div className="p-4 bg-muted rounded-lg">
+      <div className="rounded-lg bg-muted p-4">
         <p>This is a box with background color.</p>
       </div>
-      <div className="p-4 border-2 border-dashed border-muted-foreground rounded-lg">
+      <div className="rounded-lg border-2 border-dashed border-muted-foreground p-4">
         <p>This is a box with dashed border.</p>
       </div>
     </div>
-  )
+  );
 }
 /* DEMO_END */
 
 // This gets replaced at build time with the actual source code
-const basicBoxSource = __SOURCE__
+const basicBoxSource = __SOURCE__;
 
 /* DEMO_START */
 function BoxSpacingDemo() {
   return (
     <div className="space-y-4">
-      <div className="p-2 border rounded-lg bg-blue-50">
+      <div className="rounded-lg border bg-blue-50 p-2">
         <p>Small padding (p-2)</p>
       </div>
-      <div className="p-4 border rounded-lg bg-green-50">
+      <div className="rounded-lg border bg-green-50 p-4">
         <p>Medium padding (p-4)</p>
       </div>
-      <div className="p-8 border rounded-lg bg-yellow-50">
+      <div className="rounded-lg border bg-yellow-50 p-8">
         <p>Large padding (p-8)</p>
       </div>
     </div>
-  )
+  );
 }
 /* DEMO_END */
 
-const boxSpacingSource = __SOURCE__
+const boxSpacingSource = __SOURCE__;
 
 /* DEMO_START */
 function NestedBoxesDemo() {
   return (
-    <div className="p-4 border rounded-lg">
+    <div className="rounded-lg border p-4">
       <p className="mb-4">Outer box</p>
-      <div className="p-4 bg-muted rounded-lg">
+      <div className="rounded-lg bg-muted p-4">
         <p className="mb-2">Inner box</p>
-        <div className="p-2 bg-background border rounded">
+        <div className="rounded border bg-background p-2">
           <p>Nested box</p>
         </div>
       </div>
     </div>
-  )
+  );
 }
 /* DEMO_END */
 
-const nestedBoxesSource = __SOURCE__
+const nestedBoxesSource = __SOURCE__;
 
 function BoxPage() {
   return (
     <>
-      <PageHeader 
+      <PageHeader
         breadcrumbs={[{ title: "Layout", href: "/layout" }, { title: "Box" }]}
         pageHeading="Box"
         pageSubheading="A fundamental layout component for creating containers and spacing."
@@ -80,20 +86,21 @@ function BoxPage() {
           <Card>
             <CardHeader>
               <CardTitle>Basic Box</CardTitle>
-              <CardDescription>Simple container boxes with different styles</CardDescription>
+              <CardDescription>
+                Simple container boxes with different styles
+              </CardDescription>
             </CardHeader>
             <CardContent>
-              <DemoContainer
-                demo={<BasicBoxDemo />}
-                source={basicBoxSource}
-              />
+              <DemoContainer demo={<BasicBoxDemo />} source={basicBoxSource} />
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader>
               <CardTitle>Box Spacing</CardTitle>
-              <CardDescription>Different padding and margin configurations</CardDescription>
+              <CardDescription>
+                Different padding and margin configurations
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <DemoContainer
@@ -106,7 +113,9 @@ function BoxPage() {
           <Card>
             <CardHeader>
               <CardTitle>Nested Boxes</CardTitle>
-              <CardDescription>Boxes within boxes for complex layouts</CardDescription>
+              <CardDescription>
+                Boxes within boxes for complex layouts
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <DemoContainer
@@ -119,10 +128,14 @@ function BoxPage() {
           <Card>
             <CardHeader>
               <CardTitle>Usage</CardTitle>
-              <CardDescription>How to create box layouts with Tailwind classes</CardDescription>
+              <CardDescription>
+                How to create box layouts with Tailwind classes
+              </CardDescription>
             </CardHeader>
             <CardContent>
-              <CodeBlock language="jsx" code={`// Basic box with padding and border
+              <CodeBlock
+                language="jsx"
+                code={`// Basic box with padding and border
 <div className="p-4 border rounded-lg">
   Content here
 </div>
@@ -135,11 +148,12 @@ function BoxPage() {
 // Responsive box
 <div className="p-2 md:p-4 lg:p-6 border rounded-lg">
   Responsive padding
-</div>`} />
+</div>`}
+              />
             </CardContent>
           </Card>
         </div>
       </div>
     </>
-  )
+  );
 }

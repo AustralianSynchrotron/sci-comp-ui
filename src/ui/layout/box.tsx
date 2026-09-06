@@ -1,7 +1,7 @@
-import * as React from "react"
-import { Slot } from "@radix-ui/react-slot"
-import { cva, type VariantProps } from "class-variance-authority"
-import { cn } from "../../lib/utils"
+import * as React from "react";
+import { Slot } from "@radix-ui/react-slot";
+import { cva, type VariantProps } from "class-variance-authority";
+import { cn } from "../../lib/utils";
 
 const boxVariants = cva("", {
   variants: {
@@ -42,28 +42,45 @@ const boxVariants = cva("", {
     },
   },
   defaultVariants: {},
-})
+});
 
-interface BoxProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof boxVariants> {
-  asChild?: boolean
-  component?: React.ElementType
+interface BoxProps
+  extends
+    React.HTMLAttributes<HTMLDivElement>,
+    VariantProps<typeof boxVariants> {
+  asChild?: boolean;
+  component?: React.ElementType;
 }
 
 const Box = React.forwardRef<HTMLDivElement, BoxProps>(
-  ({ className, display, position, overflow, textAlign, asChild = false, component, ...props }, ref) => {
-    const Comp = asChild ? Slot : component || "div"
-    
+  (
+    {
+      className,
+      display,
+      position,
+      overflow,
+      textAlign,
+      asChild = false,
+      component,
+      ...props
+    },
+    ref
+  ) => {
+    const Comp = asChild ? Slot : component || "div";
+
     return (
       <Comp
         ref={ref}
         data-slot="box"
-        className={cn(boxVariants({ display, position, overflow, textAlign, className }))}
+        className={cn(
+          boxVariants({ display, position, overflow, textAlign, className })
+        )}
         {...props}
       />
-    )
+    );
   }
-)
-Box.displayName = "Box"
+);
+Box.displayName = "Box";
 
-export { Box, boxVariants }
-export type { BoxProps }
+export { Box, boxVariants };
+export type { BoxProps };

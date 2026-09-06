@@ -1,20 +1,26 @@
-import { createFileRoute } from '@tanstack/react-router'
-import { PageHeader } from "../../components/page-header"
-import { 
-  Breadcrumb, 
-  BreadcrumbList, 
-  BreadcrumbItem, 
-  BreadcrumbLink, 
-  BreadcrumbPage, 
+import { createFileRoute } from "@tanstack/react-router";
+import { PageHeader } from "../../components/page-header";
+import {
+  Breadcrumb,
+  BreadcrumbList,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbPage,
   BreadcrumbSeparator,
-  BreadcrumbEllipsis 
-} from "../../../ui/elements/breadcrumb"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../../ui/layout/card"
-import { DemoContainer } from "@/docs/components/demo-container"
+  BreadcrumbEllipsis,
+} from "../../../ui/elements/breadcrumb";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../../../ui/layout/card";
+import { DemoContainer } from "@/docs/components/demo-container";
 
-export const Route = createFileRoute('/elements/breadcrumb')({
+export const Route = createFileRoute("/elements/breadcrumb")({
   component: BreadcrumbDemoPage,
-})
+});
 
 /* DEMO_START */
 function BasicBreadcrumbDemo() {
@@ -34,12 +40,12 @@ function BasicBreadcrumbDemo() {
         </BreadcrumbItem>
       </BreadcrumbList>
     </Breadcrumb>
-  )
+  );
 }
 /* DEMO_END */
 
 // This gets replaced at build time with the actual source code
-const basicBreadcrumbSource = __SOURCE__
+const basicBreadcrumbSource = __SOURCE__;
 
 /* DEMO_START */
 function ComplexBreadcrumbDemo() {
@@ -67,11 +73,11 @@ function ComplexBreadcrumbDemo() {
         </BreadcrumbItem>
       </BreadcrumbList>
     </Breadcrumb>
-  )
+  );
 }
 /* DEMO_END */
 
-const complexBreadcrumbSource = __SOURCE__
+const complexBreadcrumbSource = __SOURCE__;
 
 /* DEMO_START */
 function EquipmentBreadcrumbDemo() {
@@ -95,17 +101,20 @@ function EquipmentBreadcrumbDemo() {
         </BreadcrumbItem>
       </BreadcrumbList>
     </Breadcrumb>
-  )
+  );
 }
 /* DEMO_END */
 
-const equipmentBreadcrumbSource = __SOURCE__
+const equipmentBreadcrumbSource = __SOURCE__;
 
 function BreadcrumbDemoPage() {
   return (
     <>
-      <PageHeader 
-        breadcrumbs={[{ title: "Elements", href: "/elements" }, { title: "Breadcrumb" }]}
+      <PageHeader
+        breadcrumbs={[
+          { title: "Elements", href: "/elements" },
+          { title: "Breadcrumb" },
+        ]}
         pageHeading="Breadcrumb"
         pageSubheading="A navigation component that shows the current page location within a hierarchy."
       />
@@ -127,7 +136,9 @@ function BreadcrumbDemoPage() {
           <Card>
             <CardHeader>
               <CardTitle>Complex Navigation</CardTitle>
-              <CardDescription>Breadcrumb with ellipsis for long paths</CardDescription>
+              <CardDescription>
+                Breadcrumb with ellipsis for long paths
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <DemoContainer
@@ -140,7 +151,9 @@ function BreadcrumbDemoPage() {
           <Card>
             <CardHeader>
               <CardTitle>Equipment Navigation</CardTitle>
-              <CardDescription>Navigating through equipment hierarchy</CardDescription>
+              <CardDescription>
+                Navigating through equipment hierarchy
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <DemoContainer
@@ -152,5 +165,5 @@ function BreadcrumbDemoPage() {
         </div>
       </div>
     </>
-  )
+  );
 }

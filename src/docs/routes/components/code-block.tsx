@@ -1,18 +1,24 @@
-import { createFileRoute } from '@tanstack/react-router'
-import { PageHeader } from "../../components/page-header"
-import { CodeBlock } from "../../../ui/components/code-block"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../../ui/layout/card"
-import { DemoContainer } from "@/docs/components/demo-container"
+import { createFileRoute } from "@tanstack/react-router";
+import { PageHeader } from "../../components/page-header";
+import { CodeBlock } from "../../../ui/components/code-block";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../../../ui/layout/card";
+import { DemoContainer } from "@/docs/components/demo-container";
 
-export const Route = createFileRoute('/components/code-block')({
+export const Route = createFileRoute("/components/code-block")({
   component: CodeBlockPage,
-})
+});
 
 /* DEMO_START */
 function BasicCodeBlockDemo() {
   return (
     <div className="space-y-4">
-      <CodeBlock 
+      <CodeBlock
         code={`function greet(name: string) {
   return \`Hello, \${name}!\`
 }
@@ -21,18 +27,18 @@ console.log(greet("World"))`}
         language="typescript"
       />
     </div>
-  )
+  );
 }
 /* DEMO_END */
 
 // This gets replaced at build time with the actual source code
-const basicCodeBlockSource = __SOURCE__
+const basicCodeBlockSource = __SOURCE__;
 
 /* DEMO_START */
 function MultipleLanguagesDemo() {
   return (
     <div className="space-y-4">
-      <CodeBlock 
+      <CodeBlock
         code={`import numpy as np
 
 def calculate_beam_energy(mass, velocity):
@@ -44,8 +50,8 @@ beam_energy = calculate_beam_energy(9.1093837015e-31, 0.9999999)
 print(f"Beam Energy: {beam_energy / 1e9:.1f} GeV")`}
         language="python"
       />
-      
-      <CodeBlock 
+
+      <CodeBlock
         code={`#!/bin/bash
 
 # Check beam status
@@ -59,17 +65,17 @@ fi`}
         language="bash"
       />
     </div>
-  )
+  );
 }
 /* DEMO_END */
 
-const multipleLanguagesSource = __SOURCE__
+const multipleLanguagesSource = __SOURCE__;
 
 /* DEMO_START */
 function LineNumbersDemo() {
   return (
     <div className="space-y-4">
-      <CodeBlock 
+      <CodeBlock
         code={`import React from 'react'
 import { Button } from './ui/button'
 
@@ -97,17 +103,17 @@ export function ControlPanel({ isActive, onToggle, energy }: ControlPanelProps) 
         showLineNumbers
       />
     </div>
-  )
+  );
 }
 /* DEMO_END */
 
-const lineNumbersSource = __SOURCE__
+const lineNumbersSource = __SOURCE__;
 
 /* DEMO_START */
 function NoLanguageDemo() {
   return (
     <div className="space-y-4">
-      <CodeBlock 
+      <CodeBlock
         code={`This is a plain text code block without syntax highlighting.
 It's useful for displaying:
 - Configuration files
@@ -119,17 +125,20 @@ The copy button is positioned in the top-right corner
 when no language is specified.`}
       />
     </div>
-  )
+  );
 }
 /* DEMO_END */
 
-const noLanguageSource = __SOURCE__
+const noLanguageSource = __SOURCE__;
 
 function CodeBlockPage() {
   return (
     <>
-      <PageHeader 
-        breadcrumbs={[{ title: "Components", href: "/components" }, { title: "Code Block" }]}
+      <PageHeader
+        breadcrumbs={[
+          { title: "Components", href: "/components" },
+          { title: "Code Block" },
+        ]}
         pageHeading="Code Block"
         pageSubheading="A versatile component for displaying code with syntax highlighting, line numbers, and copy functionality."
       />
@@ -138,7 +147,9 @@ function CodeBlockPage() {
           <Card>
             <CardHeader>
               <CardTitle>Basic Usage</CardTitle>
-              <CardDescription>Simple code block with TypeScript syntax highlighting</CardDescription>
+              <CardDescription>
+                Simple code block with TypeScript syntax highlighting
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <DemoContainer
@@ -151,7 +162,9 @@ function CodeBlockPage() {
           <Card>
             <CardHeader>
               <CardTitle>Multiple Languages</CardTitle>
-              <CardDescription>Code blocks supporting different programming languages</CardDescription>
+              <CardDescription>
+                Code blocks supporting different programming languages
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <DemoContainer
@@ -164,7 +177,9 @@ function CodeBlockPage() {
           <Card>
             <CardHeader>
               <CardTitle>Line Numbers</CardTitle>
-              <CardDescription>Code blocks with line numbers for better readability</CardDescription>
+              <CardDescription>
+                Code blocks with line numbers for better readability
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <DemoContainer
@@ -177,7 +192,9 @@ function CodeBlockPage() {
           <Card>
             <CardHeader>
               <CardTitle>Plain Text</CardTitle>
-              <CardDescription>Code blocks without syntax highlighting for plain text content</CardDescription>
+              <CardDescription>
+                Code blocks without syntax highlighting for plain text content
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <DemoContainer
@@ -189,5 +206,5 @@ function CodeBlockPage() {
         </div>
       </div>
     </>
-  )
+  );
 }

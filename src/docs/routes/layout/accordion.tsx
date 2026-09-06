@@ -1,12 +1,23 @@
-import { createFileRoute } from '@tanstack/react-router'
-import { PageHeader } from "../../components/page-header"
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../../../ui/layout/accordion"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../../ui/layout/card"
-import { DemoContainer } from "@/docs/components/demo-container"
+import { createFileRoute } from "@tanstack/react-router";
+import { PageHeader } from "../../components/page-header";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "../../../ui/layout/accordion";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../../../ui/layout/card";
+import { DemoContainer } from "@/docs/components/demo-container";
 
-export const Route = createFileRoute('/layout/accordion')({
+export const Route = createFileRoute("/layout/accordion")({
   component: AccordionPage,
-})
+});
 
 /* DEMO_START */
 function BasicAccordionDemo() {
@@ -70,12 +81,12 @@ function BasicAccordionDemo() {
         </AccordionContent>
       </AccordionItem>
     </Accordion>
-  )
+  );
 }
 /* DEMO_END */
 
 // This gets replaced at build time with the actual source code
-const basicAccordionSource = __SOURCE__
+const basicAccordionSource = __SOURCE__;
 
 /* DEMO_START */
 function MultipleAccordionDemo() {
@@ -136,17 +147,20 @@ function MultipleAccordionDemo() {
         </AccordionContent>
       </AccordionItem>
     </Accordion>
-  )
+  );
 }
 /* DEMO_END */
 
-const multipleAccordionSource = __SOURCE__
+const multipleAccordionSource = __SOURCE__;
 
 function AccordionPage() {
   return (
     <>
-      <PageHeader 
-        breadcrumbs={[{ title: "Layout", href: "/layout" }, { title: "Accordion" }]}
+      <PageHeader
+        breadcrumbs={[
+          { title: "Layout", href: "/layout" },
+          { title: "Accordion" },
+        ]}
         pageHeading="Accordion"
         pageSubheading="A vertically collapsible section that can be used to organize content into expandable areas."
       />
@@ -155,7 +169,9 @@ function AccordionPage() {
           <Card>
             <CardHeader>
               <CardTitle>Basic Accordion</CardTitle>
-              <CardDescription>A single collapsible accordion with beamline information</CardDescription>
+              <CardDescription>
+                A single collapsible accordion with beamline information
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <DemoContainer
@@ -168,7 +184,9 @@ function AccordionPage() {
           <Card>
             <CardHeader>
               <CardTitle>Multiple Accordion</CardTitle>
-              <CardDescription>Multiple sections can be expanded simultaneously</CardDescription>
+              <CardDescription>
+                Multiple sections can be expanded simultaneously
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <DemoContainer
@@ -180,5 +198,5 @@ function AccordionPage() {
         </div>
       </div>
     </>
-  )
+  );
 }

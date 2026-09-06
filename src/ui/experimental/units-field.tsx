@@ -1,56 +1,75 @@
-import { useState, useEffect } from "react"
-import { Input } from "../elements/input"
-import { Label } from "../elements/label"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../elements/select"
-import { synchrotronMath, type SynchrotronValue } from "../../lib/units-math"
+import { useState, useEffect } from "react";
+import { Input } from "../elements/input";
+import { Label } from "../elements/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../elements/select";
+import { synchrotronMath, type SynchrotronValue } from "../../lib/units-math";
 
 interface UnitsFieldProps {
-  label: string
-  defaultValue?: number
-  defaultUnit?: string
-  onChange?: (value: SynchrotronValue) => void
-  className?: string
+  label: string;
+  defaultValue?: number;
+  defaultUnit?: string;
+  onChange?: (value: SynchrotronValue) => void;
+  className?: string;
 }
 
-export function UnitsField({ label, defaultValue = 0, defaultUnit = "eV", onChange, className }: UnitsFieldProps) {
+export function UnitsField({
+  label,
+  defaultValue = 0,
+  defaultUnit = "eV",
+  onChange,
+  className,
+}: UnitsFieldProps) {
   const [nativeValue, setNativeValue] = useState<SynchrotronValue>(
-    synchrotronMath.createValue(defaultValue, defaultUnit),
-  )
-  const [displayValue, setDisplayValue] = useState<SynchrotronValue>(nativeValue)
-  const [compatibleUnits, setCompatibleUnits] = useState<string[]>([])
+    synchrotronMath.createValue(defaultValue, defaultUnit)
+  );
+  const [displayValue, setDisplayValue] =
+    useState<SynchrotronValue>(nativeValue);
+  const [compatibleUnits, setCompatibleUnits] = useState<string[]>([]);
 
   // Update compatible units when native unit changes
   useEffect(() => {
-    const units = synchrotronMath.getCompatibleUnits(nativeValue.nativeUnit)
-    setCompatibleUnits(units)
-  }, [nativeValue.nativeUnit])
+    const units = synchrotronMath.getCompatibleUnits(nativeValue.nativeUnit);
+    setCompatibleUnits(units);
+  }, [nativeValue.nativeUnit]);
 
   // Handle input value change
   const handleValueChange = (inputValue: string) => {
-    const numValue = Number.parseFloat(inputValue) || 0
+    const numValue = Number.parseFloat(inputValue) || 0;
 
     // Update native value in current display units, then convert back to native
-    const updatedInDisplayUnits = synchrotronMath.createValue(numValue, displayValue.unit)
-    const backToNative = synchrotronMath.convertForDisplay(updatedInDisplayUnits, nativeValue.nativeUnit)
+    const updatedInDisplayUnits = synchrotronMath.createValue(
+      numValue,
+      displayValue.unit
+    );
+    const backToNative = synchrotronMath.convertForDisplay(
+      updatedInDisplayUnits,
+      nativeValue.nativeUnit
+    );
 
-    setNativeValue(backToNative)
-    setDisplayValue({ ...updatedInDisplayUnits })
+    setNativeValue(backToNative);
+    setDisplayValue({ ...updatedInDisplayUnits });
 
-    onChange?.(backToNative)
-  }
+    onChange?.(backToNative);
+  };
 
   // Handle unit change for display
   const handleUnitChange = (newUnit: string) => {
-    const converted = synchrotronMath.convertForDisplay(nativeValue, newUnit)
-    setDisplayValue(converted)
-  }
+    const converted = synchrotronMath.convertForDisplay(nativeValue, newUnit);
+    setDisplayValue(converted);
+  };
 
   return (
     <div className={className}>
       <Label htmlFor={`${label}-input`} className="text-sm font-medium">
         {label}
       </Label>
-      <div className="flex gap-2 mt-1">
+      <div className="mt-1 flex gap-2">
         <Input
           id={`${label}-input`}
           type="number"
@@ -72,9 +91,10 @@ export function UnitsField({ label, defaultValue = 0, defaultUnit = "eV", onChan
           </SelectContent>
         </Select>
       </div>
-      <div className="text-xs text-muted-foreground mt-1">
-        Native: {nativeValue.nativeValue.toExponential(3)} {nativeValue.nativeUnit}
+      <div className="mt-1 text-xs text-muted-foreground">
+        Native: {nativeValue.nativeValue.toExponential(3)}{" "}
+        {nativeValue.nativeUnit}
       </div>
     </div>
-  )
+  );
 }

@@ -1,15 +1,21 @@
-import { createFileRoute } from "@tanstack/react-router"
-import { useState } from "react"
-import { PageHeader } from "../../components/page-header"
-import { Input } from "../../../ui/elements/input"
-import { Label } from "../../../ui/elements/label"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../../ui/layout/card"
-import { DemoContainer } from "@/docs/components/demo-container"
-import { DatePicker } from "../../../ui/components/date-picker"
+import { createFileRoute } from "@tanstack/react-router";
+import { useState } from "react";
+import { PageHeader } from "../../components/page-header";
+import { Input } from "../../../ui/elements/input";
+import { Label } from "../../../ui/elements/label";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../../../ui/layout/card";
+import { DemoContainer } from "@/docs/components/demo-container";
+import { DatePicker } from "../../../ui/components/date-picker";
 
 export const Route = createFileRoute("/elements/input")({
   component: InputPage,
-})
+});
 
 /* DEMO_START */
 function BasicInputDemo() {
@@ -18,16 +24,16 @@ function BasicInputDemo() {
       <Label htmlFor="email">Email</Label>
       <Input id="email" placeholder="Enter your email" />
     </div>
-  )
+  );
 }
 /* DEMO_END */
 
 // This gets replaced at build time with the actual source code
-const basicInputSource = __SOURCE__
+const basicInputSource = __SOURCE__;
 
 /* DEMO_START */
 function InputTypesDemo() {
-  const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined)
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
 
   return (
     <div className="space-y-4">
@@ -48,11 +54,11 @@ function InputTypesDemo() {
         />
       </div>
     </div>
-  )
+  );
 }
 /* DEMO_END */
 
-const inputTypesSource = __SOURCE__
+const inputTypesSource = __SOURCE__;
 
 /* DEMO_START */
 function InputStatesDemo() {
@@ -67,23 +73,25 @@ function InputStatesDemo() {
         <Input id="disabled" placeholder="Disabled input" disabled />
       </div>
     </div>
-  )
+  );
 }
 /* DEMO_END */
 
-const inputStatesSource = __SOURCE__
+const inputStatesSource = __SOURCE__;
 
 function InputPage() {
   return (
     <>
-      <PageHeader 
-        breadcrumbs={[{ title: "Elements", href: "/elements" }, { title: "Input" }]}
+      <PageHeader
+        breadcrumbs={[
+          { title: "Elements", href: "/elements" },
+          { title: "Input" },
+        ]}
         pageHeading="Input"
         pageSubheading="Displays a form input field or a component that looks like an input field."
       />
       <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
         <div className="space-y-6">
-
           <Card>
             <CardHeader>
               <CardTitle>Basic Input</CardTitle>
@@ -125,5 +133,5 @@ function InputPage() {
         </div>
       </div>
     </>
-  )
+  );
 }

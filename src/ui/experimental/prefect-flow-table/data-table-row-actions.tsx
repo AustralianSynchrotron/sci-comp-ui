@@ -1,7 +1,15 @@
-import type { Row } from "@tanstack/react-table"
-import { MoreHorizontal, Play, Pause, RotateCcw, Eye, Copy, Trash2 } from "lucide-react"
+import type { Row } from "@tanstack/react-table";
+import {
+  MoreHorizontal,
+  Play,
+  Pause,
+  RotateCcw,
+  Eye,
+  Copy,
+  Trash2,
+} from "lucide-react";
 
-import { Button } from "../../elements/button"
+import { Button } from "../../elements/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,21 +17,27 @@ import {
   DropdownMenuSeparator,
   DropdownMenuShortcut,
   DropdownMenuTrigger,
-} from "../../components/dropdown-menu"
+} from "../../components/dropdown-menu";
 
 // import { flowSchema } from "./data/schema" // Available for future use
 
 interface DataTableRowActionsProps<TData> {
-  row: Row<TData>
+  row: Row<TData>;
 }
 
-export function DataTableRowActions<TData>({ }: DataTableRowActionsProps<TData>) {
+export function DataTableRowActions<
+  TData,
+>({}: DataTableRowActionsProps<TData>) {
   // const flow = flowSchema.parse(row.original) // Available for future actions when needed
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon" className="data-[state=open]:bg-muted size-8">
+        <Button
+          variant="ghost"
+          size="icon"
+          className="size-8 data-[state=open]:bg-muted"
+        >
           <MoreHorizontal />
           <span className="sr-only">Open menu</span>
         </Button>
@@ -58,5 +72,5 @@ export function DataTableRowActions<TData>({ }: DataTableRowActionsProps<TData>)
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
-  )
+  );
 }

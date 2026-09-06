@@ -10,11 +10,6 @@
     "verbatimModuleSyntax": false,
     "moduleResolution": "node"
   },
-  "include": [
-    "src/**/*"
-  ],
-  "exclude": [
-    "src/**/*.stories.*",
-    "src/**/*.test.*"
-  ]
+  "include": ["src/**/*"],
+  "exclude": ["src/**/*.stories.*", "src/**/*.test.*"]
 }

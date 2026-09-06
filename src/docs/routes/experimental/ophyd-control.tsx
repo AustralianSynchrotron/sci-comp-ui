@@ -1,36 +1,45 @@
-import { createFileRoute } from "@tanstack/react-router"
-import { PageHeader } from "../../components/page-header"
-import { OphydPositionControl } from "../../../ui/experimental/ophyd-control"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../../ui/layout/card"
-import { DemoContainer } from "../../components/demo-container"
+import { createFileRoute } from "@tanstack/react-router";
+import { PageHeader } from "../../components/page-header";
+import { OphydPositionControl } from "../../../ui/experimental/ophyd-control";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../../../ui/layout/card";
+import { DemoContainer } from "../../components/demo-container";
 
-export const Route = createFileRoute('/experimental/ophyd-control')({
+export const Route = createFileRoute("/experimental/ophyd-control")({
   component: OphydControlPage,
-})
+});
 
 /* DEMO_START */
 function OphydControlDemo() {
   return (
     <div className="space-y-6">
-        <h4 className="font-medium mb-3">Basic Position Control</h4>
-        <OphydPositionControl
-          min={0}
-          max={100}
-          defaultValue={25}
-          defaultTarget={50}
-        />
+      <h4 className="mb-3 font-medium">Basic Position Control</h4>
+      <OphydPositionControl
+        min={0}
+        max={100}
+        defaultValue={25}
+        defaultTarget={50}
+      />
     </div>
-  )
+  );
 }
 /* DEMO_END */
 
-const ophydControlSource = __SOURCE__
+const ophydControlSource = __SOURCE__;
 
 function OphydControlPage() {
   return (
     <>
-      <PageHeader 
-        breadcrumbs={[{ title: "Experimental", href: "/experimental" }, { title: "Ophyd Control" }]}
+      <PageHeader
+        breadcrumbs={[
+          { title: "Experimental", href: "/experimental" },
+          { title: "Ophyd Control" },
+        ]}
         pageHeading="Ophyd Position Control"
         pageSubheading="A motor position control component with real-time movement simulation and precise positioning controls."
       />
@@ -40,9 +49,10 @@ function OphydControlPage() {
             <CardHeader>
               <CardTitle>Position Control</CardTitle>
               <CardDescription>
-                Interactive motor position control with real-time movement simulation, 
-                adjustable increments, and visual feedback. Perfect for controlling 
-                stepper motors, linear actuators, and other positioning systems.
+                Interactive motor position control with real-time movement
+                simulation, adjustable increments, and visual feedback. Perfect
+                for controlling stepper motors, linear actuators, and other
+                positioning systems.
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -55,5 +65,5 @@ function OphydControlPage() {
         </div>
       </div>
     </>
-  )
+  );
 }

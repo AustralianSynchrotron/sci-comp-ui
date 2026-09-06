@@ -1,14 +1,24 @@
-import { createFileRoute } from '@tanstack/react-router'
-import { PageHeader } from "../../components/page-header"
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "../../../ui/layout/collapsible"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../../ui/layout/card"
-import { DemoContainer } from "@/docs/components/demo-container"
-import { Button } from "../../../ui/elements/button"
-import React from "react"
+import { createFileRoute } from "@tanstack/react-router";
+import { PageHeader } from "../../components/page-header";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "../../../ui/layout/collapsible";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../../../ui/layout/card";
+import { DemoContainer } from "@/docs/components/demo-container";
+import { Button } from "../../../ui/elements/button";
+import React from "react";
 
-export const Route = createFileRoute('/layout/collapsible')({
+export const Route = createFileRoute("/layout/collapsible")({
   component: CollapsiblePage,
-})
+});
 
 /* DEMO_START */
 function BasicCollapsibleDemo() {
@@ -37,21 +47,23 @@ function BasicCollapsibleDemo() {
         </div>
       </CollapsibleContent>
     </Collapsible>
-  )
+  );
 }
 /* DEMO_END */
 
 // This gets replaced at build time with the actual source code
-const basicCollapsibleSource = __SOURCE__
+const basicCollapsibleSource = __SOURCE__;
 
 /* DEMO_START */
 function ControlledCollapsibleDemo() {
-  const [isOpen, setIsOpen] = React.useState(false)
-  
+  const [isOpen, setIsOpen] = React.useState(false);
+
   return (
     <Collapsible open={isOpen} onOpenChange={setIsOpen}>
       <div className="flex items-center justify-between space-x-4">
-        <h4 className="text-sm font-medium leading-none">Detector Configuration</h4>
+        <h4 className="text-sm leading-none font-medium">
+          Detector Configuration
+        </h4>
         <CollapsibleTrigger asChild>
           <Button variant="ghost" size="sm">
             {isOpen ? "Hide" : "Show"} Details
@@ -81,17 +93,20 @@ function ControlledCollapsibleDemo() {
         </div>
       </CollapsibleContent>
     </Collapsible>
-  )
+  );
 }
 /* DEMO_END */
 
-const controlledCollapsibleSource = __SOURCE__
+const controlledCollapsibleSource = __SOURCE__;
 
 function CollapsiblePage() {
   return (
     <>
-      <PageHeader 
-        breadcrumbs={[{ title: "Layout", href: "/layout" }, { title: "Collapsible" }]}
+      <PageHeader
+        breadcrumbs={[
+          { title: "Layout", href: "/layout" },
+          { title: "Collapsible" },
+        ]}
         pageHeading="Collapsible"
         pageSubheading="A collapsible content area that can be toggled to show or hide content."
       />
@@ -100,7 +115,9 @@ function CollapsiblePage() {
           <Card>
             <CardHeader>
               <CardTitle>Basic Collapsible</CardTitle>
-              <CardDescription>A simple collapsible section with beamline status information</CardDescription>
+              <CardDescription>
+                A simple collapsible section with beamline status information
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <DemoContainer
@@ -113,7 +130,9 @@ function CollapsiblePage() {
           <Card>
             <CardHeader>
               <CardTitle>Controlled Collapsible</CardTitle>
-              <CardDescription>A collapsible with controlled state and custom trigger button</CardDescription>
+              <CardDescription>
+                A collapsible with controlled state and custom trigger button
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <DemoContainer
@@ -125,5 +144,5 @@ function CollapsiblePage() {
         </div>
       </div>
     </>
-  )
+  );
 }

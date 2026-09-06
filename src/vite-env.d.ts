@@ -6,4 +6,4 @@ declare module "*.css" {
 }
 
 // Declaration for the source embedding plugin
-declare const __SOURCE__: string
+declare const __SOURCE__: string;

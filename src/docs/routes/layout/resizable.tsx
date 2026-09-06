@@ -1,12 +1,22 @@
-import { createFileRoute } from '@tanstack/react-router'
-import { PageHeader } from "../../components/page-header"
-import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "../../../ui/layout/resizable"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../../ui/layout/card"
-import { DemoContainer } from "@/docs/components/demo-container"
+import { createFileRoute } from "@tanstack/react-router";
+import { PageHeader } from "../../components/page-header";
+import {
+  ResizablePanelGroup,
+  ResizablePanel,
+  ResizableHandle,
+} from "../../../ui/layout/resizable";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../../../ui/layout/card";
+import { DemoContainer } from "@/docs/components/demo-container";
 
-export const Route = createFileRoute('/layout/resizable')({
+export const Route = createFileRoute("/layout/resizable")({
   component: ResizablePage,
-})
+});
 
 /* DEMO_START */
 function BasicResizableDemo() {
@@ -27,11 +37,11 @@ function BasicResizableDemo() {
         </div>
       </ResizablePanel>
     </ResizablePanelGroup>
-  )
+  );
 }
 /* DEMO_END */
 
-const basicResizableSource = __SOURCE__
+const basicResizableSource = __SOURCE__;
 
 /* DEMO_START */
 function ResizableWithHandleDemo() {
@@ -52,11 +62,11 @@ function ResizableWithHandleDemo() {
         </div>
       </ResizablePanel>
     </ResizablePanelGroup>
-  )
+  );
 }
 /* DEMO_END */
 
-const resizableWithHandleSource = __SOURCE__
+const resizableWithHandleSource = __SOURCE__;
 
 /* DEMO_START */
 function VerticalResizableDemo() {
@@ -77,11 +87,11 @@ function VerticalResizableDemo() {
         </div>
       </ResizablePanel>
     </ResizablePanelGroup>
-  )
+  );
 }
 /* DEMO_END */
 
-const verticalResizableSource = __SOURCE__
+const verticalResizableSource = __SOURCE__;
 
 /* DEMO_START */
 function NestedResizableDemo() {
@@ -112,17 +122,20 @@ function NestedResizableDemo() {
         </ResizablePanelGroup>
       </ResizablePanel>
     </ResizablePanelGroup>
-  )
+  );
 }
 /* DEMO_END */
 
-const nestedResizableSource = __SOURCE__
+const nestedResizableSource = __SOURCE__;
 
 function ResizablePage() {
   return (
     <>
       <PageHeader
-        breadcrumbs={[{ title: "Layout", href: "/layout" }, { title: "Resizable" }]}
+        breadcrumbs={[
+          { title: "Layout", href: "/layout" },
+          { title: "Resizable" },
+        ]}
         pageHeading="Resizable"
         pageSubheading="Accessible resizable panel groups and layouts for building complex interfaces."
       />
@@ -131,7 +144,9 @@ function ResizablePage() {
           <Card>
             <CardHeader>
               <CardTitle>Basic Horizontal</CardTitle>
-              <CardDescription>A simple horizontal resizable panel group</CardDescription>
+              <CardDescription>
+                A simple horizontal resizable panel group
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <DemoContainer
@@ -144,7 +159,9 @@ function ResizablePage() {
           <Card>
             <CardHeader>
               <CardTitle>With Handle</CardTitle>
-              <CardDescription>Resizable panels with a visual drag handle indicator</CardDescription>
+              <CardDescription>
+                Resizable panels with a visual drag handle indicator
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <DemoContainer
@@ -157,7 +174,9 @@ function ResizablePage() {
           <Card>
             <CardHeader>
               <CardTitle>Vertical Layout</CardTitle>
-              <CardDescription>Panels arranged vertically with resize handle</CardDescription>
+              <CardDescription>
+                Panels arranged vertically with resize handle
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <DemoContainer
@@ -170,7 +189,10 @@ function ResizablePage() {
           <Card>
             <CardHeader>
               <CardTitle>Nested Panels</CardTitle>
-              <CardDescription>Complex layouts with nested horizontal and vertical resizable panels</CardDescription>
+              <CardDescription>
+                Complex layouts with nested horizontal and vertical resizable
+                panels
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <DemoContainer
@@ -182,5 +204,5 @@ function ResizablePage() {
         </div>
       </div>
     </>
-  )
+  );
 }

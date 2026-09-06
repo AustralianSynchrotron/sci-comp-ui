@@ -1,13 +1,22 @@
-import { createFileRoute } from '@tanstack/react-router'
-import { useState } from "react"
-import { PageHeader } from "../../components/page-header"
-import { BeamBlockerControl, type ShutterConfig } from "../../../ui/experimental/beam-blockers-control"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../../ui/layout/card"
-import { DemoContainer } from "@/docs/components/demo-container"
+import { createFileRoute } from "@tanstack/react-router";
+import { useState } from "react";
+import { PageHeader } from "../../components/page-header";
+import {
+  BeamBlockerControl,
+  type ShutterConfig,
+} from "../../../ui/experimental/beam-blockers-control";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../../../ui/layout/card";
+import { DemoContainer } from "@/docs/components/demo-container";
 
-export const Route = createFileRoute('/experimental/beam-blockers-control')({
+export const Route = createFileRoute("/experimental/beam-blockers-control")({
   component: BeamBlockersControlPage,
-})
+});
 
 /* DEMO_START */
 function BasicBeamBlockerDemo() {
@@ -15,11 +24,15 @@ function BasicBeamBlockerDemo() {
     { id: "shut01", name: "SHUT 01", type: "shutter", isOpen: false },
     { id: "shut02", name: "SHUT 02", type: "shutter", isOpen: false },
     { id: "shut03", name: "SHUT 03", type: "shutter", isOpen: true },
-  ])
+  ]);
 
   const handleShutterChange = (shutterId: string, isOpen: boolean) => {
-    setShutters((prev) => prev.map((shutter) => (shutter.id === shutterId ? { ...shutter, isOpen } : shutter)))
-  }
+    setShutters((prev) =>
+      prev.map((shutter) =>
+        shutter.id === shutterId ? { ...shutter, isOpen } : shutter
+      )
+    );
+  };
 
   return (
     <div>
@@ -28,15 +41,16 @@ function BasicBeamBlockerDemo() {
         onShutterChange={handleShutterChange}
       />
       <div className="mt-4 text-sm text-muted-foreground">
-        Try toggling the shutters to see the beam visualization update in real-time.
+        Try toggling the shutters to see the beam visualization update in
+        real-time.
       </div>
     </div>
-  )
+  );
 }
 /* DEMO_END */
 
 // This gets replaced at build time with the actual source code
-const basicBeamBlockerSource = __SOURCE__
+const basicBeamBlockerSource = __SOURCE__;
 
 /* DEMO_START */
 function VariableBlockerDemo() {
@@ -52,11 +66,15 @@ function VariableBlockerDemo() {
       currentValue: 2.3,
     },
     { id: "shut03", name: "SHUT 03", type: "shutter", isOpen: false },
-  ])
+  ]);
 
   const handleShutterChange = (shutterId: string, isOpen: boolean) => {
-    setShutters((prev) => prev.map((shutter) => (shutter.id === shutterId ? { ...shutter, isOpen } : shutter)))
-  }
+    setShutters((prev) =>
+      prev.map((shutter) =>
+        shutter.id === shutterId ? { ...shutter, isOpen } : shutter
+      )
+    );
+  };
 
   return (
     <div>
@@ -66,7 +84,7 @@ function VariableBlockerDemo() {
       />
       <div className="mt-4 space-y-2 text-sm">
         <div className="font-medium">Variable Blocker Features:</div>
-        <ul className="text-muted-foreground space-y-1 ml-4">
+        <ul className="ml-4 space-y-1 text-muted-foreground">
           <li>• Automatically opens when current value exceeds threshold</li>
           <li>• Shows real-time value monitoring</li>
           <li>• Visual status indicators (OPEN/BLOCKED)</li>
@@ -74,11 +92,11 @@ function VariableBlockerDemo() {
         </ul>
       </div>
     </div>
-  )
+  );
 }
 /* DEMO_END */
 
-const variableBlockerSource = __SOURCE__
+const variableBlockerSource = __SOURCE__;
 
 /* DEMO_START */
 function SafetyFeaturesDemo() {
@@ -86,11 +104,15 @@ function SafetyFeaturesDemo() {
     { id: "shut01", name: "SHUT 01", type: "shutter", isOpen: true },
     { id: "shut02", name: "SHUT 02", type: "shutter", isOpen: true },
     { id: "shut03", name: "SHUT 03", type: "shutter", isOpen: false },
-  ])
+  ]);
 
   const handleShutterChange = (shutterId: string, isOpen: boolean) => {
-    setShutters((prev) => prev.map((shutter) => (shutter.id === shutterId ? { ...shutter, isOpen } : shutter)))
-  }
+    setShutters((prev) =>
+      prev.map((shutter) =>
+        shutter.id === shutterId ? { ...shutter, isOpen } : shutter
+      )
+    );
+  };
 
   return (
     <div>
@@ -100,30 +122,31 @@ function SafetyFeaturesDemo() {
       />
       <div className="mt-4 space-y-2 text-sm">
         <div className="font-medium">Safety System:</div>
-        <ul className="text-muted-foreground space-y-1 ml-4">
+        <ul className="ml-4 space-y-1 text-muted-foreground">
           <li>• Confirmation dialog before detector exposure</li>
           <li>• Visual beam blocking indicators</li>
           <li>• Animated beam flow with blocking visualization</li>
           <li>• Red pulse indicators on blocking elements</li>
         </ul>
-        <div className="text-orange-600 dark:text-orange-400 font-medium">
+        <div className="font-medium text-orange-600 dark:text-orange-400">
           ⚠️ Try opening the last shutter to see the safety dialog
         </div>
       </div>
     </div>
-  )
+  );
 }
 /* DEMO_END */
 
-const safetyFeaturesSource = __SOURCE__
+const safetyFeaturesSource = __SOURCE__;
 
 function BeamBlockersControlPage() {
-
-
   return (
     <>
-      <PageHeader 
-        breadcrumbs={[{ title: "Components", href: "/components" }, { title: "Beam Blockers Control" }]}
+      <PageHeader
+        breadcrumbs={[
+          { title: "Components", href: "/components" },
+          { title: "Beam Blockers Control" },
+        ]}
         pageHeading="Beam Blockers Control"
         pageSubheading="A visual display of beam blockers and beam."
       />
@@ -132,7 +155,9 @@ function BeamBlockersControlPage() {
           <Card>
             <CardHeader>
               <CardTitle>Basic Example</CardTitle>
-              <CardDescription>A simple beamline with three shutters</CardDescription>
+              <CardDescription>
+                A simple beamline with three shutters
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <DemoContainer
@@ -145,7 +170,9 @@ function BeamBlockersControlPage() {
           <Card>
             <CardHeader>
               <CardTitle>With Variable Blocker</CardTitle>
-              <CardDescription>Demonstrates variable threshold blockers like a broad beamstop.</CardDescription>
+              <CardDescription>
+                Demonstrates variable threshold blockers like a broad beamstop.
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <DemoContainer
@@ -158,7 +185,10 @@ function BeamBlockersControlPage() {
           <Card>
             <CardHeader>
               <CardTitle>Safety Features</CardTitle>
-              <CardDescription>Demonstrates the safety warning dialog when exposing the detector</CardDescription>
+              <CardDescription>
+                Demonstrates the safety warning dialog when exposing the
+                detector
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <DemoContainer
@@ -170,5 +200,5 @@ function BeamBlockersControlPage() {
         </div>
       </div>
     </>
-  )
+  );
 }

@@ -1,11 +1,11 @@
-import * as React from 'react'
-import { Outlet, createRootRoute } from '@tanstack/react-router'
-import { AppSidebar } from '../../docs/components/app-sidebar'
-import { SidebarInset, SidebarProvider } from '../../ui/layout/sidebar'
+import * as React from "react";
+import { Outlet, createRootRoute } from "@tanstack/react-router";
+import { AppSidebar } from "../../docs/components/app-sidebar";
+import { SidebarInset, SidebarProvider } from "../../ui/layout/sidebar";
 
 export const Route = createRootRoute({
   component: RootComponent,
-})
+});
 
 function RootComponent() {
   return (
@@ -21,5 +21,5 @@ function RootComponent() {
         <Outlet />
       </SidebarInset>
     </SidebarProvider>
-  )
+  );
 }

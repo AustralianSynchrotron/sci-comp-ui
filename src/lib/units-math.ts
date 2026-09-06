@@ -1,7 +1,7 @@
-import { create, all, type MathJsInstance } from "mathjs"
+import { create, all, type MathJsInstance } from "mathjs";
 
 // Create a mathjs instance with all functionality
-const math = create(all) as MathJsInstance
+const math = create(all) as MathJsInstance;
 
 // Define synchrotron-specific units in dependency order
 // Base units first (no dependencies)
@@ -56,51 +56,51 @@ const baseUnits = {
   microbarn: "1e-34 m^2", // ASCII equivalent of μbarn
   nbarn: "1e-37 m^2",
   pbarn: "1e-40 m^2",
-}
+};
 
 // Derived units that depend on base units
 const derivedUnits: Record<string, string> = {
   // No derived units currently needed
-}
+};
 
 // Helper function to create units safely
 function createUnitSafely(name: string, definition: string) {
   try {
     // Check if unit already exists by trying to create a test unit
-    math.unit(1, name)
+    math.unit(1, name);
     // If we get here, unit already exists, skip silently
   } catch (error) {
     // Unit doesn't exist, try to create it
     try {
-      math.createUnit(name, definition)
+      math.createUnit(name, definition);
     } catch (createError) {
-      console.warn(`Failed to create unit ${name}: ${createError}`)
+      console.warn(`Failed to create unit ${name}: ${createError}`);
     }
   }
 }
 
 // Create base units first
 Object.entries(baseUnits).forEach(([name, definition]) => {
-  createUnitSafely(name, definition)
-})
+  createUnitSafely(name, definition);
+});
 
 // Then create derived units
 Object.entries(derivedUnits).forEach(([name, definition]) => {
-  createUnitSafely(name, definition)
-})
+  createUnitSafely(name, definition);
+});
 
 export interface SynchrotronValue {
-  value: number
-  unit: string
-  nativeValue: number
-  nativeUnit: string
+  value: number;
+  unit: string;
+  nativeValue: number;
+  nativeUnit: string;
 }
 
 export class SynchrotronMath {
-  private math: MathJsInstance
+  private math: MathJsInstance;
 
   constructor() {
-    this.math = math
+    this.math = math;
   }
 
   // Create a value with native storage
@@ -110,24 +110,30 @@ export class SynchrotronMath {
       unit,
       nativeValue: value,
       nativeUnit: unit,
-    }
+    };
   }
 
   // Convert to different unit for display (doesn't mutate native)
-  convertForDisplay(synchValue: SynchrotronValue, targetUnit: string): SynchrotronValue {
+  convertForDisplay(
+    synchValue: SynchrotronValue,
+    targetUnit: string
+  ): SynchrotronValue {
     try {
-      const mathUnit = this.math.unit(synchValue.nativeValue, synchValue.nativeUnit)
-      const converted = mathUnit.to(targetUnit)
+      const mathUnit = this.math.unit(
+        synchValue.nativeValue,
+        synchValue.nativeUnit
+      );
+      const converted = mathUnit.to(targetUnit);
 
       return {
         value: converted.toNumber(),
         unit: targetUnit,
         nativeValue: synchValue.nativeValue,
         nativeUnit: synchValue.nativeUnit,
-      }
+      };
     } catch (error) {
-      console.error("Conversion error:", error)
-      return synchValue
+      console.error("Conversion error:", error);
+      return synchValue;
     }
   }
 
@@ -143,7 +149,16 @@ export class SynchrotronMath {
         // Magnetic field
         MAGNETIC_FIELD_STRENGTH: ["T", "mT", "G", "kG"],
         // Pressure
-        PRESSURE: ["Pa", "kPa", "MPa", "Torr", "mTorr", "mbar", "microbar", "atm"],
+        PRESSURE: [
+          "Pa",
+          "kPa",
+          "MPa",
+          "Torr",
+          "mTorr",
+          "mbar",
+          "microbar",
+          "atm",
+        ],
         // Current
         CURRENT: ["A", "mA", "microA", "nA", "pA"],
         // Frequency
@@ -152,34 +167,43 @@ export class SynchrotronMath {
         TIME: ["s", "ms", "microsecond", "ns", "ps", "fs", "min", "h"],
 
         // Area
-        AREA: ["m^2", "cm^2", "mm^2", "barn", "mbarn", "microbarn", "nbarn", "pbarn"],
-      }
+        AREA: [
+          "m^2",
+          "cm^2",
+          "mm^2",
+          "barn",
+          "mbarn",
+          "microbarn",
+          "nbarn",
+          "pbarn",
+        ],
+      };
 
       // Find matching dimension
       for (const [_, units] of Object.entries(unitGroups)) {
         if (units.includes(unit)) {
-          return units
+          return units;
         }
       }
 
-      return [unit] // fallback to original unit
+      return [unit]; // fallback to original unit
     } catch (error) {
-      return [unit]
+      return [unit];
     }
   }
 
   // Utility methods
   add(a: SynchrotronValue, b: SynchrotronValue): SynchrotronValue {
-    const unitA = this.math.unit(a.nativeValue, a.nativeUnit)
-    const unitB = this.math.unit(b.nativeValue, b.nativeUnit)
-    const result = this.math.add(unitA, unitB)
+    const unitA = this.math.unit(a.nativeValue, a.nativeUnit);
+    const unitB = this.math.unit(b.nativeValue, b.nativeUnit);
+    const result = this.math.add(unitA, unitB);
 
     return {
       value: result.toNumber(),
       unit: result.formatUnits(),
       nativeValue: result.toNumber(),
       nativeUnit: result.formatUnits(),
-    }
+    };
   }
 
   multiply(a: SynchrotronValue, scalar: number): SynchrotronValue {
@@ -188,29 +212,29 @@ export class SynchrotronMath {
       unit: a.unit,
       nativeValue: a.nativeValue * scalar,
       nativeUnit: a.nativeUnit,
-    }
+    };
   }
 
   // Energy-wavelength conversion (E = hc/λ)
   energyToWavelength(energy: SynchrotronValue): SynchrotronValue {
-    const h = 4.135667696e-15 // Planck constant in eV⋅s
-    const c = 299792458 // speed of light in m/s
+    const h = 4.135667696e-15; // Planck constant in eV⋅s
+    const c = 299792458; // speed of light in m/s
 
-    const energyInEv = this.convertForDisplay(energy, "eV")
-    const wavelengthInM = (h * c) / energyInEv.value
+    const energyInEv = this.convertForDisplay(energy, "eV");
+    const wavelengthInM = (h * c) / energyInEv.value;
 
-    return this.createValue(wavelengthInM, "m")
+    return this.createValue(wavelengthInM, "m");
   }
 
   wavelengthToEnergy(wavelength: SynchrotronValue): SynchrotronValue {
-    const h = 4.135667696e-15 // Planck constant in eV⋅s
-    const c = 299792458 // speed of light in m/s
+    const h = 4.135667696e-15; // Planck constant in eV⋅s
+    const c = 299792458; // speed of light in m/s
 
-    const wavelengthInM = this.convertForDisplay(wavelength, "m")
-    const energyInEv = (h * c) / wavelengthInM.value
+    const wavelengthInM = this.convertForDisplay(wavelength, "m");
+    const energyInEv = (h * c) / wavelengthInM.value;
 
-    return this.createValue(energyInEv, "eV")
+    return this.createValue(energyInEv, "eV");
   }
 }
 
-export const synchrotronMath = new SynchrotronMath()
+export const synchrotronMath = new SynchrotronMath();
