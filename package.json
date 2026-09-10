@@ -121,5 +121,8 @@
     "react-hook-form": "^7.44.3",
     "sonner": "^2.0.6",
     "zod": "^4.0.5"
+  },
+  "overrides": {
+    "maplibre-gl": "^6.4.1"
   }
 }
