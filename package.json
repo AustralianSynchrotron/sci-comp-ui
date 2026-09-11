@@ -122,6 +122,7 @@
     "sonner": "^2.0.6",
     "zod": "^4.0.5"
   },
+  "//": "overrides: see the Known Issues section in README.md for why each override exists and when it can be removed",
   "overrides": {
     "maplibre-gl": "^6.4.1"
   }
