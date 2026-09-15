@@ -208,3 +208,13 @@ packageVersionPlugin({
   includeVPrefix: true, // Whether to prefix with 'v'
 });
 ```
+
+## Known Issues
+
+### `maplibre-gl` override
+
+`plotly.js@4` depends on `maplibre-gl ^5.24.0`, and every 5.x release is vulnerable to [GHSA-jrc7-96c5-q579](https://github.com/advisories/GHSA-jrc7-96c5-q579) (critical, CVSS 10.0) — the fix landed in 6.4.1 and was never backported. `package.json` therefore overrides `maplibre-gl` to `^6.4.1`.
+
+Remove the override once plotly.js depends on a patched version — check with `npm view plotly.js dependencies.maplibre-gl`; tracked upstream at [plotly/plotly.js#8031](https://github.com/plotly/plotly.js/issues/8031). Then reinstall and confirm `npm ls maplibre-gl` reports `>= 6.4.1` without the `overridden` marker.
+
+Note the override applies to this repo only — npm honours `overrides` from the root project, so consumers are not covered by it.
