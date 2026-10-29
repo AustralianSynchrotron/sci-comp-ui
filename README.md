@@ -218,3 +218,7 @@ packageVersionPlugin({
 Remove the override once plotly.js depends on a patched version — check with `npm view plotly.js dependencies.maplibre-gl`; tracked upstream at [plotly/plotly.js#8031](https://github.com/plotly/plotly.js/issues/8031). Then reinstall and confirm `npm ls maplibre-gl` reports `>= 6.4.1` without the `overridden` marker.
 
 Note the override applies to this repo only — npm honours `overrides` from the root project, so consumers are not covered by it.
+
+## TODOs
+
+- Add vitest for components (for custom ones, not necessary for radix-ui ones)
