@@ -71,10 +71,13 @@ export default defineConfig(({ command, mode }) => {
         : {
             // Library build (existing configuration)
             lib: {
-              entry: resolve(__dirname, "src/index.ts"),
+              entry: {
+                index: resolve(__dirname, "src/index.ts"),
+                shadcn: resolve(__dirname, "src/shadcn.ts"),
+              },
               name: "SciCompComponentLibrary",
               formats: ["es", "cjs"],
-              fileName: (format) => `index.${format}.js`,
+              fileName: (format, entryName) => `${entryName}.${format}.js`,
             },
             rollupOptions: {
               external: [
