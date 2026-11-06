@@ -19,7 +19,6 @@ import { Route as ExperimentalUnitsFieldRouteImport } from './routes/experimenta
 import { Route as ExperimentalTextLogRouteImport } from './routes/experimental/text-log'
 import { Route as ExperimentalStepColumnsRouteImport } from './routes/experimental/step-columns'
 import { Route as ExperimentalPrefectFlowTableRouteImport } from './routes/experimental/prefect-flow-table'
-import { Route as ExperimentalPeriodicTableRouteImport } from './routes/experimental/periodic-table'
 import { Route as ExperimentalOphydControlRouteImport } from './routes/experimental/ophyd-control'
 import { Route as ExperimentalFileBrowserRouteImport } from './routes/experimental/file-browser'
 import { Route as ExperimentalCameraControlVideoRouteImport } from './routes/experimental/camera-control-video'
@@ -35,6 +34,7 @@ import { Route as DocsZodPydanticAnalogyRouteImport } from './routes/docs/zod-py
 import { Route as DocsMuiMigrationRouteImport } from './routes/docs/mui-migration'
 import { Route as DocsGettingStartedRouteImport } from './routes/docs/getting-started'
 import { Route as DocsComponentCreationRouteImport } from './routes/docs/component-creation'
+import { Route as ComponentsPeriodicTableRouteImport } from './routes/components/periodic-table'
 import { Route as ComponentsOphydMonitorRouteImport } from './routes/components/ophyd-monitor'
 import { Route as ComponentsFormRouteImport } from './routes/components/form'
 import { Route as ComponentsCodeBlockRouteImport } from './routes/components/code-block'
@@ -92,12 +92,6 @@ const ExperimentalPrefectFlowTableRoute =
   ExperimentalPrefectFlowTableRouteImport.update({
     id: '/experimental/prefect-flow-table',
     path: '/experimental/prefect-flow-table',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const ExperimentalPeriodicTableRoute =
-  ExperimentalPeriodicTableRouteImport.update({
-    id: '/experimental/periodic-table',
-    path: '/experimental/periodic-table',
     getParentRoute: () => rootRouteImport,
   } as any)
 const ExperimentalOphydControlRoute =
@@ -179,6 +173,11 @@ const DocsComponentCreationRoute = DocsComponentCreationRouteImport.update({
   path: '/docs/component-creation',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ComponentsPeriodicTableRoute = ComponentsPeriodicTableRouteImport.update({
+  id: '/components/periodic-table',
+  path: '/components/periodic-table',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ComponentsOphydMonitorRoute = ComponentsOphydMonitorRouteImport.update({
   id: '/components/ophyd-monitor',
   path: '/components/ophyd-monitor',
@@ -225,6 +224,7 @@ export interface FileRoutesByFullPath {
   '/components/code-block': typeof ComponentsCodeBlockRoute
   '/components/form': typeof ComponentsFormRoute
   '/components/ophyd-monitor': typeof ComponentsOphydMonitorRoute
+  '/components/periodic-table': typeof ComponentsPeriodicTableRoute
   '/docs/component-creation': typeof DocsComponentCreationRoute
   '/docs/getting-started': typeof DocsGettingStartedRoute
   '/docs/mui-migration': typeof DocsMuiMigrationRoute
@@ -240,7 +240,6 @@ export interface FileRoutesByFullPath {
   '/experimental/camera-control-video': typeof ExperimentalCameraControlVideoRoute
   '/experimental/file-browser': typeof ExperimentalFileBrowserRoute
   '/experimental/ophyd-control': typeof ExperimentalOphydControlRoute
-  '/experimental/periodic-table': typeof ExperimentalPeriodicTableRoute
   '/experimental/prefect-flow-table': typeof ExperimentalPrefectFlowTableRoute
   '/experimental/step-columns': typeof ExperimentalStepColumnsRoute
   '/experimental/text-log': typeof ExperimentalTextLogRoute
@@ -260,6 +259,7 @@ export interface FileRoutesByTo {
   '/components/code-block': typeof ComponentsCodeBlockRoute
   '/components/form': typeof ComponentsFormRoute
   '/components/ophyd-monitor': typeof ComponentsOphydMonitorRoute
+  '/components/periodic-table': typeof ComponentsPeriodicTableRoute
   '/docs/component-creation': typeof DocsComponentCreationRoute
   '/docs/getting-started': typeof DocsGettingStartedRoute
   '/docs/mui-migration': typeof DocsMuiMigrationRoute
@@ -275,7 +275,6 @@ export interface FileRoutesByTo {
   '/experimental/camera-control-video': typeof ExperimentalCameraControlVideoRoute
   '/experimental/file-browser': typeof ExperimentalFileBrowserRoute
   '/experimental/ophyd-control': typeof ExperimentalOphydControlRoute
-  '/experimental/periodic-table': typeof ExperimentalPeriodicTableRoute
   '/experimental/prefect-flow-table': typeof ExperimentalPrefectFlowTableRoute
   '/experimental/step-columns': typeof ExperimentalStepColumnsRoute
   '/experimental/text-log': typeof ExperimentalTextLogRoute
@@ -296,6 +295,7 @@ export interface FileRoutesById {
   '/components/code-block': typeof ComponentsCodeBlockRoute
   '/components/form': typeof ComponentsFormRoute
   '/components/ophyd-monitor': typeof ComponentsOphydMonitorRoute
+  '/components/periodic-table': typeof ComponentsPeriodicTableRoute
   '/docs/component-creation': typeof DocsComponentCreationRoute
   '/docs/getting-started': typeof DocsGettingStartedRoute
   '/docs/mui-migration': typeof DocsMuiMigrationRoute
@@ -311,7 +311,6 @@ export interface FileRoutesById {
   '/experimental/camera-control-video': typeof ExperimentalCameraControlVideoRoute
   '/experimental/file-browser': typeof ExperimentalFileBrowserRoute
   '/experimental/ophyd-control': typeof ExperimentalOphydControlRoute
-  '/experimental/periodic-table': typeof ExperimentalPeriodicTableRoute
   '/experimental/prefect-flow-table': typeof ExperimentalPrefectFlowTableRoute
   '/experimental/step-columns': typeof ExperimentalStepColumnsRoute
   '/experimental/text-log': typeof ExperimentalTextLogRoute
@@ -333,6 +332,7 @@ export interface FileRouteTypes {
     | '/components/code-block'
     | '/components/form'
     | '/components/ophyd-monitor'
+    | '/components/periodic-table'
     | '/docs/component-creation'
     | '/docs/getting-started'
     | '/docs/mui-migration'
@@ -348,7 +348,6 @@ export interface FileRouteTypes {
     | '/experimental/camera-control-video'
     | '/experimental/file-browser'
     | '/experimental/ophyd-control'
-    | '/experimental/periodic-table'
     | '/experimental/prefect-flow-table'
     | '/experimental/step-columns'
     | '/experimental/text-log'
@@ -368,6 +367,7 @@ export interface FileRouteTypes {
     | '/components/code-block'
     | '/components/form'
     | '/components/ophyd-monitor'
+    | '/components/periodic-table'
     | '/docs/component-creation'
     | '/docs/getting-started'
     | '/docs/mui-migration'
@@ -383,7 +383,6 @@ export interface FileRouteTypes {
     | '/experimental/camera-control-video'
     | '/experimental/file-browser'
     | '/experimental/ophyd-control'
-    | '/experimental/periodic-table'
     | '/experimental/prefect-flow-table'
     | '/experimental/step-columns'
     | '/experimental/text-log'
@@ -403,6 +402,7 @@ export interface FileRouteTypes {
     | '/components/code-block'
     | '/components/form'
     | '/components/ophyd-monitor'
+    | '/components/periodic-table'
     | '/docs/component-creation'
     | '/docs/getting-started'
     | '/docs/mui-migration'
@@ -418,7 +418,6 @@ export interface FileRouteTypes {
     | '/experimental/camera-control-video'
     | '/experimental/file-browser'
     | '/experimental/ophyd-control'
-    | '/experimental/periodic-table'
     | '/experimental/prefect-flow-table'
     | '/experimental/step-columns'
     | '/experimental/text-log'
@@ -439,6 +438,7 @@ export interface RootRouteChildren {
   ComponentsCodeBlockRoute: typeof ComponentsCodeBlockRoute
   ComponentsFormRoute: typeof ComponentsFormRoute
   ComponentsOphydMonitorRoute: typeof ComponentsOphydMonitorRoute
+  ComponentsPeriodicTableRoute: typeof ComponentsPeriodicTableRoute
   DocsComponentCreationRoute: typeof DocsComponentCreationRoute
   DocsGettingStartedRoute: typeof DocsGettingStartedRoute
   DocsMuiMigrationRoute: typeof DocsMuiMigrationRoute
@@ -454,7 +454,6 @@ export interface RootRouteChildren {
   ExperimentalCameraControlVideoRoute: typeof ExperimentalCameraControlVideoRoute
   ExperimentalFileBrowserRoute: typeof ExperimentalFileBrowserRoute
   ExperimentalOphydControlRoute: typeof ExperimentalOphydControlRoute
-  ExperimentalPeriodicTableRoute: typeof ExperimentalPeriodicTableRoute
   ExperimentalPrefectFlowTableRoute: typeof ExperimentalPrefectFlowTableRoute
   ExperimentalStepColumnsRoute: typeof ExperimentalStepColumnsRoute
   ExperimentalTextLogRoute: typeof ExperimentalTextLogRoute
@@ -536,13 +535,6 @@ declare module '@tanstack/react-router' {
       path: '/experimental/prefect-flow-table'
       fullPath: '/experimental/prefect-flow-table'
       preLoaderRoute: typeof ExperimentalPrefectFlowTableRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/experimental/periodic-table': {
-      id: '/experimental/periodic-table'
-      path: '/experimental/periodic-table'
-      fullPath: '/experimental/periodic-table'
-      preLoaderRoute: typeof ExperimentalPeriodicTableRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/experimental/ophyd-control': {
@@ -650,6 +642,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DocsComponentCreationRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/components/periodic-table': {
+      id: '/components/periodic-table'
+      path: '/components/periodic-table'
+      fullPath: '/components/periodic-table'
+      preLoaderRoute: typeof ComponentsPeriodicTableRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/components/ophyd-monitor': {
       id: '/components/ophyd-monitor'
       path: '/components/ophyd-monitor'
@@ -711,6 +710,7 @@ const rootRouteChildren: RootRouteChildren = {
   ComponentsCodeBlockRoute: ComponentsCodeBlockRoute,
   ComponentsFormRoute: ComponentsFormRoute,
   ComponentsOphydMonitorRoute: ComponentsOphydMonitorRoute,
+  ComponentsPeriodicTableRoute: ComponentsPeriodicTableRoute,
   DocsComponentCreationRoute: DocsComponentCreationRoute,
   DocsGettingStartedRoute: DocsGettingStartedRoute,
   DocsMuiMigrationRoute: DocsMuiMigrationRoute,
@@ -726,7 +726,6 @@ const rootRouteChildren: RootRouteChildren = {
   ExperimentalCameraControlVideoRoute: ExperimentalCameraControlVideoRoute,
   ExperimentalFileBrowserRoute: ExperimentalFileBrowserRoute,
   ExperimentalOphydControlRoute: ExperimentalOphydControlRoute,
-  ExperimentalPeriodicTableRoute: ExperimentalPeriodicTableRoute,
   ExperimentalPrefectFlowTableRoute: ExperimentalPrefectFlowTableRoute,
   ExperimentalStepColumnsRoute: ExperimentalStepColumnsRoute,
   ExperimentalTextLogRoute: ExperimentalTextLogRoute,

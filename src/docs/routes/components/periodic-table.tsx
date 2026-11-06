@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { PageHeader } from "../../components/page-header";
-import { PeriodicTable } from "../../../ui/experimental/periodic-table";
+import { PeriodicTable } from "../../../ui/components/periodic-table";
 import {
   Card,
   CardContent,
@@ -12,7 +12,7 @@ import {
 import { Badge } from "../../../ui/elements/badge";
 import { DemoContainer } from "@/docs/components/demo-container";
 
-export const Route = createFileRoute("/experimental/periodic-table")({
+export const Route = createFileRoute("/components/periodic-table")({
   component: PeriodicTablePage,
 });
 

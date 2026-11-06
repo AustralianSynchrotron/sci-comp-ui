@@ -10,6 +10,11 @@ export {
 } from "./elements/breadcrumb";
 export { Calendar } from "./components/calendar";
 export { CodeBlock } from "./components/code-block";
+export {
+  PeriodicTable,
+  type PeriodicTableOutputType,
+  type PeriodicTableProps,
+} from "./components/periodic-table";
 export { Skeleton } from "./layout/skeleton";
 export { Slider } from "./elements/slider";
 export { Textarea } from "./elements/textarea";
@@ -39,11 +44,6 @@ export { Stack, stackVariants } from "./layout/stack";
 
 // EXPERIMENTAL COMPONENTS
 export { FileBrowser, type FileTreeItem } from "./experimental/file-browser";
-export {
-  PeriodicTable,
-  type PeriodicTableOutputType,
-  type PeriodicTableProps,
-} from "./experimental/periodic-table";
 export {
   CameraControl,
   type CameraControlProps,

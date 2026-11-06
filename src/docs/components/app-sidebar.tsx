@@ -193,6 +193,10 @@ const data: { navMain: NavItem[] } = {
           url: "/components/ophyd-monitor",
         },
         {
+          title: "Periodic Table",
+          url: "/components/periodic-table",
+        },
+        {
           title: "Radio Group",
           url: `${SHADCN_DOCS}/radio-group`,
           newTab: true,
@@ -260,10 +264,6 @@ const data: { navMain: NavItem[] } = {
         {
           title: "Ophyd Control",
           url: "/experimental/ophyd-control",
-        },
-        {
-          title: "Periodic Table",
-          url: "/experimental/periodic-table",
         },
         {
           title: "Prefect Flow Table",
