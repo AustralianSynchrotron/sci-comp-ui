@@ -392,6 +392,20 @@ function FormPage() {
       />
       <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
         <div className="space-y-6">
+          <p className="text-sm text-muted-foreground">
+            Uses the older shadcn/ui <code>Form</code>/<code>FormField</code>{" "}
+            API. Upstream now documents{" "}
+            <a
+              href="https://ui.shadcn.com/docs/forms/react-hook-form"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-medium text-primary hover:underline"
+            >
+              forms with react-hook-form
+            </a>{" "}
+            using <code>Field</code>, so its examples won&apos;t match this
+            component.
+          </p>
           <Card>
             <CardHeader>
               <CardTitle>Simple Validation Form</CardTitle>

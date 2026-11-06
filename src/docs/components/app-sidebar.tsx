@@ -1,5 +1,5 @@
 import type * as React from "react";
-import { GalleryVerticalEnd } from "lucide-react";
+import { ExternalLink, GalleryVerticalEnd } from "lucide-react";
 import { Link, useLocation } from "@tanstack/react-router";
 import { Badge } from "../../ui/elements/badge";
 import {
@@ -21,6 +21,9 @@ type NavItem = {
   newTab?: boolean;
   items?: NavItem[];
 };
+
+// Components exported from src/shadcn.ts that we haven't changed are documented upstream.
+const SHADCN_DOCS = "https://ui.shadcn.com/docs/components/radix";
 
 const data: { navMain: NavItem[] } = {
   navMain: [
@@ -79,16 +82,39 @@ const data: { navMain: NavItem[] } = {
           url: "/elements/button",
         },
         {
+          title: "Checkbox",
+          url: `${SHADCN_DOCS}/checkbox`,
+          newTab: true,
+        },
+        {
           title: "Input",
-          url: "/elements/input",
+          url: `${SHADCN_DOCS}/input`,
+          newTab: true,
+        },
+        {
+          title: "Label",
+          url: `${SHADCN_DOCS}/label`,
+          newTab: true,
+        },
+        {
+          title: "Popover",
+          url: `${SHADCN_DOCS}/popover`,
+          newTab: true,
         },
         {
           title: "Progress",
-          url: "/elements/progress",
+          url: `${SHADCN_DOCS}/progress`,
+          newTab: true,
         },
         {
           title: "Select",
-          url: "/elements/select",
+          url: `${SHADCN_DOCS}/select`,
+          newTab: true,
+        },
+        {
+          title: "Separator",
+          url: `${SHADCN_DOCS}/separator`,
+          newTab: true,
         },
         {
           title: "Slider",
@@ -100,15 +126,18 @@ const data: { navMain: NavItem[] } = {
         },
         {
           title: "Switch",
-          url: "/elements/switch",
+          url: `${SHADCN_DOCS}/switch`,
+          newTab: true,
         },
         {
           title: "Toaster",
-          url: "/elements/toaster",
+          url: `${SHADCN_DOCS}/sonner`,
+          newTab: true,
         },
         {
           title: "Tooltip",
-          url: "/elements/tooltip",
+          url: `${SHADCN_DOCS}/tooltip`,
+          newTab: true,
         },
         {
           title: "Typography",
@@ -122,11 +151,18 @@ const data: { navMain: NavItem[] } = {
       items: [
         {
           title: "Alert",
-          url: "/components/alert",
+          url: `${SHADCN_DOCS}/alert`,
+          newTab: true,
         },
         {
           title: "Alert Dialog",
-          url: "/components/alert-dialog",
+          url: `${SHADCN_DOCS}/alert-dialog`,
+          newTab: true,
+        },
+        {
+          title: "Dialog",
+          url: `${SHADCN_DOCS}/dialog`,
+          newTab: true,
         },
         {
           title: "Form",
@@ -158,7 +194,8 @@ const data: { navMain: NavItem[] } = {
         },
         {
           title: "Radio Group",
-          url: "/components/radio-group",
+          url: `${SHADCN_DOCS}/radio-group`,
+          newTab: true,
         },
       ],
     },
@@ -168,7 +205,8 @@ const data: { navMain: NavItem[] } = {
       items: [
         {
           title: "Accordion",
-          url: "/layout/accordion",
+          url: `${SHADCN_DOCS}/accordion`,
+          newTab: true,
         },
         {
           title: "Box",
@@ -176,11 +214,13 @@ const data: { navMain: NavItem[] } = {
         },
         {
           title: "Card",
-          url: "/layout/card",
+          url: `${SHADCN_DOCS}/card`,
+          newTab: true,
         },
         {
           title: "Collapsible",
-          url: "/layout/collapsible",
+          url: `${SHADCN_DOCS}/collapsible`,
+          newTab: true,
         },
         {
           title: "Grid",
@@ -193,6 +233,11 @@ const data: { navMain: NavItem[] } = {
         {
           title: "Sheet",
           url: "/layout/sheet",
+        },
+        {
+          title: "Sidebar",
+          url: `${SHADCN_DOCS}/sidebar`,
+          newTab: true,
         },
         {
           title: "Stack",
@@ -297,6 +342,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                             }
                           >
                             {subItem.title}
+                            {subItem.newTab && (
+                              <ExternalLink className="size-3" />
+                            )}
                           </Link>
                         </SidebarMenuSubButton>
                       </SidebarMenuSubItem>

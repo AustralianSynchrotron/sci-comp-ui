@@ -21,7 +21,7 @@ Import the components you want:
 import { StepColumns } from "@australiansynchrotron/sci-comp-ui";
 ```
 
-Components derived from shadcn/ui (Button, Card, Dialog, Form, Select, Sidebar, Tooltip, …) come from the `/shadcn` subpath; see `src/shadcn.ts` for the full list. `cn` is available from both.
+Components derived from shadcn/ui (Button, Card, Dialog, Form, Select, Sidebar, Tooltip, …) come from the `/shadcn` subpath; see `src/shadcn.ts` for the full list. `cn` is available from both. Usage docs for these are on [ui.shadcn.com](https://ui.shadcn.com/docs/components); our copies are a snapshot and can differ from upstream, so check our docs site for Button, Badge and Form.
 
 ```js
 import { Button, Card, cn } from "@australiansynchrotron/sci-comp-ui/shadcn";
