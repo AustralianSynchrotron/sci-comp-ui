@@ -54,6 +54,14 @@ function GettingStartedPage() {
                         from, providing a collection of reusable, accessible
                         components built on top of Radix UI primitives.
                       </p>
+                      <p className="mt-1 text-sm text-muted-foreground">
+                        Components imported from{" "}
+                        <code>@australiansynchrotron/sci-comp-ui/shadcn</code>{" "}
+                        are shadcn/ui components. Any without a page on this
+                        site are unchanged, so refer to the official shadcn/ui
+                        docs for those. Ones we&apos;ve customised have their
+                        own page here, noting what differs from upstream.
+                      </p>
                     </li>
                     <li>
                       <a
@@ -182,7 +190,7 @@ function GettingStartedPage() {
               <CodeBlock
                 language="tsx"
                 code={`import "@australiansynchrotron/sci-comp-ui/styles";
-import { Button } from "@australiansynchrotron/sci-comp-ui"`}
+import { Button } from "@australiansynchrotron/sci-comp-ui/shadcn";`}
               />
               <Button>Example Button</Button>
             </CardContent>

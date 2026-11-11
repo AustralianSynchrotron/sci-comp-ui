@@ -22,9 +22,8 @@ type NavItem = {
   items?: NavItem[];
 };
 
-// Components exported from src/shadcn.ts that we haven't changed are documented upstream.
-const SHADCN_DOCS = "https://ui.shadcn.com/docs/components/radix";
-
+// shadcn/ui components we haven't changed have no page here; the Getting Started page
+// points readers to the shadcn/ui docs for those.
 const data: { navMain: NavItem[] } = {
   navMain: [
     {
@@ -82,62 +81,12 @@ const data: { navMain: NavItem[] } = {
           url: "/elements/button",
         },
         {
-          title: "Checkbox",
-          url: `${SHADCN_DOCS}/checkbox`,
-          newTab: true,
-        },
-        {
-          title: "Input",
-          url: `${SHADCN_DOCS}/input`,
-          newTab: true,
-        },
-        {
-          title: "Label",
-          url: `${SHADCN_DOCS}/label`,
-          newTab: true,
-        },
-        {
-          title: "Popover",
-          url: `${SHADCN_DOCS}/popover`,
-          newTab: true,
-        },
-        {
-          title: "Progress",
-          url: `${SHADCN_DOCS}/progress`,
-          newTab: true,
-        },
-        {
-          title: "Select",
-          url: `${SHADCN_DOCS}/select`,
-          newTab: true,
-        },
-        {
-          title: "Separator",
-          url: `${SHADCN_DOCS}/separator`,
-          newTab: true,
-        },
-        {
           title: "Slider",
           url: "/elements/slider",
         },
         {
           title: "Spark Line",
           url: "/elements/spark-line",
-        },
-        {
-          title: "Switch",
-          url: `${SHADCN_DOCS}/switch`,
-          newTab: true,
-        },
-        {
-          title: "Toaster",
-          url: `${SHADCN_DOCS}/sonner`,
-          newTab: true,
-        },
-        {
-          title: "Tooltip",
-          url: `${SHADCN_DOCS}/tooltip`,
-          newTab: true,
         },
         {
           title: "Typography",
@@ -149,21 +98,6 @@ const data: { navMain: NavItem[] } = {
       title: "Components",
       url: "/components",
       items: [
-        {
-          title: "Alert",
-          url: `${SHADCN_DOCS}/alert`,
-          newTab: true,
-        },
-        {
-          title: "Alert Dialog",
-          url: `${SHADCN_DOCS}/alert-dialog`,
-          newTab: true,
-        },
-        {
-          title: "Dialog",
-          url: `${SHADCN_DOCS}/dialog`,
-          newTab: true,
-        },
         {
           title: "Form",
           url: "/components/form",
@@ -196,11 +130,6 @@ const data: { navMain: NavItem[] } = {
           title: "Periodic Table",
           url: "/components/periodic-table",
         },
-        {
-          title: "Radio Group",
-          url: `${SHADCN_DOCS}/radio-group`,
-          newTab: true,
-        },
       ],
     },
     {
@@ -208,23 +137,8 @@ const data: { navMain: NavItem[] } = {
       url: "/layout",
       items: [
         {
-          title: "Accordion",
-          url: `${SHADCN_DOCS}/accordion`,
-          newTab: true,
-        },
-        {
           title: "Box",
           url: "/layout/box",
-        },
-        {
-          title: "Card",
-          url: `${SHADCN_DOCS}/card`,
-          newTab: true,
-        },
-        {
-          title: "Collapsible",
-          url: `${SHADCN_DOCS}/collapsible`,
-          newTab: true,
         },
         {
           title: "Grid",
@@ -237,11 +151,6 @@ const data: { navMain: NavItem[] } = {
         {
           title: "Sheet",
           url: "/layout/sheet",
-        },
-        {
-          title: "Sidebar",
-          url: `${SHADCN_DOCS}/sidebar`,
-          newTab: true,
         },
         {
           title: "Stack",
