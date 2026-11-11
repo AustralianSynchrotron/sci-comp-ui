@@ -16,6 +16,11 @@
       "import": "./dist/index.es.js",
       "require": "./dist/index.cjs.js"
     },
+    "./shadcn": {
+      "types": "./dist/shadcn.d.ts",
+      "import": "./dist/shadcn.es.js",
+      "require": "./dist/shadcn.cjs.js"
+    },
     "./styles": {
       "types": "./dist/styles.d.ts",
       "default": "./dist/sci-comp-ui.css"
