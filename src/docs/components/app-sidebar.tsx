@@ -1,5 +1,5 @@
 import type * as React from "react";
-import { GalleryVerticalEnd } from "lucide-react";
+import { ExternalLink, GalleryVerticalEnd } from "lucide-react";
 import { Link, useLocation } from "@tanstack/react-router";
 import { Badge } from "../../ui/elements/badge";
 import {
@@ -22,6 +22,8 @@ type NavItem = {
   items?: NavItem[];
 };
 
+// shadcn/ui components we haven't changed have no page here; the Getting Started page
+// points readers to the shadcn/ui docs for those.
 const data: { navMain: NavItem[] } = {
   navMain: [
     {
@@ -79,36 +81,12 @@ const data: { navMain: NavItem[] } = {
           url: "/elements/button",
         },
         {
-          title: "Input",
-          url: "/elements/input",
-        },
-        {
-          title: "Progress",
-          url: "/elements/progress",
-        },
-        {
-          title: "Select",
-          url: "/elements/select",
-        },
-        {
           title: "Slider",
           url: "/elements/slider",
         },
         {
           title: "Spark Line",
           url: "/elements/spark-line",
-        },
-        {
-          title: "Switch",
-          url: "/elements/switch",
-        },
-        {
-          title: "Toaster",
-          url: "/elements/toaster",
-        },
-        {
-          title: "Tooltip",
-          url: "/elements/tooltip",
         },
         {
           title: "Typography",
@@ -120,14 +98,6 @@ const data: { navMain: NavItem[] } = {
       title: "Components",
       url: "/components",
       items: [
-        {
-          title: "Alert",
-          url: "/components/alert",
-        },
-        {
-          title: "Alert Dialog",
-          url: "/components/alert-dialog",
-        },
         {
           title: "Form",
           url: "/components/form",
@@ -157,8 +127,8 @@ const data: { navMain: NavItem[] } = {
           url: "/components/ophyd-monitor",
         },
         {
-          title: "Radio Group",
-          url: "/components/radio-group",
+          title: "Periodic Table",
+          url: "/components/periodic-table",
         },
       ],
     },
@@ -167,20 +137,8 @@ const data: { navMain: NavItem[] } = {
       url: "/layout",
       items: [
         {
-          title: "Accordion",
-          url: "/layout/accordion",
-        },
-        {
           title: "Box",
           url: "/layout/box",
-        },
-        {
-          title: "Card",
-          url: "/layout/card",
-        },
-        {
-          title: "Collapsible",
-          url: "/layout/collapsible",
         },
         {
           title: "Grid",
@@ -215,10 +173,6 @@ const data: { navMain: NavItem[] } = {
         {
           title: "Ophyd Control",
           url: "/experimental/ophyd-control",
-        },
-        {
-          title: "Periodic Table",
-          url: "/experimental/periodic-table",
         },
         {
           title: "Prefect Flow Table",
@@ -297,6 +251,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                             }
                           >
                             {subItem.title}
+                            {subItem.newTab && (
+                              <ExternalLink className="size-3" />
+                            )}
                           </Link>
                         </SidebarMenuSubButton>
                       </SidebarMenuSubItem>

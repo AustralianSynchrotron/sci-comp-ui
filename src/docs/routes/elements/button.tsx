@@ -75,6 +75,21 @@ function ButtonPage() {
       />
       <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
         <div className="space-y-6">
+          <p className="text-sm text-muted-foreground">
+            Based on the shadcn/ui{" "}
+            <a
+              href="https://ui.shadcn.com/docs/components/radix/button"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-medium text-primary hover:underline"
+            >
+              Button
+            </a>
+            ; see upstream for general usage. This page covers our additions:
+            the <code>success</code> and <code>warning</code> variants and the{" "}
+            <code>loading</code> prop. Upstream sizes such as{" "}
+            <code>icon-sm</code> are not in our copy.
+          </p>
           <Card>
             <CardHeader>
               <CardTitle>Variants</CardTitle>

@@ -14,30 +14,19 @@ import { Route as LayoutStackRouteImport } from './routes/layout/stack'
 import { Route as LayoutSheetRouteImport } from './routes/layout/sheet'
 import { Route as LayoutResizableRouteImport } from './routes/layout/resizable'
 import { Route as LayoutGridRouteImport } from './routes/layout/grid'
-import { Route as LayoutCollapsibleRouteImport } from './routes/layout/collapsible'
-import { Route as LayoutCardRouteImport } from './routes/layout/card'
 import { Route as LayoutBoxRouteImport } from './routes/layout/box'
-import { Route as LayoutAccordionRouteImport } from './routes/layout/accordion'
 import { Route as ExperimentalUnitsFieldRouteImport } from './routes/experimental/units-field'
 import { Route as ExperimentalTextLogRouteImport } from './routes/experimental/text-log'
 import { Route as ExperimentalStepColumnsRouteImport } from './routes/experimental/step-columns'
 import { Route as ExperimentalPrefectFlowTableRouteImport } from './routes/experimental/prefect-flow-table'
-import { Route as ExperimentalPeriodicTableRouteImport } from './routes/experimental/periodic-table'
 import { Route as ExperimentalOphydControlRouteImport } from './routes/experimental/ophyd-control'
 import { Route as ExperimentalFileBrowserRouteImport } from './routes/experimental/file-browser'
 import { Route as ExperimentalCameraControlVideoRouteImport } from './routes/experimental/camera-control-video'
 import { Route as ExperimentalCameraControlH264RouteImport } from './routes/experimental/camera-control-h264'
 import { Route as ExperimentalBeamBlockersControlRouteImport } from './routes/experimental/beam-blockers-control'
 import { Route as ElementsTypographyRouteImport } from './routes/elements/typography'
-import { Route as ElementsTooltipRouteImport } from './routes/elements/tooltip'
-import { Route as ElementsToasterRouteImport } from './routes/elements/toaster'
-import { Route as ElementsSwitchRouteImport } from './routes/elements/switch'
 import { Route as ElementsSparkLineRouteImport } from './routes/elements/spark-line'
 import { Route as ElementsSliderRouteImport } from './routes/elements/slider'
-import { Route as ElementsSelectRouteImport } from './routes/elements/select'
-import { Route as ElementsProgressRouteImport } from './routes/elements/progress'
-import { Route as ElementsInputRouteImport } from './routes/elements/input'
-import { Route as ElementsCheckboxRouteImport } from './routes/elements/checkbox'
 import { Route as ElementsButtonRouteImport } from './routes/elements/button'
 import { Route as ElementsBreadcrumbRouteImport } from './routes/elements/breadcrumb'
 import { Route as ElementsBadgeRouteImport } from './routes/elements/badge'
@@ -45,7 +34,7 @@ import { Route as DocsZodPydanticAnalogyRouteImport } from './routes/docs/zod-py
 import { Route as DocsMuiMigrationRouteImport } from './routes/docs/mui-migration'
 import { Route as DocsGettingStartedRouteImport } from './routes/docs/getting-started'
 import { Route as DocsComponentCreationRouteImport } from './routes/docs/component-creation'
-import { Route as ComponentsRadioGroupRouteImport } from './routes/components/radio-group'
+import { Route as ComponentsPeriodicTableRouteImport } from './routes/components/periodic-table'
 import { Route as ComponentsOphydMonitorRouteImport } from './routes/components/ophyd-monitor'
 import { Route as ComponentsFormRouteImport } from './routes/components/form'
 import { Route as ComponentsCodeBlockRouteImport } from './routes/components/code-block'
@@ -53,8 +42,6 @@ import { Route as ComponentsChartXyRouteImport } from './routes/components/chart
 import { Route as ComponentsChartHistogramRouteImport } from './routes/components/chart-histogram'
 import { Route as ComponentsChartBarRouteImport } from './routes/components/chart-bar'
 import { Route as ComponentsCalendarRouteImport } from './routes/components/calendar'
-import { Route as ComponentsAlertDialogRouteImport } from './routes/components/alert-dialog'
-import { Route as ComponentsAlertRouteImport } from './routes/components/alert'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -81,24 +68,9 @@ const LayoutGridRoute = LayoutGridRouteImport.update({
   path: '/layout/grid',
   getParentRoute: () => rootRouteImport,
 } as any)
-const LayoutCollapsibleRoute = LayoutCollapsibleRouteImport.update({
-  id: '/layout/collapsible',
-  path: '/layout/collapsible',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LayoutCardRoute = LayoutCardRouteImport.update({
-  id: '/layout/card',
-  path: '/layout/card',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const LayoutBoxRoute = LayoutBoxRouteImport.update({
   id: '/layout/box',
   path: '/layout/box',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LayoutAccordionRoute = LayoutAccordionRouteImport.update({
-  id: '/layout/accordion',
-  path: '/layout/accordion',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ExperimentalUnitsFieldRoute = ExperimentalUnitsFieldRouteImport.update({
@@ -120,12 +92,6 @@ const ExperimentalPrefectFlowTableRoute =
   ExperimentalPrefectFlowTableRouteImport.update({
     id: '/experimental/prefect-flow-table',
     path: '/experimental/prefect-flow-table',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const ExperimentalPeriodicTableRoute =
-  ExperimentalPeriodicTableRouteImport.update({
-    id: '/experimental/periodic-table',
-    path: '/experimental/periodic-table',
     getParentRoute: () => rootRouteImport,
   } as any)
 const ExperimentalOphydControlRoute =
@@ -162,21 +128,6 @@ const ElementsTypographyRoute = ElementsTypographyRouteImport.update({
   path: '/elements/typography',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ElementsTooltipRoute = ElementsTooltipRouteImport.update({
-  id: '/elements/tooltip',
-  path: '/elements/tooltip',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ElementsToasterRoute = ElementsToasterRouteImport.update({
-  id: '/elements/toaster',
-  path: '/elements/toaster',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ElementsSwitchRoute = ElementsSwitchRouteImport.update({
-  id: '/elements/switch',
-  path: '/elements/switch',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const ElementsSparkLineRoute = ElementsSparkLineRouteImport.update({
   id: '/elements/spark-line',
   path: '/elements/spark-line',
@@ -185,26 +136,6 @@ const ElementsSparkLineRoute = ElementsSparkLineRouteImport.update({
 const ElementsSliderRoute = ElementsSliderRouteImport.update({
   id: '/elements/slider',
   path: '/elements/slider',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ElementsSelectRoute = ElementsSelectRouteImport.update({
-  id: '/elements/select',
-  path: '/elements/select',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ElementsProgressRoute = ElementsProgressRouteImport.update({
-  id: '/elements/progress',
-  path: '/elements/progress',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ElementsInputRoute = ElementsInputRouteImport.update({
-  id: '/elements/input',
-  path: '/elements/input',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ElementsCheckboxRoute = ElementsCheckboxRouteImport.update({
-  id: '/elements/checkbox',
-  path: '/elements/checkbox',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ElementsButtonRoute = ElementsButtonRouteImport.update({
@@ -242,9 +173,9 @@ const DocsComponentCreationRoute = DocsComponentCreationRouteImport.update({
   path: '/docs/component-creation',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ComponentsRadioGroupRoute = ComponentsRadioGroupRouteImport.update({
-  id: '/components/radio-group',
-  path: '/components/radio-group',
+const ComponentsPeriodicTableRoute = ComponentsPeriodicTableRouteImport.update({
+  id: '/components/periodic-table',
+  path: '/components/periodic-table',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ComponentsOphydMonitorRoute = ComponentsOphydMonitorRouteImport.update({
@@ -283,21 +214,9 @@ const ComponentsCalendarRoute = ComponentsCalendarRouteImport.update({
   path: '/components/calendar',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ComponentsAlertDialogRoute = ComponentsAlertDialogRouteImport.update({
-  id: '/components/alert-dialog',
-  path: '/components/alert-dialog',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ComponentsAlertRoute = ComponentsAlertRouteImport.update({
-  id: '/components/alert',
-  path: '/components/alert',
-  getParentRoute: () => rootRouteImport,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/components/alert': typeof ComponentsAlertRoute
-  '/components/alert-dialog': typeof ComponentsAlertDialogRoute
   '/components/calendar': typeof ComponentsCalendarRoute
   '/components/chart-bar': typeof ComponentsChartBarRoute
   '/components/chart-histogram': typeof ComponentsChartHistogramRoute
@@ -305,7 +224,7 @@ export interface FileRoutesByFullPath {
   '/components/code-block': typeof ComponentsCodeBlockRoute
   '/components/form': typeof ComponentsFormRoute
   '/components/ophyd-monitor': typeof ComponentsOphydMonitorRoute
-  '/components/radio-group': typeof ComponentsRadioGroupRoute
+  '/components/periodic-table': typeof ComponentsPeriodicTableRoute
   '/docs/component-creation': typeof DocsComponentCreationRoute
   '/docs/getting-started': typeof DocsGettingStartedRoute
   '/docs/mui-migration': typeof DocsMuiMigrationRoute
@@ -313,30 +232,19 @@ export interface FileRoutesByFullPath {
   '/elements/badge': typeof ElementsBadgeRoute
   '/elements/breadcrumb': typeof ElementsBreadcrumbRoute
   '/elements/button': typeof ElementsButtonRoute
-  '/elements/checkbox': typeof ElementsCheckboxRoute
-  '/elements/input': typeof ElementsInputRoute
-  '/elements/progress': typeof ElementsProgressRoute
-  '/elements/select': typeof ElementsSelectRoute
   '/elements/slider': typeof ElementsSliderRoute
   '/elements/spark-line': typeof ElementsSparkLineRoute
-  '/elements/switch': typeof ElementsSwitchRoute
-  '/elements/toaster': typeof ElementsToasterRoute
-  '/elements/tooltip': typeof ElementsTooltipRoute
   '/elements/typography': typeof ElementsTypographyRoute
   '/experimental/beam-blockers-control': typeof ExperimentalBeamBlockersControlRoute
   '/experimental/camera-control-h264': typeof ExperimentalCameraControlH264Route
   '/experimental/camera-control-video': typeof ExperimentalCameraControlVideoRoute
   '/experimental/file-browser': typeof ExperimentalFileBrowserRoute
   '/experimental/ophyd-control': typeof ExperimentalOphydControlRoute
-  '/experimental/periodic-table': typeof ExperimentalPeriodicTableRoute
   '/experimental/prefect-flow-table': typeof ExperimentalPrefectFlowTableRoute
   '/experimental/step-columns': typeof ExperimentalStepColumnsRoute
   '/experimental/text-log': typeof ExperimentalTextLogRoute
   '/experimental/units-field': typeof ExperimentalUnitsFieldRoute
-  '/layout/accordion': typeof LayoutAccordionRoute
   '/layout/box': typeof LayoutBoxRoute
-  '/layout/card': typeof LayoutCardRoute
-  '/layout/collapsible': typeof LayoutCollapsibleRoute
   '/layout/grid': typeof LayoutGridRoute
   '/layout/resizable': typeof LayoutResizableRoute
   '/layout/sheet': typeof LayoutSheetRoute
@@ -344,8 +252,6 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/components/alert': typeof ComponentsAlertRoute
-  '/components/alert-dialog': typeof ComponentsAlertDialogRoute
   '/components/calendar': typeof ComponentsCalendarRoute
   '/components/chart-bar': typeof ComponentsChartBarRoute
   '/components/chart-histogram': typeof ComponentsChartHistogramRoute
@@ -353,7 +259,7 @@ export interface FileRoutesByTo {
   '/components/code-block': typeof ComponentsCodeBlockRoute
   '/components/form': typeof ComponentsFormRoute
   '/components/ophyd-monitor': typeof ComponentsOphydMonitorRoute
-  '/components/radio-group': typeof ComponentsRadioGroupRoute
+  '/components/periodic-table': typeof ComponentsPeriodicTableRoute
   '/docs/component-creation': typeof DocsComponentCreationRoute
   '/docs/getting-started': typeof DocsGettingStartedRoute
   '/docs/mui-migration': typeof DocsMuiMigrationRoute
@@ -361,30 +267,19 @@ export interface FileRoutesByTo {
   '/elements/badge': typeof ElementsBadgeRoute
   '/elements/breadcrumb': typeof ElementsBreadcrumbRoute
   '/elements/button': typeof ElementsButtonRoute
-  '/elements/checkbox': typeof ElementsCheckboxRoute
-  '/elements/input': typeof ElementsInputRoute
-  '/elements/progress': typeof ElementsProgressRoute
-  '/elements/select': typeof ElementsSelectRoute
   '/elements/slider': typeof ElementsSliderRoute
   '/elements/spark-line': typeof ElementsSparkLineRoute
-  '/elements/switch': typeof ElementsSwitchRoute
-  '/elements/toaster': typeof ElementsToasterRoute
-  '/elements/tooltip': typeof ElementsTooltipRoute
   '/elements/typography': typeof ElementsTypographyRoute
   '/experimental/beam-blockers-control': typeof ExperimentalBeamBlockersControlRoute
   '/experimental/camera-control-h264': typeof ExperimentalCameraControlH264Route
   '/experimental/camera-control-video': typeof ExperimentalCameraControlVideoRoute
   '/experimental/file-browser': typeof ExperimentalFileBrowserRoute
   '/experimental/ophyd-control': typeof ExperimentalOphydControlRoute
-  '/experimental/periodic-table': typeof ExperimentalPeriodicTableRoute
   '/experimental/prefect-flow-table': typeof ExperimentalPrefectFlowTableRoute
   '/experimental/step-columns': typeof ExperimentalStepColumnsRoute
   '/experimental/text-log': typeof ExperimentalTextLogRoute
   '/experimental/units-field': typeof ExperimentalUnitsFieldRoute
-  '/layout/accordion': typeof LayoutAccordionRoute
   '/layout/box': typeof LayoutBoxRoute
-  '/layout/card': typeof LayoutCardRoute
-  '/layout/collapsible': typeof LayoutCollapsibleRoute
   '/layout/grid': typeof LayoutGridRoute
   '/layout/resizable': typeof LayoutResizableRoute
   '/layout/sheet': typeof LayoutSheetRoute
@@ -393,8 +288,6 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/components/alert': typeof ComponentsAlertRoute
-  '/components/alert-dialog': typeof ComponentsAlertDialogRoute
   '/components/calendar': typeof ComponentsCalendarRoute
   '/components/chart-bar': typeof ComponentsChartBarRoute
   '/components/chart-histogram': typeof ComponentsChartHistogramRoute
@@ -402,7 +295,7 @@ export interface FileRoutesById {
   '/components/code-block': typeof ComponentsCodeBlockRoute
   '/components/form': typeof ComponentsFormRoute
   '/components/ophyd-monitor': typeof ComponentsOphydMonitorRoute
-  '/components/radio-group': typeof ComponentsRadioGroupRoute
+  '/components/periodic-table': typeof ComponentsPeriodicTableRoute
   '/docs/component-creation': typeof DocsComponentCreationRoute
   '/docs/getting-started': typeof DocsGettingStartedRoute
   '/docs/mui-migration': typeof DocsMuiMigrationRoute
@@ -410,30 +303,19 @@ export interface FileRoutesById {
   '/elements/badge': typeof ElementsBadgeRoute
   '/elements/breadcrumb': typeof ElementsBreadcrumbRoute
   '/elements/button': typeof ElementsButtonRoute
-  '/elements/checkbox': typeof ElementsCheckboxRoute
-  '/elements/input': typeof ElementsInputRoute
-  '/elements/progress': typeof ElementsProgressRoute
-  '/elements/select': typeof ElementsSelectRoute
   '/elements/slider': typeof ElementsSliderRoute
   '/elements/spark-line': typeof ElementsSparkLineRoute
-  '/elements/switch': typeof ElementsSwitchRoute
-  '/elements/toaster': typeof ElementsToasterRoute
-  '/elements/tooltip': typeof ElementsTooltipRoute
   '/elements/typography': typeof ElementsTypographyRoute
   '/experimental/beam-blockers-control': typeof ExperimentalBeamBlockersControlRoute
   '/experimental/camera-control-h264': typeof ExperimentalCameraControlH264Route
   '/experimental/camera-control-video': typeof ExperimentalCameraControlVideoRoute
   '/experimental/file-browser': typeof ExperimentalFileBrowserRoute
   '/experimental/ophyd-control': typeof ExperimentalOphydControlRoute
-  '/experimental/periodic-table': typeof ExperimentalPeriodicTableRoute
   '/experimental/prefect-flow-table': typeof ExperimentalPrefectFlowTableRoute
   '/experimental/step-columns': typeof ExperimentalStepColumnsRoute
   '/experimental/text-log': typeof ExperimentalTextLogRoute
   '/experimental/units-field': typeof ExperimentalUnitsFieldRoute
-  '/layout/accordion': typeof LayoutAccordionRoute
   '/layout/box': typeof LayoutBoxRoute
-  '/layout/card': typeof LayoutCardRoute
-  '/layout/collapsible': typeof LayoutCollapsibleRoute
   '/layout/grid': typeof LayoutGridRoute
   '/layout/resizable': typeof LayoutResizableRoute
   '/layout/sheet': typeof LayoutSheetRoute
@@ -443,8 +325,6 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/components/alert'
-    | '/components/alert-dialog'
     | '/components/calendar'
     | '/components/chart-bar'
     | '/components/chart-histogram'
@@ -452,7 +332,7 @@ export interface FileRouteTypes {
     | '/components/code-block'
     | '/components/form'
     | '/components/ophyd-monitor'
-    | '/components/radio-group'
+    | '/components/periodic-table'
     | '/docs/component-creation'
     | '/docs/getting-started'
     | '/docs/mui-migration'
@@ -460,30 +340,19 @@ export interface FileRouteTypes {
     | '/elements/badge'
     | '/elements/breadcrumb'
     | '/elements/button'
-    | '/elements/checkbox'
-    | '/elements/input'
-    | '/elements/progress'
-    | '/elements/select'
     | '/elements/slider'
     | '/elements/spark-line'
-    | '/elements/switch'
-    | '/elements/toaster'
-    | '/elements/tooltip'
     | '/elements/typography'
     | '/experimental/beam-blockers-control'
     | '/experimental/camera-control-h264'
     | '/experimental/camera-control-video'
     | '/experimental/file-browser'
     | '/experimental/ophyd-control'
-    | '/experimental/periodic-table'
     | '/experimental/prefect-flow-table'
     | '/experimental/step-columns'
     | '/experimental/text-log'
     | '/experimental/units-field'
-    | '/layout/accordion'
     | '/layout/box'
-    | '/layout/card'
-    | '/layout/collapsible'
     | '/layout/grid'
     | '/layout/resizable'
     | '/layout/sheet'
@@ -491,8 +360,6 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/components/alert'
-    | '/components/alert-dialog'
     | '/components/calendar'
     | '/components/chart-bar'
     | '/components/chart-histogram'
@@ -500,7 +367,7 @@ export interface FileRouteTypes {
     | '/components/code-block'
     | '/components/form'
     | '/components/ophyd-monitor'
-    | '/components/radio-group'
+    | '/components/periodic-table'
     | '/docs/component-creation'
     | '/docs/getting-started'
     | '/docs/mui-migration'
@@ -508,30 +375,19 @@ export interface FileRouteTypes {
     | '/elements/badge'
     | '/elements/breadcrumb'
     | '/elements/button'
-    | '/elements/checkbox'
-    | '/elements/input'
-    | '/elements/progress'
-    | '/elements/select'
     | '/elements/slider'
     | '/elements/spark-line'
-    | '/elements/switch'
-    | '/elements/toaster'
-    | '/elements/tooltip'
     | '/elements/typography'
     | '/experimental/beam-blockers-control'
     | '/experimental/camera-control-h264'
     | '/experimental/camera-control-video'
     | '/experimental/file-browser'
     | '/experimental/ophyd-control'
-    | '/experimental/periodic-table'
     | '/experimental/prefect-flow-table'
     | '/experimental/step-columns'
     | '/experimental/text-log'
     | '/experimental/units-field'
-    | '/layout/accordion'
     | '/layout/box'
-    | '/layout/card'
-    | '/layout/collapsible'
     | '/layout/grid'
     | '/layout/resizable'
     | '/layout/sheet'
@@ -539,8 +395,6 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
-    | '/components/alert'
-    | '/components/alert-dialog'
     | '/components/calendar'
     | '/components/chart-bar'
     | '/components/chart-histogram'
@@ -548,7 +402,7 @@ export interface FileRouteTypes {
     | '/components/code-block'
     | '/components/form'
     | '/components/ophyd-monitor'
-    | '/components/radio-group'
+    | '/components/periodic-table'
     | '/docs/component-creation'
     | '/docs/getting-started'
     | '/docs/mui-migration'
@@ -556,30 +410,19 @@ export interface FileRouteTypes {
     | '/elements/badge'
     | '/elements/breadcrumb'
     | '/elements/button'
-    | '/elements/checkbox'
-    | '/elements/input'
-    | '/elements/progress'
-    | '/elements/select'
     | '/elements/slider'
     | '/elements/spark-line'
-    | '/elements/switch'
-    | '/elements/toaster'
-    | '/elements/tooltip'
     | '/elements/typography'
     | '/experimental/beam-blockers-control'
     | '/experimental/camera-control-h264'
     | '/experimental/camera-control-video'
     | '/experimental/file-browser'
     | '/experimental/ophyd-control'
-    | '/experimental/periodic-table'
     | '/experimental/prefect-flow-table'
     | '/experimental/step-columns'
     | '/experimental/text-log'
     | '/experimental/units-field'
-    | '/layout/accordion'
     | '/layout/box'
-    | '/layout/card'
-    | '/layout/collapsible'
     | '/layout/grid'
     | '/layout/resizable'
     | '/layout/sheet'
@@ -588,8 +431,6 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  ComponentsAlertRoute: typeof ComponentsAlertRoute
-  ComponentsAlertDialogRoute: typeof ComponentsAlertDialogRoute
   ComponentsCalendarRoute: typeof ComponentsCalendarRoute
   ComponentsChartBarRoute: typeof ComponentsChartBarRoute
   ComponentsChartHistogramRoute: typeof ComponentsChartHistogramRoute
@@ -597,7 +438,7 @@ export interface RootRouteChildren {
   ComponentsCodeBlockRoute: typeof ComponentsCodeBlockRoute
   ComponentsFormRoute: typeof ComponentsFormRoute
   ComponentsOphydMonitorRoute: typeof ComponentsOphydMonitorRoute
-  ComponentsRadioGroupRoute: typeof ComponentsRadioGroupRoute
+  ComponentsPeriodicTableRoute: typeof ComponentsPeriodicTableRoute
   DocsComponentCreationRoute: typeof DocsComponentCreationRoute
   DocsGettingStartedRoute: typeof DocsGettingStartedRoute
   DocsMuiMigrationRoute: typeof DocsMuiMigrationRoute
@@ -605,30 +446,19 @@ export interface RootRouteChildren {
   ElementsBadgeRoute: typeof ElementsBadgeRoute
   ElementsBreadcrumbRoute: typeof ElementsBreadcrumbRoute
   ElementsButtonRoute: typeof ElementsButtonRoute
-  ElementsCheckboxRoute: typeof ElementsCheckboxRoute
-  ElementsInputRoute: typeof ElementsInputRoute
-  ElementsProgressRoute: typeof ElementsProgressRoute
-  ElementsSelectRoute: typeof ElementsSelectRoute
   ElementsSliderRoute: typeof ElementsSliderRoute
   ElementsSparkLineRoute: typeof ElementsSparkLineRoute
-  ElementsSwitchRoute: typeof ElementsSwitchRoute
-  ElementsToasterRoute: typeof ElementsToasterRoute
-  ElementsTooltipRoute: typeof ElementsTooltipRoute
   ElementsTypographyRoute: typeof ElementsTypographyRoute
   ExperimentalBeamBlockersControlRoute: typeof ExperimentalBeamBlockersControlRoute
   ExperimentalCameraControlH264Route: typeof ExperimentalCameraControlH264Route
   ExperimentalCameraControlVideoRoute: typeof ExperimentalCameraControlVideoRoute
   ExperimentalFileBrowserRoute: typeof ExperimentalFileBrowserRoute
   ExperimentalOphydControlRoute: typeof ExperimentalOphydControlRoute
-  ExperimentalPeriodicTableRoute: typeof ExperimentalPeriodicTableRoute
   ExperimentalPrefectFlowTableRoute: typeof ExperimentalPrefectFlowTableRoute
   ExperimentalStepColumnsRoute: typeof ExperimentalStepColumnsRoute
   ExperimentalTextLogRoute: typeof ExperimentalTextLogRoute
   ExperimentalUnitsFieldRoute: typeof ExperimentalUnitsFieldRoute
-  LayoutAccordionRoute: typeof LayoutAccordionRoute
   LayoutBoxRoute: typeof LayoutBoxRoute
-  LayoutCardRoute: typeof LayoutCardRoute
-  LayoutCollapsibleRoute: typeof LayoutCollapsibleRoute
   LayoutGridRoute: typeof LayoutGridRoute
   LayoutResizableRoute: typeof LayoutResizableRoute
   LayoutSheetRoute: typeof LayoutSheetRoute
@@ -672,32 +502,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutGridRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/layout/collapsible': {
-      id: '/layout/collapsible'
-      path: '/layout/collapsible'
-      fullPath: '/layout/collapsible'
-      preLoaderRoute: typeof LayoutCollapsibleRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/layout/card': {
-      id: '/layout/card'
-      path: '/layout/card'
-      fullPath: '/layout/card'
-      preLoaderRoute: typeof LayoutCardRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/layout/box': {
       id: '/layout/box'
       path: '/layout/box'
       fullPath: '/layout/box'
       preLoaderRoute: typeof LayoutBoxRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/layout/accordion': {
-      id: '/layout/accordion'
-      path: '/layout/accordion'
-      fullPath: '/layout/accordion'
-      preLoaderRoute: typeof LayoutAccordionRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/experimental/units-field': {
@@ -726,13 +535,6 @@ declare module '@tanstack/react-router' {
       path: '/experimental/prefect-flow-table'
       fullPath: '/experimental/prefect-flow-table'
       preLoaderRoute: typeof ExperimentalPrefectFlowTableRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/experimental/periodic-table': {
-      id: '/experimental/periodic-table'
-      path: '/experimental/periodic-table'
-      fullPath: '/experimental/periodic-table'
-      preLoaderRoute: typeof ExperimentalPeriodicTableRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/experimental/ophyd-control': {
@@ -777,27 +579,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ElementsTypographyRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/elements/tooltip': {
-      id: '/elements/tooltip'
-      path: '/elements/tooltip'
-      fullPath: '/elements/tooltip'
-      preLoaderRoute: typeof ElementsTooltipRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/elements/toaster': {
-      id: '/elements/toaster'
-      path: '/elements/toaster'
-      fullPath: '/elements/toaster'
-      preLoaderRoute: typeof ElementsToasterRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/elements/switch': {
-      id: '/elements/switch'
-      path: '/elements/switch'
-      fullPath: '/elements/switch'
-      preLoaderRoute: typeof ElementsSwitchRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/elements/spark-line': {
       id: '/elements/spark-line'
       path: '/elements/spark-line'
@@ -810,34 +591,6 @@ declare module '@tanstack/react-router' {
       path: '/elements/slider'
       fullPath: '/elements/slider'
       preLoaderRoute: typeof ElementsSliderRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/elements/select': {
-      id: '/elements/select'
-      path: '/elements/select'
-      fullPath: '/elements/select'
-      preLoaderRoute: typeof ElementsSelectRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/elements/progress': {
-      id: '/elements/progress'
-      path: '/elements/progress'
-      fullPath: '/elements/progress'
-      preLoaderRoute: typeof ElementsProgressRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/elements/input': {
-      id: '/elements/input'
-      path: '/elements/input'
-      fullPath: '/elements/input'
-      preLoaderRoute: typeof ElementsInputRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/elements/checkbox': {
-      id: '/elements/checkbox'
-      path: '/elements/checkbox'
-      fullPath: '/elements/checkbox'
-      preLoaderRoute: typeof ElementsCheckboxRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/elements/button': {
@@ -889,11 +642,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DocsComponentCreationRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/components/radio-group': {
-      id: '/components/radio-group'
-      path: '/components/radio-group'
-      fullPath: '/components/radio-group'
-      preLoaderRoute: typeof ComponentsRadioGroupRouteImport
+    '/components/periodic-table': {
+      id: '/components/periodic-table'
+      path: '/components/periodic-table'
+      fullPath: '/components/periodic-table'
+      preLoaderRoute: typeof ComponentsPeriodicTableRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/components/ophyd-monitor': {
@@ -945,27 +698,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ComponentsCalendarRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/components/alert-dialog': {
-      id: '/components/alert-dialog'
-      path: '/components/alert-dialog'
-      fullPath: '/components/alert-dialog'
-      preLoaderRoute: typeof ComponentsAlertDialogRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/components/alert': {
-      id: '/components/alert'
-      path: '/components/alert'
-      fullPath: '/components/alert'
-      preLoaderRoute: typeof ComponentsAlertRouteImport
-      parentRoute: typeof rootRouteImport
-    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  ComponentsAlertRoute: ComponentsAlertRoute,
-  ComponentsAlertDialogRoute: ComponentsAlertDialogRoute,
   ComponentsCalendarRoute: ComponentsCalendarRoute,
   ComponentsChartBarRoute: ComponentsChartBarRoute,
   ComponentsChartHistogramRoute: ComponentsChartHistogramRoute,
@@ -973,7 +710,7 @@ const rootRouteChildren: RootRouteChildren = {
   ComponentsCodeBlockRoute: ComponentsCodeBlockRoute,
   ComponentsFormRoute: ComponentsFormRoute,
   ComponentsOphydMonitorRoute: ComponentsOphydMonitorRoute,
-  ComponentsRadioGroupRoute: ComponentsRadioGroupRoute,
+  ComponentsPeriodicTableRoute: ComponentsPeriodicTableRoute,
   DocsComponentCreationRoute: DocsComponentCreationRoute,
   DocsGettingStartedRoute: DocsGettingStartedRoute,
   DocsMuiMigrationRoute: DocsMuiMigrationRoute,
@@ -981,30 +718,19 @@ const rootRouteChildren: RootRouteChildren = {
   ElementsBadgeRoute: ElementsBadgeRoute,
   ElementsBreadcrumbRoute: ElementsBreadcrumbRoute,
   ElementsButtonRoute: ElementsButtonRoute,
-  ElementsCheckboxRoute: ElementsCheckboxRoute,
-  ElementsInputRoute: ElementsInputRoute,
-  ElementsProgressRoute: ElementsProgressRoute,
-  ElementsSelectRoute: ElementsSelectRoute,
   ElementsSliderRoute: ElementsSliderRoute,
   ElementsSparkLineRoute: ElementsSparkLineRoute,
-  ElementsSwitchRoute: ElementsSwitchRoute,
-  ElementsToasterRoute: ElementsToasterRoute,
-  ElementsTooltipRoute: ElementsTooltipRoute,
   ElementsTypographyRoute: ElementsTypographyRoute,
   ExperimentalBeamBlockersControlRoute: ExperimentalBeamBlockersControlRoute,
   ExperimentalCameraControlH264Route: ExperimentalCameraControlH264Route,
   ExperimentalCameraControlVideoRoute: ExperimentalCameraControlVideoRoute,
   ExperimentalFileBrowserRoute: ExperimentalFileBrowserRoute,
   ExperimentalOphydControlRoute: ExperimentalOphydControlRoute,
-  ExperimentalPeriodicTableRoute: ExperimentalPeriodicTableRoute,
   ExperimentalPrefectFlowTableRoute: ExperimentalPrefectFlowTableRoute,
   ExperimentalStepColumnsRoute: ExperimentalStepColumnsRoute,
   ExperimentalTextLogRoute: ExperimentalTextLogRoute,
   ExperimentalUnitsFieldRoute: ExperimentalUnitsFieldRoute,
-  LayoutAccordionRoute: LayoutAccordionRoute,
   LayoutBoxRoute: LayoutBoxRoute,
-  LayoutCardRoute: LayoutCardRoute,
-  LayoutCollapsibleRoute: LayoutCollapsibleRoute,
   LayoutGridRoute: LayoutGridRoute,
   LayoutResizableRoute: LayoutResizableRoute,
   LayoutSheetRoute: LayoutSheetRoute,
