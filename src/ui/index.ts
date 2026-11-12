@@ -8,6 +8,7 @@ export {
   BreadcrumbItem,
   BreadcrumbLink,
 } from "./elements/breadcrumb";
+export { Button, buttonVariants } from "./elements/button";
 export { Calendar } from "./components/calendar";
 export { CodeBlock } from "./components/code-block";
 export {

@@ -77,6 +77,10 @@ const data: { navMain: NavItem[] } = {
           url: "/elements/breadcrumb",
         },
         {
+          title: "Button",
+          url: "/elements/button",
+        },
+        {
           title: "Button Shadcn",
           url: "/elements/button2",
         },

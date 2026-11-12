@@ -15,24 +15,45 @@ export const Route = createFileRoute("/elements/button")({
 });
 
 /* DEMO_START */
-function BasicButtonDemo() {
+function ButtonVariantsDemo() {
   return (
-    <div className="flex flex-wrap gap-4">
-      <Button variant="default">Default</Button>
-      <Button variant="success">Success</Button>
-      <Button variant="warning">Warning</Button>
-      <Button variant="destructive">Destructive</Button>
-      <Button variant="outline">Outline</Button>
-      <Button variant="secondary">Secondary</Button>
-      <Button variant="ghost">Ghost</Button>
-      <Button variant="link">Link</Button>
-    </div>
+    <>
+      <div className="flex flex-wrap gap-4">
+        <Button variant="default">Default</Button>
+        <Button variant="white">White</Button>
+        <Button variant="warning">Warning</Button>
+        <Button variant="alert">Alert</Button>
+        <Button variant="success">Success</Button>
+        <Button variant="iconOnly">S</Button>
+      </div>
+
+      <div className="flex flex-wrap gap-4">
+        <Button variant="default" disabled>
+          Default
+        </Button>
+        <Button variant="white" disabled>
+          White
+        </Button>
+        <Button variant="warning" disabled>
+          Warning
+        </Button>
+        <Button variant="alert" disabled>
+          Alert
+        </Button>
+        <Button variant="success" disabled>
+          Success
+        </Button>
+        <Button variant="iconOnly" disabled>
+          S
+        </Button>
+      </div>
+    </>
   );
 }
 /* DEMO_END */
 
 // This gets replaced at build time with the actual source code
-const basicButtonSource = __SOURCE__;
+const buttonVariantsSource = __SOURCE__;
 
 /* DEMO_START */
 function ButtonSizesDemo() {
@@ -49,18 +70,17 @@ function ButtonSizesDemo() {
 const buttonSizesSource = __SOURCE__;
 
 /* DEMO_START */
-function ButtonStatesDemo() {
+function ButtonRoundedDemo() {
   return (
-    <div className="flex gap-4">
-      <Button>Normal</Button>
-      <Button disabled>Disabled</Button>
-      <Button loading>Loading</Button>
+    <div className="flex items-center gap-4">
+      <Button rounded="default">Default Rounded</Button>
+      <Button rounded="md">Medium Rounded</Button>
     </div>
   );
 }
 /* DEMO_END */
 
-const buttonStatesSource = __SOURCE__;
+const buttonRoundedSource = __SOURCE__;
 
 function ButtonPage() {
   return (
@@ -90,17 +110,19 @@ function ButtonPage() {
             <code>loading</code> prop. Upstream sizes such as{" "}
             <code>icon-sm</code> are not in our copy.
           </p>
+
           <Card>
             <CardHeader>
               <CardTitle>Variants</CardTitle>
               <CardDescription>
-                Different button styles for various use cases
+                Button style variants and their appearance in{" "}
+                <code>disabled</code> state.
               </CardDescription>
             </CardHeader>
             <CardContent>
               <DemoContainer
-                demo={<BasicButtonDemo />}
-                source={basicButtonSource}
+                demo={<ButtonVariantsDemo />}
+                source={buttonVariantsSource}
               />
             </CardContent>
           </Card>
@@ -108,7 +130,7 @@ function ButtonPage() {
           <Card>
             <CardHeader>
               <CardTitle>Sizes</CardTitle>
-              <CardDescription>Different button sizes</CardDescription>
+              <CardDescription>Button sizes</CardDescription>
             </CardHeader>
             <CardContent>
               <DemoContainer
@@ -120,8 +142,21 @@ function ButtonPage() {
 
           <Card>
             <CardHeader>
-              <CardTitle>States</CardTitle>
-              <CardDescription>Button states and interactions</CardDescription>
+              <CardTitle>Corner Rounding</CardTitle>
+              <CardDescription>Button corner rounding radius.</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <DemoContainer
+                demo={<ButtonRoundedDemo />}
+                source={buttonRoundedSource}
+              />
+            </CardContent>
+          </Card>
+
+          {/* <Card>
+            <CardHeader>
+              <CardTitle>Loading</CardTitle>
+              <CardDescription>Button loading states</CardDescription>
             </CardHeader>
             <CardContent>
               <DemoContainer
@@ -129,7 +164,7 @@ function ButtonPage() {
                 source={buttonStatesSource}
               />
             </CardContent>
-          </Card>
+          </Card> */}
         </div>
       </div>
     </>

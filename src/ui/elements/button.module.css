@@ -1,0 +1,222 @@
+@reference "../../styles/index.css";
+
+.root {
+  @apply relative inline-flex h-auto w-auto justify-center align-middle;
+  @apply font-sans leading-none font-normal tracking-normal uppercase;
+  @apply shadow-(--shadow-button) duration-(--duration-default) ease-in-out;
+
+  transition-property: color, background, background-color, box-shadow;
+  background-position: 100%;
+  background-size: 300% 1px;
+
+  /* &:enabled:global(.isActive), */
+  &:enabled:is(:focus-visible, :hover) {
+    @apply cursor-pointer bg-position-[0%] shadow-(--shadow-button-focus);
+  }
+
+  svg {
+    @apply transition-colors duration-(--duration-default) ease-in-out;
+  }
+}
+
+.sizeDefault {
+  @apply text-[16px] xl:text-[18px];
+  @apply px-3 py-2;
+
+  svg {
+    @apply h-[14px] w-[14px];
+    @apply xl:h-[18px] xl:w-[18px];
+  }
+}
+
+.sizeSmall {
+  @apply px-2 py-1 text-[14px];
+  @apply xl:text-[16px];
+
+  svg {
+    @apply h-3 w-3;
+    @apply xl:h-[14px] xl:w-[14px];
+  }
+
+  &.iconStart > svg {
+    @apply mr-2;
+  }
+}
+
+.sizeLarge {
+  @apply text-[18px];
+  @apply xl:text-[24px];
+
+  svg {
+    @apply h-4 w-4;
+    @apply xl:h-6 xl:w-6;
+  }
+}
+
+.iconStart svg {
+  @apply mr-3;
+}
+
+.iconEnd {
+  flex-direction: row-reverse;
+
+  svg {
+    @apply ml-3;
+  }
+}
+
+.root:not(.iconOnly):disabled,
+.root.colorWarning:not(.iconOnly):disabled,
+.root.colorAlert:not(.iconOnly):disabled {
+  @apply text-disabled-medium cursor-default;
+  background: color-mix(in oklch, var(--color-grey) 10%, #fff);
+
+  svg {
+    @apply fill-disabled-medium text-disabled-medium;
+  }
+}
+
+.colorDefault {
+  @apply bg-gradient-medium text-white [&>svg]:fill-white;
+  background: linear-gradient(
+    to left,
+    var(--color-gradient-medium) 33%,
+    var(--color-gradient-light) 66%
+  );
+}
+
+.colorWhite {
+  @apply text-gradient-medium bg-white;
+  background: linear-gradient(
+    to left,
+    var(--color-white) 33%,
+    var(--color-gradient-light) 66%
+  );
+
+  &:enabled:global(.isActive),
+  &:enabled:is(:focus-visible, :hover) {
+    @apply text-white;
+
+    svg {
+      @apply fill-white text-white;
+    }
+  }
+
+  svg {
+    @apply fill-gradient-medium text-gradient-medium;
+  }
+}
+
+.colorWarning {
+  background: linear-gradient(
+    to left,
+    var(--color-warning-dark) 33%,
+    var(--color-warning-medium) 66%
+  );
+}
+
+.colorAlert {
+  background: linear-gradient(
+    to left,
+    var(--color-alert-dark) 33%,
+    var(--color-alert-medium) 66%
+  );
+}
+
+.colorSuccess {
+  background: linear-gradient(
+    to left,
+    var(--color-success) 33%,
+    var(--color-white) 66%
+  );
+}
+
+.iconOnly {
+  @apply bg-transparent p-0 shadow-none;
+
+  &:enabled:global(.isActive),
+  &:enabled:is(:focus-visible, :hover) {
+    @apply shadow-none;
+  }
+
+  /* &:enabled:global(.isActive) > svg,
+    &:enabled:is(:focus-visible, :hover) > svg {
+        @apply fill-gradient-light text-gradient-light;
+    } */
+
+  svg {
+    @apply mx-0;
+  }
+
+  &.sizeDefault svg {
+    @apply h-6 w-6;
+  }
+
+  &.sizeSmall svg {
+    @apply h-4 w-4;
+  }
+
+  &.sizeLarge svg {
+    @apply h-8 w-8;
+  }
+
+  &.iconStart.sizeSmall svg {
+    @apply mr-0;
+  }
+
+  &.iconEnd.sizeSmall svg {
+    @apply ml-0;
+  }
+
+  &:disabled {
+    @apply cursor-default;
+
+    svg {
+      @apply fill-disabled-medium text-disabled-medium;
+    }
+  }
+
+  &.colorDefault {
+    svg {
+      @apply fill-gradient-medium text-gradient-medium;
+    }
+
+    &:enabled:global(.isActive) > svg,
+    &:enabled:is(:focus-visible, :hover) > svg {
+      @apply fill-gradient-light text-gradient-light;
+    }
+  }
+
+  &.colorWarning {
+    svg {
+      @apply fill-warning-dark text-warning-dark;
+    }
+
+    &:enabled:global(.isActive) > svg,
+    &:enabled:is(:focus-visible, :hover) > svg {
+      @apply fill-warning text-warning;
+    }
+  }
+
+  &.colorAlert {
+    svg {
+      @apply fill-alert-dark text-alert-dark;
+    }
+
+    &:enabled:global(.isActive) > svg,
+    &:enabled:is(:focus-visible, :hover) > svg {
+      @apply fill-alert text-alert;
+    }
+  }
+
+  &.colorSuccess {
+    svg {
+      @apply fill-success text-success;
+    }
+
+    &:enabled:global(.isActive) > svg,
+    &:enabled:is(:focus-visible, :hover) > svg {
+      @apply fill-success text-success;
+    }
+  }
+}
