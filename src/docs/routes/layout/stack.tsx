@@ -7,7 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from "../../../ui/layout/card";
-import { Button } from "../../../ui/elements/button";
+import { Button } from "../../../ui/elements/button2";
 import { DemoContainer } from "@/docs/components/demo-container";
 import { CodeBlock } from "../../../ui/components/code-block";
 

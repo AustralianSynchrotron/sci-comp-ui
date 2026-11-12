@@ -27,6 +27,7 @@ import { Route as ExperimentalBeamBlockersControlRouteImport } from './routes/ex
 import { Route as ElementsTypographyRouteImport } from './routes/elements/typography'
 import { Route as ElementsSparkLineRouteImport } from './routes/elements/spark-line'
 import { Route as ElementsSliderRouteImport } from './routes/elements/slider'
+import { Route as ElementsButton2RouteImport } from './routes/elements/button2'
 import { Route as ElementsButtonRouteImport } from './routes/elements/button'
 import { Route as ElementsBreadcrumbRouteImport } from './routes/elements/breadcrumb'
 import { Route as ElementsBadgeRouteImport } from './routes/elements/badge'
@@ -138,6 +139,11 @@ const ElementsSliderRoute = ElementsSliderRouteImport.update({
   path: '/elements/slider',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ElementsButton2Route = ElementsButton2RouteImport.update({
+  id: '/elements/button2',
+  path: '/elements/button2',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ElementsButtonRoute = ElementsButtonRouteImport.update({
   id: '/elements/button',
   path: '/elements/button',
@@ -232,6 +238,7 @@ export interface FileRoutesByFullPath {
   '/elements/badge': typeof ElementsBadgeRoute
   '/elements/breadcrumb': typeof ElementsBreadcrumbRoute
   '/elements/button': typeof ElementsButtonRoute
+  '/elements/button2': typeof ElementsButton2Route
   '/elements/slider': typeof ElementsSliderRoute
   '/elements/spark-line': typeof ElementsSparkLineRoute
   '/elements/typography': typeof ElementsTypographyRoute
@@ -267,6 +274,7 @@ export interface FileRoutesByTo {
   '/elements/badge': typeof ElementsBadgeRoute
   '/elements/breadcrumb': typeof ElementsBreadcrumbRoute
   '/elements/button': typeof ElementsButtonRoute
+  '/elements/button2': typeof ElementsButton2Route
   '/elements/slider': typeof ElementsSliderRoute
   '/elements/spark-line': typeof ElementsSparkLineRoute
   '/elements/typography': typeof ElementsTypographyRoute
@@ -303,6 +311,7 @@ export interface FileRoutesById {
   '/elements/badge': typeof ElementsBadgeRoute
   '/elements/breadcrumb': typeof ElementsBreadcrumbRoute
   '/elements/button': typeof ElementsButtonRoute
+  '/elements/button2': typeof ElementsButton2Route
   '/elements/slider': typeof ElementsSliderRoute
   '/elements/spark-line': typeof ElementsSparkLineRoute
   '/elements/typography': typeof ElementsTypographyRoute
@@ -340,6 +349,7 @@ export interface FileRouteTypes {
     | '/elements/badge'
     | '/elements/breadcrumb'
     | '/elements/button'
+    | '/elements/button2'
     | '/elements/slider'
     | '/elements/spark-line'
     | '/elements/typography'
@@ -375,6 +385,7 @@ export interface FileRouteTypes {
     | '/elements/badge'
     | '/elements/breadcrumb'
     | '/elements/button'
+    | '/elements/button2'
     | '/elements/slider'
     | '/elements/spark-line'
     | '/elements/typography'
@@ -410,6 +421,7 @@ export interface FileRouteTypes {
     | '/elements/badge'
     | '/elements/breadcrumb'
     | '/elements/button'
+    | '/elements/button2'
     | '/elements/slider'
     | '/elements/spark-line'
     | '/elements/typography'
@@ -446,6 +458,7 @@ export interface RootRouteChildren {
   ElementsBadgeRoute: typeof ElementsBadgeRoute
   ElementsBreadcrumbRoute: typeof ElementsBreadcrumbRoute
   ElementsButtonRoute: typeof ElementsButtonRoute
+  ElementsButton2Route: typeof ElementsButton2Route
   ElementsSliderRoute: typeof ElementsSliderRoute
   ElementsSparkLineRoute: typeof ElementsSparkLineRoute
   ElementsTypographyRoute: typeof ElementsTypographyRoute
@@ -593,6 +606,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ElementsSliderRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/elements/button2': {
+      id: '/elements/button2'
+      path: '/elements/button2'
+      fullPath: '/elements/button2'
+      preLoaderRoute: typeof ElementsButton2RouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/elements/button': {
       id: '/elements/button'
       path: '/elements/button'
@@ -718,6 +738,7 @@ const rootRouteChildren: RootRouteChildren = {
   ElementsBadgeRoute: ElementsBadgeRoute,
   ElementsBreadcrumbRoute: ElementsBreadcrumbRoute,
   ElementsButtonRoute: ElementsButtonRoute,
+  ElementsButton2Route: ElementsButton2Route,
   ElementsSliderRoute: ElementsSliderRoute,
   ElementsSparkLineRoute: ElementsSparkLineRoute,
   ElementsTypographyRoute: ElementsTypographyRoute,

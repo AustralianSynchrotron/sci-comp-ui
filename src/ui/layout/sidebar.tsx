@@ -4,7 +4,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { PanelLeftIcon } from "lucide-react";
 
 import { cn } from "../../lib/utils";
-import { Button } from "../elements/button";
+import { Button } from "../elements/button2";
 import { Input } from "../elements/input";
 import { Separator } from "../elements/separator";
 import { Skeleton } from "./skeleton";

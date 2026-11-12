@@ -16,7 +16,7 @@ import {
   CardTitle,
 } from "../../../ui/layout/card";
 import { DemoContainer } from "@/docs/components/demo-container";
-import { Button } from "../../../ui/elements/button";
+import { Button } from "../../../ui/elements/button2";
 import { Stack } from "../../../ui/layout/stack";
 import { Switch } from "../../../ui/elements/switch";
 import { Typography } from "../../../ui/elements/typography";

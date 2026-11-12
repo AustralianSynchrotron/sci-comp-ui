@@ -2,7 +2,7 @@ import type { Column } from "@tanstack/react-table";
 import { ArrowDown, ArrowUp, ChevronsUpDown, EyeOff } from "lucide-react";
 
 import { cn } from "../../../lib/utils";
-import { Button } from "../../elements/button";
+import { Button } from "../../elements/button2";
 import {
   DropdownMenu,
   DropdownMenuContent,

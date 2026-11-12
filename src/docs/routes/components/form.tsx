@@ -3,7 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { PageHeader } from "../../components/page-header";
-import { Button } from "../../../ui/elements/button";
+import { Button } from "../../../ui/elements/button2";
 import { Input } from "../../../ui/elements/input";
 import { Textarea } from "../../../ui/elements/textarea";
 import {
