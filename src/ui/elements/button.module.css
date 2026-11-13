@@ -1,15 +1,11 @@
-@reference "../../styles/index.css";
+@reference "../../styles/globals.css";
 
 .root {
   @apply relative inline-flex h-auto w-auto justify-center align-middle;
   @apply font-sans leading-none font-normal tracking-normal uppercase;
-  @apply shadow-(--shadow-button) duration-(--duration-default) ease-in-out;
+  @apply shadow-(--shadow-button) transition-[color,_background,_background-color,_box-shadow] duration-(--duration-default) ease-in-out;
 
-  transition-property: color, background, background-color, box-shadow;
-  background-position: 100%;
-  background-size: 300% 1px;
-
-  /* &:enabled:global(.isActive), */
+  &:enabled:global(.isActive),
   &:enabled:is(:focus-visible, :hover) {
     @apply cursor-pointer bg-position-[0%] shadow-(--shadow-button-focus);
   }
@@ -30,8 +26,8 @@
 }
 
 .sizeSmall {
-  @apply px-2 py-1 text-[14px];
-  @apply xl:text-[16px];
+  @apply text-[14px] xl:text-[16px];
+  @apply px-2 py-1;
 
   svg {
     @apply h-3 w-3;
@@ -44,8 +40,8 @@
 }
 
 .sizeLarge {
-  @apply text-[18px];
-  @apply xl:text-[24px];
+  @apply text-[18px] xl:text-[24px];
+  @apply px-3 py-2;
 
   svg {
     @apply h-4 w-4;
@@ -58,7 +54,7 @@
 }
 
 .iconEnd {
-  flex-direction: row-reverse;
+  @apply flex-row-reverse;
 
   svg {
     @apply ml-3;
@@ -68,7 +64,7 @@
 .root:not(.iconOnly):disabled,
 .root.colorWarning:not(.iconOnly):disabled,
 .root.colorAlert:not(.iconOnly):disabled {
-  @apply text-disabled-medium cursor-default;
+  @apply cursor-default text-disabled-medium;
   background: color-mix(in oklch, var(--color-grey) 10%, #fff);
 
   svg {
@@ -78,20 +74,23 @@
 
 .colorDefault {
   @apply bg-gradient-medium text-white [&>svg]:fill-white;
+
   background: linear-gradient(
     to left,
     var(--color-gradient-medium) 33%,
     var(--color-gradient-light) 66%
   );
+  @apply bg-size-[300%_1px] bg-position-[100%];
 }
 
 .colorWhite {
-  @apply text-gradient-medium bg-white;
+  @apply bg-white text-gradient-medium;
   background: linear-gradient(
     to left,
     var(--color-white) 33%,
     var(--color-gradient-light) 66%
   );
+  @apply bg-size-[300%_1px] bg-position-[99%];
 
   &:enabled:global(.isActive),
   &:enabled:is(:focus-visible, :hover) {
@@ -108,27 +107,36 @@
 }
 
 .colorWarning {
+  @apply bg-gradient-medium text-white [&>svg]:fill-white;
+
   background: linear-gradient(
     to left,
     var(--color-warning-dark) 33%,
     var(--color-warning-medium) 66%
   );
+  @apply bg-size-[300%_1px] bg-position-[100%];
 }
 
 .colorAlert {
+  @apply bg-gradient-medium text-white [&>svg]:fill-white;
+
   background: linear-gradient(
     to left,
     var(--color-alert-dark) 33%,
     var(--color-alert-medium) 66%
   );
+  @apply bg-size-[300%_1px] bg-position-[100%];
 }
 
 .colorSuccess {
+  @apply bg-gradient-medium text-white [&>svg]:fill-white;
+
   background: linear-gradient(
     to left,
-    var(--color-success) 33%,
-    var(--color-white) 66%
+    var(--color-success-dark) 33%,
+    var(--color-success-medium) 66%
   );
+  @apply bg-size-[300%_1px] bg-position-[100%];
 }
 
 .iconOnly {
@@ -139,10 +147,10 @@
     @apply shadow-none;
   }
 
-  /* &:enabled:global(.isActive) > svg,
-    &:enabled:is(:focus-visible, :hover) > svg {
-        @apply fill-gradient-light text-gradient-light;
-    } */
+  &:enabled:global(.isActive) > svg,
+  &:enabled:is(:focus-visible, :hover) > svg {
+    @apply fill-gradient-light text-gradient-light;
+  }
 
   svg {
     @apply mx-0;
@@ -211,7 +219,7 @@
 
   &.colorSuccess {
     svg {
-      @apply fill-success text-success;
+      @apply fill-success-dark text-success-dark;
     }
 
     &:enabled:global(.isActive) > svg,

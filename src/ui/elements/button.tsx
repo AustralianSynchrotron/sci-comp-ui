@@ -23,7 +23,8 @@ const buttonVariants = cva(styles.root, {
       lg: styles.sizeLarge,
     },
     rounded: {
-      default: "rounded-xs",
+      default: "rounded-sm",
+      xs: "rounded-xs",
       md: "rounded-md",
     },
     iconPosition: {
