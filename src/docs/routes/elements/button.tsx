@@ -17,17 +17,18 @@ export const Route = createFileRoute("/elements/button")({
 /* DEMO_START */
 function ButtonVariantsDemo() {
   return (
-    <>
+    <div className="flex flex-col gap-4">
       <div className="flex flex-wrap gap-4">
+        <h5>Active State</h5>
         <Button variant="default">Default</Button>
         <Button variant="white">White</Button>
         <Button variant="warning">Warning</Button>
         <Button variant="alert">Alert</Button>
         <Button variant="success">Success</Button>
-        <Button variant="iconOnly">S</Button>
       </div>
 
       <div className="flex flex-wrap gap-4">
+        <h5>Disabled State</h5>
         <Button variant="default" disabled>
           Default
         </Button>
@@ -43,11 +44,8 @@ function ButtonVariantsDemo() {
         <Button variant="success" disabled>
           Success
         </Button>
-        <Button variant="iconOnly" disabled>
-          S
-        </Button>
       </div>
-    </>
+    </div>
   );
 }
 /* DEMO_END */
@@ -73,6 +71,7 @@ const buttonSizesSource = __SOURCE__;
 function ButtonRoundedDemo() {
   return (
     <div className="flex items-center gap-4">
+      <Button rounded="xs">Extra-Small Rounded</Button>
       <Button rounded="default">Default Rounded</Button>
       <Button rounded="md">Medium Rounded</Button>
     </div>
@@ -95,13 +94,13 @@ function ButtonPage() {
       />
       <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
         <div className="space-y-6">
-          <p className="text-sm text-muted-foreground">
+          <p className="text-muted-foreground text-sm">
             Based on the shadcn/ui{" "}
             <a
               href="https://ui.shadcn.com/docs/components/radix/button"
               target="_blank"
               rel="noopener noreferrer"
-              className="font-medium text-primary hover:underline"
+              className="text-primary font-medium hover:underline"
             >
               Button
             </a>
@@ -153,7 +152,10 @@ function ButtonPage() {
             </CardContent>
           </Card>
 
-          {/* <Card>
+          {/* TODO: .isActive */}
+
+          {/* TODO: Loading
+          <Card>
             <CardHeader>
               <CardTitle>Loading</CardTitle>
               <CardDescription>Button loading states</CardDescription>
@@ -165,6 +167,11 @@ function ButtonPage() {
               />
             </CardContent>
           </Card> */}
+
+          {/* TODO: SVG icon left/right */}
+
+          {/* TODO: SVG icon only, variants, states, sizes */}
+          {/* <Button variant="iconOnly">S</Button> */}
         </div>
       </div>
     </>
