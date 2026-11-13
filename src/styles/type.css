@@ -1,0 +1,83 @@
+@utility type-meta {
+  @apply font-light;
+  @apply text-[14px] leading-[calc(22/14)];
+  @apply xl:text-[16px] xl:leading-[calc(22/16)];
+  @apply 3xl:font-normal;
+}
+
+@utility type-regular {
+  @apply font-light;
+  @apply text-[16px] leading-[calc(24/16)];
+  @apply xl:text-[18px] xl:leading-[calc(26/18)];
+}
+
+@utility type-large {
+  @apply font-light;
+  @apply text-[18px] leading-[calc(26/18)];
+  @apply xl:text-[24px] xl:leading-[calc(32/24)];
+}
+
+@utility richtext {
+  p {
+    @apply my-6 break-words first:mt-0;
+  }
+
+  strong,
+  b {
+    @apply font-normal;
+  }
+
+  a {
+    @apply inline-block pb-px text-inherit no-underline duration-(--duration-short) ease-in-out;
+    transition-property: border-bottom-color, box-shadow, color;
+    box-shadow: inset 0 0 0 0 var(--color-gradient-light);
+    border-bottom: 1px solid;
+    border-bottom-color: var(--color-gradient-light);
+
+    &:is(:focus, :hover) {
+      @apply text-white;
+      box-shadow: inset 0 -1.5em 0 0
+        rgba(from var(--color-gradient-light) r g b / 60%);
+      border-bottom-color: rgba(from var(--color-gradient-light) r g b / 60%);
+    }
+  }
+
+  ul,
+  ol {
+    @apply my-6 list-none ps-10;
+    @apply xl:my-8 xl:ps-14;
+
+    ul,
+    ol {
+      @apply my-4;
+      @apply xl:my-8;
+    }
+  }
+
+  ol {
+    counter-reset: counter;
+  }
+
+  li {
+    counter-increment: counter;
+  }
+
+  li + li {
+    @apply mt-2 xl:mt-4;
+  }
+
+  ul > li::before {
+    @apply font-medium text-gradient-medium;
+    @apply float-left block content-['∘'];
+    @apply ml-[-24px] w-6;
+    @apply xl:ml-[-32px] xl:w-8;
+  }
+
+  ol > li::before {
+    @apply font-poppins font-bold text-gradient-medium;
+    @apply inline-block text-center;
+    @apply ml-[-40px] w-10;
+    @apply xl:ml-[-56px] xl:w-14;
+    content: counter(counter);
+  }
+}
