@@ -93,6 +93,10 @@ const data: { navMain: NavItem[] } = {
           url: "/elements/spark-line",
         },
         {
+          title: "SVGs",
+          url: "/elements/svgs",
+        },
+        {
           title: "Typography",
           url: "/elements/typography",
         },

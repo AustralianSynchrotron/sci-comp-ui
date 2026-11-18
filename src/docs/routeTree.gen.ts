@@ -25,6 +25,7 @@ import { Route as ExperimentalCameraControlVideoRouteImport } from './routes/exp
 import { Route as ExperimentalCameraControlH264RouteImport } from './routes/experimental/camera-control-h264'
 import { Route as ExperimentalBeamBlockersControlRouteImport } from './routes/experimental/beam-blockers-control'
 import { Route as ElementsTypographyRouteImport } from './routes/elements/typography'
+import { Route as ElementsSvgsRouteImport } from './routes/elements/svgs'
 import { Route as ElementsSparkLineRouteImport } from './routes/elements/spark-line'
 import { Route as ElementsSliderRouteImport } from './routes/elements/slider'
 import { Route as ElementsButton2RouteImport } from './routes/elements/button2'
@@ -127,6 +128,11 @@ const ExperimentalBeamBlockersControlRoute =
 const ElementsTypographyRoute = ElementsTypographyRouteImport.update({
   id: '/elements/typography',
   path: '/elements/typography',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ElementsSvgsRoute = ElementsSvgsRouteImport.update({
+  id: '/elements/svgs',
+  path: '/elements/svgs',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ElementsSparkLineRoute = ElementsSparkLineRouteImport.update({
@@ -241,6 +247,7 @@ export interface FileRoutesByFullPath {
   '/elements/button2': typeof ElementsButton2Route
   '/elements/slider': typeof ElementsSliderRoute
   '/elements/spark-line': typeof ElementsSparkLineRoute
+  '/elements/svgs': typeof ElementsSvgsRoute
   '/elements/typography': typeof ElementsTypographyRoute
   '/experimental/beam-blockers-control': typeof ExperimentalBeamBlockersControlRoute
   '/experimental/camera-control-h264': typeof ExperimentalCameraControlH264Route
@@ -277,6 +284,7 @@ export interface FileRoutesByTo {
   '/elements/button2': typeof ElementsButton2Route
   '/elements/slider': typeof ElementsSliderRoute
   '/elements/spark-line': typeof ElementsSparkLineRoute
+  '/elements/svgs': typeof ElementsSvgsRoute
   '/elements/typography': typeof ElementsTypographyRoute
   '/experimental/beam-blockers-control': typeof ExperimentalBeamBlockersControlRoute
   '/experimental/camera-control-h264': typeof ExperimentalCameraControlH264Route
@@ -314,6 +322,7 @@ export interface FileRoutesById {
   '/elements/button2': typeof ElementsButton2Route
   '/elements/slider': typeof ElementsSliderRoute
   '/elements/spark-line': typeof ElementsSparkLineRoute
+  '/elements/svgs': typeof ElementsSvgsRoute
   '/elements/typography': typeof ElementsTypographyRoute
   '/experimental/beam-blockers-control': typeof ExperimentalBeamBlockersControlRoute
   '/experimental/camera-control-h264': typeof ExperimentalCameraControlH264Route
@@ -352,6 +361,7 @@ export interface FileRouteTypes {
     | '/elements/button2'
     | '/elements/slider'
     | '/elements/spark-line'
+    | '/elements/svgs'
     | '/elements/typography'
     | '/experimental/beam-blockers-control'
     | '/experimental/camera-control-h264'
@@ -388,6 +398,7 @@ export interface FileRouteTypes {
     | '/elements/button2'
     | '/elements/slider'
     | '/elements/spark-line'
+    | '/elements/svgs'
     | '/elements/typography'
     | '/experimental/beam-blockers-control'
     | '/experimental/camera-control-h264'
@@ -424,6 +435,7 @@ export interface FileRouteTypes {
     | '/elements/button2'
     | '/elements/slider'
     | '/elements/spark-line'
+    | '/elements/svgs'
     | '/elements/typography'
     | '/experimental/beam-blockers-control'
     | '/experimental/camera-control-h264'
@@ -461,6 +473,7 @@ export interface RootRouteChildren {
   ElementsButton2Route: typeof ElementsButton2Route
   ElementsSliderRoute: typeof ElementsSliderRoute
   ElementsSparkLineRoute: typeof ElementsSparkLineRoute
+  ElementsSvgsRoute: typeof ElementsSvgsRoute
   ElementsTypographyRoute: typeof ElementsTypographyRoute
   ExperimentalBeamBlockersControlRoute: typeof ExperimentalBeamBlockersControlRoute
   ExperimentalCameraControlH264Route: typeof ExperimentalCameraControlH264Route
@@ -590,6 +603,13 @@ declare module '@tanstack/react-router' {
       path: '/elements/typography'
       fullPath: '/elements/typography'
       preLoaderRoute: typeof ElementsTypographyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/elements/svgs': {
+      id: '/elements/svgs'
+      path: '/elements/svgs'
+      fullPath: '/elements/svgs'
+      preLoaderRoute: typeof ElementsSvgsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/elements/spark-line': {
@@ -741,6 +761,7 @@ const rootRouteChildren: RootRouteChildren = {
   ElementsButton2Route: ElementsButton2Route,
   ElementsSliderRoute: ElementsSliderRoute,
   ElementsSparkLineRoute: ElementsSparkLineRoute,
+  ElementsSvgsRoute: ElementsSvgsRoute,
   ElementsTypographyRoute: ElementsTypographyRoute,
   ExperimentalBeamBlockersControlRoute: ExperimentalBeamBlockersControlRoute,
   ExperimentalCameraControlH264Route: ExperimentalCameraControlH264Route,
