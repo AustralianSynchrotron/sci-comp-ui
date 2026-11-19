@@ -20,7 +20,10 @@ export {
 export { Skeleton } from "./layout/skeleton";
 export { Slider } from "./elements/slider";
 export { Textarea } from "./elements/textarea";
-export { Typography, typographyVariants } from "./elements/typography";
+export {
+  MuiTypography,
+  muiTypographyVariants,
+} from "./elements/typography-mui";
 
 // LAYOUT COMPONENTS
 export { AspectRatio } from "./layout/aspect-ratio";
