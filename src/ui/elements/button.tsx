@@ -2,7 +2,7 @@ import * as React from "react";
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
 
-// import { Loader2Icon } from "lucide-react";
+import { Loader2Icon } from "lucide-react";
 import { cn } from "../../lib/utils";
 
 import styles from "./button.module.css";
@@ -15,7 +15,6 @@ const buttonVariants = cva(styles.root, {
       warning: styles.colorWarning,
       alert: styles.colorAlert,
       success: styles.colorSuccess,
-      iconOnly: styles.iconOnly,
     },
     size: {
       default: styles.sizeDefault,
@@ -36,7 +35,7 @@ const buttonVariants = cva(styles.root, {
     variant: "default",
     size: "default",
     rounded: "default",
-    iconPosition: null,
+    iconPosition: "start",
   },
 });
 
@@ -45,8 +44,11 @@ const Button = React.forwardRef<
   React.ComponentProps<"button"> &
     VariantProps<typeof buttonVariants> & {
       asChild?: boolean;
+      isActive?: boolean; // Only for if it's needed to manually enforce active state style
+      readOnly?: boolean;
+      loading?: boolean;
       icon?: React.ReactNode;
-      //   loading?: boolean;
+      iconOnly?: boolean;
     }
 >(
   (
@@ -54,11 +56,14 @@ const Button = React.forwardRef<
       className,
       variant,
       size,
+      isActive,
+      readOnly = false,
+      loading = false,
       rounded,
       iconPosition,
       asChild = false,
       icon,
-      //   loading = false,
+      iconOnly,
       children,
       ...props
     },
@@ -69,13 +74,32 @@ const Button = React.forwardRef<
     return (
       <Comp
         className={cn(
-          buttonVariants({ variant, size, rounded, iconPosition, className })
+          buttonVariants({
+            variant,
+            size,
+            rounded,
+            iconPosition,
+            className,
+          }),
+          icon != null && children == null && iconOnly ? styles.iconOnly : "",
+          isActive ? "isActive" : "",
+          readOnly ? styles.readOnly : ""
         )}
         ref={ref}
         {...props}
       >
-        {/* {loading && <Loader2Icon className="size-3 animate-spin" />} */}
-        {icon}
+        {loading ? (
+          <div className={styles.loadingIconWrap}>
+            <Loader2Icon
+              className={cn(
+                styles.loadingIcon,
+                "block shrink-0 origin-center animate-spin"
+              )}
+            />
+          </div>
+        ) : (
+          icon
+        )}
         {children}
       </Comp>
     );

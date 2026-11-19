@@ -1,17 +1,23 @@
 @reference "../../styles/globals.css";
 
 .root {
-  @apply relative inline-flex h-auto w-auto justify-center align-middle;
+  @apply relative inline-flex h-auto w-auto shrink-0 justify-center align-middle;
   @apply font-sans leading-none font-normal tracking-normal uppercase;
-  @apply shadow-(--shadow-button) transition-[color,_background,_background-color,_box-shadow] duration-(--duration-default) ease-in-out;
+  @apply shadow-(--shadow-button) transition-[color,background,background-color,box-shadow] duration-(--duration-default) ease-in-out;
 
   &:enabled:global(.isActive),
   &:enabled:is(:focus-visible, :hover) {
     @apply cursor-pointer bg-position-[0%] shadow-(--shadow-button-focus);
   }
 
-  svg {
+  svg:not(.loadingIcon) {
     @apply transition-colors duration-(--duration-default) ease-in-out;
+  }
+}
+
+.readOnly {
+  &.root {
+    @apply pointer-events-none opacity-45;
   }
 }
 
@@ -34,7 +40,7 @@
     @apply xl:h-[14px] xl:w-[14px];
   }
 
-  &.iconStart > svg {
+  &.iconStart > svg:not(.loadingIcon) {
     @apply mr-2;
   }
 }
@@ -49,21 +55,24 @@
   }
 }
 
-.iconStart svg {
+.loadingIconWrap {
+  @apply mr-2 block shrink-0 origin-center;
+}
+
+.iconStart svg:not(.loadingIcon) {
   @apply mr-3;
 }
 
 .iconEnd {
   @apply flex-row-reverse;
 
-  svg {
+  svg:not(.loadingIcon),
+  .loadingIconWrap {
     @apply ml-3;
   }
 }
 
-.root:not(.iconOnly):disabled,
-.root.colorWarning:not(.iconOnly):disabled,
-.root.colorAlert:not(.iconOnly):disabled {
+.root:not(.iconOnly):disabled {
   @apply cursor-default text-disabled-medium;
   background: color-mix(in oklch, var(--color-grey) 10%, #fff);
 
@@ -72,8 +81,8 @@
   }
 }
 
-.colorDefault {
-  @apply bg-gradient-medium text-white [&>svg]:fill-white;
+.colorDefault:not(.iconOnly) {
+  @apply bg-gradient-medium text-white [&>svg:not(.loadingIcon)]:fill-white;
 
   background: linear-gradient(
     to left,
@@ -83,7 +92,7 @@
   @apply bg-size-[300%_1px] bg-position-[100%];
 }
 
-.colorWhite {
+.colorWhite:not(.iconOnly) {
   @apply bg-white text-gradient-medium;
   background: linear-gradient(
     to left,
@@ -96,18 +105,18 @@
   &:enabled:is(:focus-visible, :hover) {
     @apply text-white;
 
-    svg {
+    svg:not(.loadingIcon) {
       @apply fill-white text-white;
     }
   }
 
-  svg {
+  svg:not(.loadingIcon) {
     @apply fill-gradient-medium text-gradient-medium;
   }
 }
 
-.colorWarning {
-  @apply bg-gradient-medium text-white [&>svg]:fill-white;
+.colorWarning:not(.iconOnly) {
+  @apply bg-gradient-medium text-white [&>svg:not(.loadingIcon)]:fill-white;
 
   background: linear-gradient(
     to left,
@@ -117,8 +126,8 @@
   @apply bg-size-[300%_1px] bg-position-[100%];
 }
 
-.colorAlert {
-  @apply bg-gradient-medium text-white [&>svg]:fill-white;
+.colorAlert:not(.iconOnly) {
+  @apply bg-gradient-medium text-white [&>svg:not(.loadingIcon)]:fill-white;
 
   background: linear-gradient(
     to left,
@@ -128,8 +137,8 @@
   @apply bg-size-[300%_1px] bg-position-[100%];
 }
 
-.colorSuccess {
-  @apply bg-gradient-medium text-white [&>svg]:fill-white;
+.colorSuccess:not(.iconOnly) {
+  @apply bg-gradient-medium text-white [&>svg:not(.loadingIcon)]:fill-white;
 
   background: linear-gradient(
     to left,
@@ -147,12 +156,13 @@
     @apply shadow-none;
   }
 
-  &:enabled:global(.isActive) > svg,
-  &:enabled:is(:focus-visible, :hover) > svg {
+  &:enabled:global(.isActive) > svg:not(.loadingIcon),
+  &:enabled:is(:focus-visible, :hover) > svg:not(.loadingIcon) {
     @apply fill-gradient-light text-gradient-light;
   }
 
-  svg {
+  svg:not(.loadingIcon),
+  .loadingIconWrap {
     @apply mx-0;
   }
 
@@ -168,63 +178,85 @@
     @apply h-8 w-8;
   }
 
-  &.iconStart.sizeSmall svg {
+  &.iconStart.sizeSmall svg:not(.loadingIcon),
+  &.iconStart.sizeSmall .loadingIconWrap {
     @apply mr-0;
   }
 
-  &.iconEnd.sizeSmall svg {
+  &.iconEnd.sizeSmall svg:not(.loadingIcon),
+  &.iconEnd.sizeSmall .loadingIconWrap {
     @apply ml-0;
   }
 
   &:disabled {
     @apply cursor-default;
 
-    svg {
+    svg:not(.loadingIcon) {
       @apply fill-disabled-medium text-disabled-medium;
+    }
+
+    svg.loadingIcon {
+      @apply stroke-disabled-medium;
     }
   }
 
-  &.colorDefault {
-    svg {
+  &.colorDefault:not(:disabled) {
+    svg:not(.loadingIcon) {
       @apply fill-gradient-medium text-gradient-medium;
     }
 
-    &:enabled:global(.isActive) > svg,
-    &:enabled:is(:focus-visible, :hover) > svg {
+    &:enabled:global(.isActive) > svg:not(.loadingIcon),
+    &:enabled:is(:focus-visible, :hover) > svg:not(.loadingIcon) {
       @apply fill-gradient-light text-gradient-light;
+    }
+
+    svg.loadingIcon {
+      @apply stroke-gradient-medium;
     }
   }
 
-  &.colorWarning {
-    svg {
+  &.colorWarning:not(:disabled) {
+    svg:not(.loadingIcon) {
       @apply fill-warning-dark text-warning-dark;
     }
 
-    &:enabled:global(.isActive) > svg,
-    &:enabled:is(:focus-visible, :hover) > svg {
+    &:enabled:global(.isActive) > svg:not(.loadingIcon),
+    &:enabled:is(:focus-visible, :hover) > svg:not(.loadingIcon) {
       @apply fill-warning text-warning;
+    }
+
+    svg.loadingIcon {
+      @apply stroke-warning-dark;
     }
   }
 
-  &.colorAlert {
-    svg {
+  &.colorAlert:not(:disabled) {
+    svg:not(.loadingIcon) {
       @apply fill-alert-dark text-alert-dark;
     }
 
-    &:enabled:global(.isActive) > svg,
-    &:enabled:is(:focus-visible, :hover) > svg {
+    &:enabled:global(.isActive) > svg:not(.loadingIcon),
+    &:enabled:is(:focus-visible, :hover) > svg:not(.loadingIcon) {
       @apply fill-alert text-alert;
+    }
+
+    svg.loadingIcon {
+      @apply stroke-alert-dark;
     }
   }
 
-  &.colorSuccess {
-    svg {
+  &.colorSuccess:not(:disabled) {
+    svg:not(.loadingIcon) {
       @apply fill-success-dark text-success-dark;
     }
 
-    &:enabled:global(.isActive) > svg,
-    &:enabled:is(:focus-visible, :hover) > svg {
+    &:enabled:global(.isActive) > svg:not(.loadingIcon),
+    &:enabled:is(:focus-visible, :hover) > svg:not(.loadingIcon) {
       @apply fill-success text-success;
+    }
+
+    svg.loadingIcon {
+      @apply stroke-success-dark;
     }
   }
 }
