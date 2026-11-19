@@ -136,7 +136,7 @@ const SVG_LIST = [
   SvgZoomOut,
 ];
 
-export const Route = createFileRoute("/elements/svgs")({
+export const Route = createFileRoute("/utility/svgs")({
   component: SvgsPage,
 });
 
@@ -245,7 +245,7 @@ function SvgsPage() {
     <>
       <PageHeader
         breadcrumbs={[
-          { title: "Elements", href: "/elements" },
+          { title: "Utility", href: "/utility" },
           { title: "SVG Icons" },
         ]}
         pageHeading="SVG Icons"

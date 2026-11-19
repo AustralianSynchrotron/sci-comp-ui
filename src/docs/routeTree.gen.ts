@@ -10,6 +10,10 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as UtilityTypographyRouteImport } from './routes/utility/typography'
+import { Route as UtilitySvgsRouteImport } from './routes/utility/svgs'
+import { Route as UtilityPaletteRouteImport } from './routes/utility/palette'
+import { Route as UtilityBreakpointsRouteImport } from './routes/utility/breakpoints'
 import { Route as LayoutStackRouteImport } from './routes/layout/stack'
 import { Route as LayoutSheetRouteImport } from './routes/layout/sheet'
 import { Route as LayoutResizableRouteImport } from './routes/layout/resizable'
@@ -24,8 +28,6 @@ import { Route as ExperimentalFileBrowserRouteImport } from './routes/experiment
 import { Route as ExperimentalCameraControlVideoRouteImport } from './routes/experimental/camera-control-video'
 import { Route as ExperimentalCameraControlH264RouteImport } from './routes/experimental/camera-control-h264'
 import { Route as ExperimentalBeamBlockersControlRouteImport } from './routes/experimental/beam-blockers-control'
-import { Route as ElementsTypographyRouteImport } from './routes/elements/typography'
-import { Route as ElementsSvgsRouteImport } from './routes/elements/svgs'
 import { Route as ElementsSparkLineRouteImport } from './routes/elements/spark-line'
 import { Route as ElementsSliderRouteImport } from './routes/elements/slider'
 import { Route as ElementsButton2RouteImport } from './routes/elements/button2'
@@ -48,6 +50,26 @@ import { Route as ComponentsCalendarRouteImport } from './routes/components/cale
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const UtilityTypographyRoute = UtilityTypographyRouteImport.update({
+  id: '/utility/typography',
+  path: '/utility/typography',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const UtilitySvgsRoute = UtilitySvgsRouteImport.update({
+  id: '/utility/svgs',
+  path: '/utility/svgs',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const UtilityPaletteRoute = UtilityPaletteRouteImport.update({
+  id: '/utility/palette',
+  path: '/utility/palette',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const UtilityBreakpointsRoute = UtilityBreakpointsRouteImport.update({
+  id: '/utility/breakpoints',
+  path: '/utility/breakpoints',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LayoutStackRoute = LayoutStackRouteImport.update({
@@ -125,16 +147,6 @@ const ExperimentalBeamBlockersControlRoute =
     path: '/experimental/beam-blockers-control',
     getParentRoute: () => rootRouteImport,
   } as any)
-const ElementsTypographyRoute = ElementsTypographyRouteImport.update({
-  id: '/elements/typography',
-  path: '/elements/typography',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ElementsSvgsRoute = ElementsSvgsRouteImport.update({
-  id: '/elements/svgs',
-  path: '/elements/svgs',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const ElementsSparkLineRoute = ElementsSparkLineRouteImport.update({
   id: '/elements/spark-line',
   path: '/elements/spark-line',
@@ -247,8 +259,6 @@ export interface FileRoutesByFullPath {
   '/elements/button2': typeof ElementsButton2Route
   '/elements/slider': typeof ElementsSliderRoute
   '/elements/spark-line': typeof ElementsSparkLineRoute
-  '/elements/svgs': typeof ElementsSvgsRoute
-  '/elements/typography': typeof ElementsTypographyRoute
   '/experimental/beam-blockers-control': typeof ExperimentalBeamBlockersControlRoute
   '/experimental/camera-control-h264': typeof ExperimentalCameraControlH264Route
   '/experimental/camera-control-video': typeof ExperimentalCameraControlVideoRoute
@@ -263,6 +273,10 @@ export interface FileRoutesByFullPath {
   '/layout/resizable': typeof LayoutResizableRoute
   '/layout/sheet': typeof LayoutSheetRoute
   '/layout/stack': typeof LayoutStackRoute
+  '/utility/breakpoints': typeof UtilityBreakpointsRoute
+  '/utility/palette': typeof UtilityPaletteRoute
+  '/utility/svgs': typeof UtilitySvgsRoute
+  '/utility/typography': typeof UtilityTypographyRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -284,8 +298,6 @@ export interface FileRoutesByTo {
   '/elements/button2': typeof ElementsButton2Route
   '/elements/slider': typeof ElementsSliderRoute
   '/elements/spark-line': typeof ElementsSparkLineRoute
-  '/elements/svgs': typeof ElementsSvgsRoute
-  '/elements/typography': typeof ElementsTypographyRoute
   '/experimental/beam-blockers-control': typeof ExperimentalBeamBlockersControlRoute
   '/experimental/camera-control-h264': typeof ExperimentalCameraControlH264Route
   '/experimental/camera-control-video': typeof ExperimentalCameraControlVideoRoute
@@ -300,6 +312,10 @@ export interface FileRoutesByTo {
   '/layout/resizable': typeof LayoutResizableRoute
   '/layout/sheet': typeof LayoutSheetRoute
   '/layout/stack': typeof LayoutStackRoute
+  '/utility/breakpoints': typeof UtilityBreakpointsRoute
+  '/utility/palette': typeof UtilityPaletteRoute
+  '/utility/svgs': typeof UtilitySvgsRoute
+  '/utility/typography': typeof UtilityTypographyRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -322,8 +338,6 @@ export interface FileRoutesById {
   '/elements/button2': typeof ElementsButton2Route
   '/elements/slider': typeof ElementsSliderRoute
   '/elements/spark-line': typeof ElementsSparkLineRoute
-  '/elements/svgs': typeof ElementsSvgsRoute
-  '/elements/typography': typeof ElementsTypographyRoute
   '/experimental/beam-blockers-control': typeof ExperimentalBeamBlockersControlRoute
   '/experimental/camera-control-h264': typeof ExperimentalCameraControlH264Route
   '/experimental/camera-control-video': typeof ExperimentalCameraControlVideoRoute
@@ -338,6 +352,10 @@ export interface FileRoutesById {
   '/layout/resizable': typeof LayoutResizableRoute
   '/layout/sheet': typeof LayoutSheetRoute
   '/layout/stack': typeof LayoutStackRoute
+  '/utility/breakpoints': typeof UtilityBreakpointsRoute
+  '/utility/palette': typeof UtilityPaletteRoute
+  '/utility/svgs': typeof UtilitySvgsRoute
+  '/utility/typography': typeof UtilityTypographyRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -361,8 +379,6 @@ export interface FileRouteTypes {
     | '/elements/button2'
     | '/elements/slider'
     | '/elements/spark-line'
-    | '/elements/svgs'
-    | '/elements/typography'
     | '/experimental/beam-blockers-control'
     | '/experimental/camera-control-h264'
     | '/experimental/camera-control-video'
@@ -377,6 +393,10 @@ export interface FileRouteTypes {
     | '/layout/resizable'
     | '/layout/sheet'
     | '/layout/stack'
+    | '/utility/breakpoints'
+    | '/utility/palette'
+    | '/utility/svgs'
+    | '/utility/typography'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -398,8 +418,6 @@ export interface FileRouteTypes {
     | '/elements/button2'
     | '/elements/slider'
     | '/elements/spark-line'
-    | '/elements/svgs'
-    | '/elements/typography'
     | '/experimental/beam-blockers-control'
     | '/experimental/camera-control-h264'
     | '/experimental/camera-control-video'
@@ -414,6 +432,10 @@ export interface FileRouteTypes {
     | '/layout/resizable'
     | '/layout/sheet'
     | '/layout/stack'
+    | '/utility/breakpoints'
+    | '/utility/palette'
+    | '/utility/svgs'
+    | '/utility/typography'
   id:
     | '__root__'
     | '/'
@@ -435,8 +457,6 @@ export interface FileRouteTypes {
     | '/elements/button2'
     | '/elements/slider'
     | '/elements/spark-line'
-    | '/elements/svgs'
-    | '/elements/typography'
     | '/experimental/beam-blockers-control'
     | '/experimental/camera-control-h264'
     | '/experimental/camera-control-video'
@@ -451,6 +471,10 @@ export interface FileRouteTypes {
     | '/layout/resizable'
     | '/layout/sheet'
     | '/layout/stack'
+    | '/utility/breakpoints'
+    | '/utility/palette'
+    | '/utility/svgs'
+    | '/utility/typography'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -473,8 +497,6 @@ export interface RootRouteChildren {
   ElementsButton2Route: typeof ElementsButton2Route
   ElementsSliderRoute: typeof ElementsSliderRoute
   ElementsSparkLineRoute: typeof ElementsSparkLineRoute
-  ElementsSvgsRoute: typeof ElementsSvgsRoute
-  ElementsTypographyRoute: typeof ElementsTypographyRoute
   ExperimentalBeamBlockersControlRoute: typeof ExperimentalBeamBlockersControlRoute
   ExperimentalCameraControlH264Route: typeof ExperimentalCameraControlH264Route
   ExperimentalCameraControlVideoRoute: typeof ExperimentalCameraControlVideoRoute
@@ -489,6 +511,10 @@ export interface RootRouteChildren {
   LayoutResizableRoute: typeof LayoutResizableRoute
   LayoutSheetRoute: typeof LayoutSheetRoute
   LayoutStackRoute: typeof LayoutStackRoute
+  UtilityBreakpointsRoute: typeof UtilityBreakpointsRoute
+  UtilityPaletteRoute: typeof UtilityPaletteRoute
+  UtilitySvgsRoute: typeof UtilitySvgsRoute
+  UtilityTypographyRoute: typeof UtilityTypographyRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -498,6 +524,34 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/utility/typography': {
+      id: '/utility/typography'
+      path: '/utility/typography'
+      fullPath: '/utility/typography'
+      preLoaderRoute: typeof UtilityTypographyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/utility/svgs': {
+      id: '/utility/svgs'
+      path: '/utility/svgs'
+      fullPath: '/utility/svgs'
+      preLoaderRoute: typeof UtilitySvgsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/utility/palette': {
+      id: '/utility/palette'
+      path: '/utility/palette'
+      fullPath: '/utility/palette'
+      preLoaderRoute: typeof UtilityPaletteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/utility/breakpoints': {
+      id: '/utility/breakpoints'
+      path: '/utility/breakpoints'
+      fullPath: '/utility/breakpoints'
+      preLoaderRoute: typeof UtilityBreakpointsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/layout/stack': {
@@ -596,20 +650,6 @@ declare module '@tanstack/react-router' {
       path: '/experimental/beam-blockers-control'
       fullPath: '/experimental/beam-blockers-control'
       preLoaderRoute: typeof ExperimentalBeamBlockersControlRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/elements/typography': {
-      id: '/elements/typography'
-      path: '/elements/typography'
-      fullPath: '/elements/typography'
-      preLoaderRoute: typeof ElementsTypographyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/elements/svgs': {
-      id: '/elements/svgs'
-      path: '/elements/svgs'
-      fullPath: '/elements/svgs'
-      preLoaderRoute: typeof ElementsSvgsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/elements/spark-line': {
@@ -761,8 +801,6 @@ const rootRouteChildren: RootRouteChildren = {
   ElementsButton2Route: ElementsButton2Route,
   ElementsSliderRoute: ElementsSliderRoute,
   ElementsSparkLineRoute: ElementsSparkLineRoute,
-  ElementsSvgsRoute: ElementsSvgsRoute,
-  ElementsTypographyRoute: ElementsTypographyRoute,
   ExperimentalBeamBlockersControlRoute: ExperimentalBeamBlockersControlRoute,
   ExperimentalCameraControlH264Route: ExperimentalCameraControlH264Route,
   ExperimentalCameraControlVideoRoute: ExperimentalCameraControlVideoRoute,
@@ -777,6 +815,10 @@ const rootRouteChildren: RootRouteChildren = {
   LayoutResizableRoute: LayoutResizableRoute,
   LayoutSheetRoute: LayoutSheetRoute,
   LayoutStackRoute: LayoutStackRoute,
+  UtilityBreakpointsRoute: UtilityBreakpointsRoute,
+  UtilityPaletteRoute: UtilityPaletteRoute,
+  UtilitySvgsRoute: UtilitySvgsRoute,
+  UtilityTypographyRoute: UtilityTypographyRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
