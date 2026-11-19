@@ -1,5 +1,5 @@
 /* Tailwind Base */
-/* @import 'tailwindcss'; */
+/* @import "tailwindcss"; */
 
 /* TODO: Line 14~19 is a workaround fix for this current tailwindcss v4 issue: https://github.com/tailwindlabs/tailwindcss/discussions/18406
 
@@ -19,32 +19,28 @@ Keep an eye on that ticket, and we can hopefully remove lines 14~19, and just re
 @import "tailwindcss/utilities.css";
 @import "tw-animate-css";
 
-/* Custom Base Styles */
-@import "./fonts.css" layer(base);
-
-@import "./theme.css" layer(base);
+/* User or Admin Theme Variables */
+/* @import "./admin.css" layer(base); */
 @import "./user.css" layer(base);
-/* @import './admin.css' layer(base); TODO: Figure out how we're going to do this from a package */
 
-/* Custom Components Here */
+/* Base Theme Variables */
+@import "./fonts.css" layer(base);
+@import "./theme.css" layer(base);
+
+/* Shad/cn Specific Theme Variables */
+@import "./shadcn.css";
+
+/* Components Utility Classes */
 @import "./headings.css";
 @import "./type.css";
-/* @import './layout.css';
-@import './inputs.css'; */
-
-/* Custom Utilities Here */
-/* @import './mixins.css'; */
+@import "./layout.css";
+@import "./inputs.css";
+@import "./mixins.css";
 
 @source "./src/**/*.{js,ts,jsx,tsx}";
-/* @source "./index.html"; */
+@source "./index.html";
 
 @custom-variant dark (&:is(.dark *));
-
-/* .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.145 0 0);
-} */
 
 @layer base {
   /* Font Kern */
@@ -60,7 +56,7 @@ Keep an eye on that ticket, and we can hopefully remove lines 14~19, and just re
   }
 
   html {
-    background-color: color-mix(in oklch, var(--color-grey) 1%, #fff);
+    background-color: var(--color-background);
     width: 100%;
     overflow-x: hidden;
     color: var(--color-text);
@@ -68,7 +64,7 @@ Keep an eye on that ticket, and we can hopefully remove lines 14~19, and just re
 
     &.dark {
       background-color: color-mix(in oklch, #fff 3%, var(--color-black));
-      color: color-mix(in oklch, var(--color-grey) 1%, #fff);
+      color: var(--color-background);
 
       ::selection {
         background-color: var(--color-white);

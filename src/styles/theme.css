@@ -24,6 +24,7 @@
   --color-grey: var(--color-ansto-grey);
   --color-text: oklch(0.4017 0 0);
   --color-dev: oklch(0.6565 0.2349 13.34);
+  --color-background: color-mix(in oklch, var(--color-grey) 1%, #fff);
 
   /* USER PALETTE */
   --color-user: var(--color-ansto-blue);
@@ -59,7 +60,12 @@
   --color-success: var(--color-ansto-green);
   --color-success-light: color-mix(in oklch, var(--color-success) 15%, #fff);
   --color-success-medium: var(--color-ansto-green);
-  --color-success-dark: oklch(0.3877 0.0998 153.01);
+  --color-success-dark: oklch(0.4062 0.1328 152.26);
+
+  /* UTILITY SUPPORT PALETTE */
+  --color-primary: var(---color-gradient-medium);
+  --color-secondary: var(--color-gradient-light);
+  --color-border: color-mix(in oklch, var(--color-gradient-medium) 20%, #fff);
 
   /* FONTS */
   --font-fira-sans:

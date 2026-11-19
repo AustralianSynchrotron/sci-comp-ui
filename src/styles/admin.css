@@ -7,7 +7,7 @@
 
 /* Ensure these admin variables have higher priority than default user theme variables */
 @layer base {
-  html {
+  :root {
     --color-gradient: var(--color-admin);
     --color-gradient-light: var(--color-admin-light);
     --color-gradient-medium: var(--color-admin-medium);

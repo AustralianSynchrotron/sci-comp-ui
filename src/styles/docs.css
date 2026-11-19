@@ -1,0 +1,12 @@
+@reference "./globals.css";
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  code {
+    @apply px-0.5;
+    background-color: color-mix(in oklch, var(--color-grey) 8%, transparent);
+  }
+}
