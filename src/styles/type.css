@@ -22,6 +22,10 @@
     @apply my-6 break-words first:mt-0;
   }
 
+  code {
+    background-color: color-mix(in oklch, var(--color-grey) 8%, transparent);
+  }
+
   strong,
   b {
     @apply font-normal;
