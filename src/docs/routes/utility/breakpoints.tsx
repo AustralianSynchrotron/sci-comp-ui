@@ -1,13 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageHeader } from "../../components/page-header";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "../../../ui/layout/card";
-import { DemoContainer } from "@/docs/components/demo-container";
+import { Card, CardContent } from "../../../ui/layout/card";
 
 export const Route = createFileRoute("/utility/breakpoints")({
   component: BreakpointsPage,
