@@ -246,9 +246,9 @@ function SvgsPage() {
       <PageHeader
         breadcrumbs={[
           { title: "Elements", href: "/elements" },
-          { title: "SVGs" },
+          { title: "SVG Icons" },
         ]}
-        pageHeading="SVGs"
+        pageHeading="SVG Icons"
         pageSubheading="Properly configured SVG React components."
       />
       <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
