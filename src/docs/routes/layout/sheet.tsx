@@ -19,7 +19,6 @@ import { DemoContainer } from "@/docs/components/demo-container";
 import { Button } from "../../../ui/elements/button2";
 import { Stack } from "../../../ui/layout/stack";
 import { Switch } from "../../../ui/elements/switch";
-import { Typography } from "../../../ui/elements/typography";
 
 export const Route = createFileRoute("/layout/sheet")({
   component: SheetPage,
@@ -44,7 +43,7 @@ function BasicSheetDemo() {
 
           <Stack spacing={4}>
             <Stack spacing={3}>
-              <Typography variant="h4">Beam Parameters</Typography>
+              <h3 className="heading-4">Beam Parameters</h3>
               <div className="grid grid-cols-2 gap-3 text-sm">
                 <div className="flex items-center justify-between">
                   <span>Energy:</span>
@@ -66,7 +65,7 @@ function BasicSheetDemo() {
             </Stack>
 
             <Stack spacing={3}>
-              <Typography variant="h4">System Status</Typography>
+              <h3 className="heading-4">System Status</h3>
               <Stack spacing={3}>
                 <div className="flex items-center justify-between">
                   <span className="text-sm">Beam Shutter</span>
@@ -84,7 +83,7 @@ function BasicSheetDemo() {
             </Stack>
 
             <Stack spacing={3}>
-              <Typography variant="h4">Quick Actions</Typography>
+              <h3 className="heading-4">Quick Actions</h3>
               <Stack direction="row" spacing={2}>
                 <Button size="sm" variant="outline">
                   Emergency Stop

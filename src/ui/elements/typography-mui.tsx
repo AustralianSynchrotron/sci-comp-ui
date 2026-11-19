@@ -1,12 +1,20 @@
+/**
+ * This component is purely for MUI support, as they tightly coupled html
+ * semantic tag with the styling.
+ *
+ * If you're not migrating from an old MUI UI, you shouldn't use this
+ * component, and should instead use the utility classes as per
+ * Tailwindcss standards, which decouples styling from the semantic html tag.
+ */
 import * as React from "react";
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "../../lib/utils";
 
-const typographyVariants = cva("", {
+const muiTypographyVariants = cva("", {
   variants: {
     variant: {
-      // shadcn standard variants
+      // MUI compatibility variants
       h1: "scroll-m-20 text-4xl font-extrabold tracking-tight text-balance lg:text-5xl",
       h2: "scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0",
       h3: "scroll-m-20 text-2xl font-semibold tracking-tight",
@@ -20,8 +28,6 @@ const typographyVariants = cva("", {
       large: "text-lg font-semibold",
       small: "text-sm leading-none font-medium",
       muted: "text-sm text-muted-foreground",
-
-      // MUI compatibility variants
       body1: "text-base leading-6 [&:not(:first-child)]:mt-4",
       body2: "text-sm leading-5 [&:not(:first-child)]:mt-3",
       subtitle1: "text-base leading-6 font-medium",
@@ -59,7 +65,7 @@ const typographyVariants = cva("", {
     },
   },
   defaultVariants: {
-    variant: "p",
+    variant: "body1",
     align: "inherit",
     color: "inherit",
     gutterBottom: false,
@@ -95,20 +101,20 @@ const variantElementMap = {
 type TypographyElement = keyof JSX.IntrinsicElements;
 type TypographyVariant = keyof typeof variantElementMap;
 
-interface TypographyProps
+interface MuiTypographyProps
   extends
     Omit<React.HTMLAttributes<HTMLElement>, "color">,
-    VariantProps<typeof typographyVariants> {
+    VariantProps<typeof muiTypographyVariants> {
   asChild?: boolean;
   component?: TypographyElement;
   children?: React.ReactNode;
 }
 
-const Typography = React.forwardRef<HTMLElement, TypographyProps>(
+const MuiTypography = React.forwardRef<HTMLElement, MuiTypographyProps>(
   (
     {
       className,
-      variant = "p",
+      variant = "body1",
       align,
       color,
       gutterBottom,
@@ -131,7 +137,7 @@ const Typography = React.forwardRef<HTMLElement, TypographyProps>(
         ref={ref}
         data-slot="typography"
         className={cn(
-          typographyVariants({
+          muiTypographyVariants({
             variant,
             align,
             color,
@@ -147,109 +153,6 @@ const Typography = React.forwardRef<HTMLElement, TypographyProps>(
     );
   }
 );
-Typography.displayName = "Typography";
+MuiTypography.displayName = "Typography";
 
-const TypographyH1 = React.forwardRef<
-  HTMLHeadingElement,
-  Omit<TypographyProps, "variant">
->(({ className, ...props }, ref) => (
-  <Typography ref={ref} variant="h1" className={className} {...props} />
-));
-TypographyH1.displayName = "TypographyH1";
-
-const TypographyH2 = React.forwardRef<
-  HTMLHeadingElement,
-  Omit<TypographyProps, "variant">
->(({ className, ...props }, ref) => (
-  <Typography ref={ref} variant="h2" className={className} {...props} />
-));
-TypographyH2.displayName = "TypographyH2";
-
-const TypographyH3 = React.forwardRef<
-  HTMLHeadingElement,
-  Omit<TypographyProps, "variant">
->(({ className, ...props }, ref) => (
-  <Typography ref={ref} variant="h3" className={className} {...props} />
-));
-TypographyH3.displayName = "TypographyH3";
-
-const TypographyH4 = React.forwardRef<
-  HTMLHeadingElement,
-  Omit<TypographyProps, "variant">
->(({ className, ...props }, ref) => (
-  <Typography ref={ref} variant="h4" className={className} {...props} />
-));
-TypographyH4.displayName = "TypographyH4";
-
-const TypographyP = React.forwardRef<
-  HTMLParagraphElement,
-  Omit<TypographyProps, "variant">
->(({ className, ...props }, ref) => (
-  <Typography ref={ref} variant="p" className={className} {...props} />
-));
-TypographyP.displayName = "TypographyP";
-
-const TypographyLead = React.forwardRef<
-  HTMLParagraphElement,
-  Omit<TypographyProps, "variant">
->(({ className, ...props }, ref) => (
-  <Typography ref={ref} variant="lead" className={className} {...props} />
-));
-TypographyLead.displayName = "TypographyLead";
-
-const TypographyLarge = React.forwardRef<
-  HTMLDivElement,
-  Omit<TypographyProps, "variant">
->(({ className, ...props }, ref) => (
-  <Typography ref={ref} variant="large" className={className} {...props} />
-));
-TypographyLarge.displayName = "TypographyLarge";
-
-const TypographySmall = React.forwardRef<
-  HTMLElement,
-  Omit<TypographyProps, "variant">
->(({ className, ...props }, ref) => (
-  <Typography ref={ref} variant="small" className={className} {...props} />
-));
-TypographySmall.displayName = "TypographySmall";
-
-const TypographyMuted = React.forwardRef<
-  HTMLParagraphElement,
-  Omit<TypographyProps, "variant">
->(({ className, ...props }, ref) => (
-  <Typography ref={ref} variant="muted" className={className} {...props} />
-));
-TypographyMuted.displayName = "TypographyMuted";
-
-const TypographyBlockquote = React.forwardRef<
-  HTMLQuoteElement,
-  Omit<TypographyProps, "variant">
->(({ className, ...props }, ref) => (
-  <Typography ref={ref} variant="blockquote" className={className} {...props} />
-));
-TypographyBlockquote.displayName = "TypographyBlockquote";
-
-const TypographyInlineCode = React.forwardRef<
-  HTMLElement,
-  Omit<TypographyProps, "variant">
->(({ className, ...props }, ref) => (
-  <Typography ref={ref} variant="code" className={className} {...props} />
-));
-TypographyInlineCode.displayName = "TypographyInlineCode";
-
-export {
-  Typography,
-  typographyVariants,
-  TypographyH1,
-  TypographyH2,
-  TypographyH3,
-  TypographyH4,
-  TypographyP,
-  TypographyLead,
-  TypographyLarge,
-  TypographySmall,
-  TypographyMuted,
-  TypographyBlockquote,
-  TypographyInlineCode,
-  type TypographyProps,
-};
+export { MuiTypography, muiTypographyVariants, type MuiTypographyProps };
