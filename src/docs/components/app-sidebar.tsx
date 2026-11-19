@@ -65,6 +65,54 @@ const data: { navMain: NavItem[] } = {
       ],
     },
     {
+      title: "Utility",
+      url: "/utility",
+      items: [
+        {
+          title: "Breakpoints",
+          url: "/utility/breakpoints",
+        },
+        {
+          title: "Palette",
+          url: "/utility/palette",
+        },
+        {
+          title: "Typography",
+          url: "/utility/typography",
+        },
+        {
+          title: "SVG Icons",
+          url: "/utility/svgs",
+        },
+      ],
+    },
+    {
+      title: "Layout",
+      url: "/layout",
+      items: [
+        {
+          title: "Box",
+          url: "/layout/box",
+        },
+        {
+          title: "Grid",
+          url: "/layout/grid",
+        },
+        {
+          title: "Resizable",
+          url: "/layout/resizable",
+        },
+        {
+          title: "Sheet",
+          url: "/layout/sheet",
+        },
+        {
+          title: "Stack",
+          url: "/layout/stack",
+        },
+      ],
+    },
+    {
       title: "Elements",
       url: "/elements",
       items: [
@@ -81,16 +129,16 @@ const data: { navMain: NavItem[] } = {
           url: "/elements/button",
         },
         {
+          title: "Button Shadcn",
+          url: "/elements/button2",
+        },
+        {
           title: "Slider",
           url: "/elements/slider",
         },
         {
           title: "Spark Line",
           url: "/elements/spark-line",
-        },
-        {
-          title: "Typography",
-          url: "/elements/typography",
         },
       ],
     },
@@ -129,32 +177,6 @@ const data: { navMain: NavItem[] } = {
         {
           title: "Periodic Table",
           url: "/components/periodic-table",
-        },
-      ],
-    },
-    {
-      title: "Layout",
-      url: "/layout",
-      items: [
-        {
-          title: "Box",
-          url: "/layout/box",
-        },
-        {
-          title: "Grid",
-          url: "/layout/grid",
-        },
-        {
-          title: "Resizable",
-          url: "/layout/resizable",
-        },
-        {
-          title: "Sheet",
-          url: "/layout/sheet",
-        },
-        {
-          title: "Stack",
-          url: "/layout/stack",
         },
       ],
     },

@@ -19,7 +19,7 @@ export {
   AlertDialogCancel,
 } from "./ui/components/alert-dialog";
 export { Badge, badgeVariants } from "./ui/elements/badge";
-export { Button, buttonVariants } from "./ui/elements/button";
+export { Button, buttonVariants } from "./ui/elements/button2";
 export { Checkbox } from "./ui/elements/checkbox";
 export {
   Dialog,

@@ -8,8 +8,10 @@ export {
   BreadcrumbItem,
   BreadcrumbLink,
 } from "./elements/breadcrumb";
+export { Button, buttonVariants } from "./elements/button";
 export { Calendar } from "./components/calendar";
 export { CodeBlock } from "./components/code-block";
+export { LoadingIcon } from "./elements/LoadingIcon";
 export {
   PeriodicTable,
   type PeriodicTableOutputType,
@@ -18,7 +20,10 @@ export {
 export { Skeleton } from "./layout/skeleton";
 export { Slider } from "./elements/slider";
 export { Textarea } from "./elements/textarea";
-export { Typography, typographyVariants } from "./elements/typography";
+export {
+  MuiTypography,
+  muiTypographyVariants,
+} from "./elements/typography-mui";
 
 // LAYOUT COMPONENTS
 export { AspectRatio } from "./layout/aspect-ratio";

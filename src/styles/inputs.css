@@ -1,0 +1,146 @@
+@utility input-textfield {
+  @apply w-full appearance-none rounded-xs border border-disabled-light bg-white px-2 py-0 type-regular duration-(--duration-short) ease-in-out hover:outline-hidden;
+
+  transition-property: color, border-color, padding, width;
+
+  &:enabled {
+    @apply hover:border-gradient-light focus:border-gradient-light focus:text-black focus:outline-hidden;
+  }
+
+  &::placeholder {
+    @apply text-disabled-light;
+  }
+
+  &:disabled,
+  &:read-only {
+    @apply [appearance:textfield] border-0 bg-transparent text-ellipsis [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none;
+  }
+
+  &:read-only {
+    @apply bg-gradient-medium/4;
+  }
+
+  &.warning {
+    @apply border-warning;
+  }
+
+  &.alert {
+    @apply border-alert;
+  }
+
+  .dark & {
+    background-color: color-mix(in oklch, #fff 15%, var(--color-black));
+
+    &:enabled {
+      @apply focus:text-white;
+    }
+
+    &::placeholder {
+      @apply text-disabled-dark;
+    }
+  }
+}
+
+@utility input-checkbox {
+  @apply relative inline-flex overflow-hidden rounded-xs text-left align-middle;
+
+  input {
+    @apply m-0 h-6 w-6 cursor-pointer appearance-none self-center rounded-xs border-2 border-gradient-medium bg-white text-current transition-colors duration-(--duration-short) ease-in-out;
+
+    &::before {
+      @apply absolute top-0 left-0 block h-full w-full bg-gradient-medium bg-center bg-no-repeat text-white opacity-0 duration-(--duration-short) ease-in-out;
+      transition-property: opacity, background-color;
+
+      background-image: url("/imgs/check.svg");
+      background-size: 20px;
+      content: " ";
+    }
+
+    &:checked::before {
+      @apply opacity-100;
+    }
+
+    &:enabled {
+      @apply hover:border-gradient-light focus:border-gradient-light;
+
+      &::before {
+        @apply hover:bg-gradient-light focus:bg-gradient-light;
+      }
+    }
+
+    &:disabled {
+      @apply pointer-events-none cursor-default border-disabled-medium bg-disabled-light;
+
+      &:checked::before {
+        @apply bg-disabled-medium;
+      }
+    }
+
+    .dark & {
+      background-color: color-mix(in oklch, #fff 15%, var(--color-black));
+    }
+  }
+}
+
+@utility input-switch {
+  @apply relative inline-block align-middle;
+
+  input {
+    @apply absolute top-0 left-0 z-(--z-input) h-full w-full opacity-0;
+  }
+
+  input:enabled {
+    @apply cursor-pointer;
+
+    &:hover ~ .input-switch_track,
+    &:checked:hover ~ .input-switch_track {
+      @apply bg-gradient-light after:border-gradient-light;
+    }
+
+    &:focus ~ .input-switch_track {
+      @apply outline-hidden;
+    }
+
+    &:checked ~ .input-switch_track {
+      @apply bg-gradient-medium after:border-gradient-medium;
+    }
+  }
+
+  input:disabled ~ .input-switch_track {
+    @apply bg-disabled-medium after:border-disabled-medium;
+  }
+
+  input:checked ~ .input-switch_track {
+    @apply after:translate-x-full;
+  }
+
+  .input-switch_track {
+    @apply relative h-6 w-12 rounded-full bg-gradient-dark transition-colors duration-(--duration-short) ease-in-out after:absolute after:top-0 after:left-0 after:box-border after:h-6 after:w-6 after:rounded-full after:border after:border-gradient-dark after:bg-white after:transition-all after:duration-(--duration-short) after:ease-in-out after:content-[''];
+
+    .dark & {
+      &::after {
+        background-color: color-mix(in oklch, #fff 15%, var(--color-black));
+      }
+    }
+  }
+
+  .input-switch_icons {
+    @apply pointer-events-none h-full w-full before:absolute before:top-0 before:left-0 before:box-border before:block before:h-6 before:w-full before:content-[''] after:absolute after:top-0 after:left-0 after:box-border after:block after:h-6 after:w-full after:content-[''];
+
+    &::before {
+      background-image: url("/imgs/check.svg");
+      background-position-x: 4px;
+      background-position-y: center;
+      background-size: 16px;
+      background-repeat: no-repeat;
+    }
+
+    &::after {
+      background-image: url("/imgs/close.svg");
+      background-position-x: calc(100% - 5px);
+      background-position-y: center;
+      background-size: 14px;
+      background-repeat: no-repeat;
+    }
+  }
+}

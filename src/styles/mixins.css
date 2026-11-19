@@ -1,0 +1,37 @@
+/* .skip-to-main class for screenreaders and keyboard to skip nav to main content */
+@utility skip-to-main {
+  position: absolute;
+  left: -9999px;
+  opacity: 0;
+  z-index: 999;
+  background-color: black;
+  padding: 1em;
+  color: white;
+}
+
+/* Hides component both visually and from screenreaders */
+@utility full-hidden {
+  @apply invisible hidden;
+}
+
+/* Converts any px fontsize to rem fontsize */
+@utility text-* {
+  /* prettier-ignore */
+  font-size: calc(--value(integer)rem / 16);
+}
+
+/* Create a collapsible HTML element, use collapse-[0] for full collapse */
+@utility collapse-* {
+  opacity: 1;
+  transition:
+    opacity var(--duration-short) var(--ease-out),
+    max-height var(--duration-default) var(--ease-out),
+    padding var(--ease-out) var(--duration-short);
+
+  &.collapsed {
+    visibility: hidden;
+    opacity: 0;
+    padding: 0;
+    max-height: --value([*]);
+  }
+}

@@ -1,0 +1,44 @@
+@reference "../../styles/globals.css";
+
+.svg {
+  & [class^="loading-blue"] {
+    opacity: 0;
+    animation-duration: 900ms;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-name: loadBlinker;
+  }
+
+  & [class^="loading-seafoam"] {
+    opacity: 0;
+    animation-duration: 900ms;
+    animation-timing-function: linear;
+    animation-delay: 300ms;
+    animation-iteration-count: infinite;
+    animation-name: loadBlinker;
+  }
+
+  & [class^="loading-flag"] {
+    opacity: 0;
+    animation-duration: 900ms;
+    animation-timing-function: linear;
+    animation-delay: 600ms;
+    animation-iteration-count: infinite;
+    animation-name: loadBlinker;
+  }
+}
+
+@keyframes loadBlinker {
+  0% {
+    opacity: 0;
+  }
+  33% {
+    opacity: 1;
+  }
+  66% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}

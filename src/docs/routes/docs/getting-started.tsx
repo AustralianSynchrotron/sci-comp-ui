@@ -190,7 +190,7 @@ function GettingStartedPage() {
               <CodeBlock
                 language="tsx"
                 code={`import "@australiansynchrotron/sci-comp-ui/styles";
-import { Button } from "@australiansynchrotron/sci-comp-ui/shadcn";`}
+import { Button } from "@australiansynchrotron/sci-comp-ui";`}
               />
               <Button>Example Button</Button>
             </CardContent>

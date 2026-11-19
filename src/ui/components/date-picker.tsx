@@ -4,7 +4,7 @@ import { Calendar as CalendarIcon } from "lucide-react";
 import { cva, type VariantProps } from "class-variance-authority";
 
 import { cn } from "../../lib/utils";
-import { Button } from "../elements/button";
+import { Button } from "../elements/button2";
 import { Calendar } from "./calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "../elements/popover";
 

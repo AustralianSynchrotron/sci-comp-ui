@@ -24,8 +24,12 @@
     "./styles": {
       "types": "./dist/styles.d.ts",
       "default": "./dist/sci-comp-ui.css"
-    }
+    },
+    "./theme/*.css": "./dist/theme/*.css"
   },
+  "sideEffects": [
+    "**/*.css"
+  ],
   "main": "./dist/index.cjs.js",
   "module": "./dist/index.es.js",
   "types": "./dist/index.d.ts",
@@ -115,6 +119,7 @@
     "typescript-eslint": "^8.39.1",
     "vite": "^7.1.2",
     "vite-plugin-dts": "^4.5.4",
+    "vite-plugin-static-copy": "^4.1.1",
     "zod": "^4.0.5"
   },
   "peerDependencies": {

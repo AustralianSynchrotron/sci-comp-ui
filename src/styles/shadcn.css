@@ -1,0 +1,86 @@
+/* SHADCN/UI COMPONENT SUPPORT PALETTE */
+
+/***
+These are variables that only exist in the default shadcn/ui theme, but not the default tailwindcss theme.
+
+So you don't have to import this file if the consumer UI does not use any shadcn exported or shadcn-derived components.
+
+These colours may need to be tweaked if they look a bit crazy with some shadcn/ui components, but try to derive them from variables from the main theme.css where possible.
+***/
+
+@layer base {
+  :root {
+    --radius: var(--radius-lg);
+    --background: var(--color-background);
+    --foreground: var(--color-text);
+    --card: var(--color-white);
+    --card-foreground: var(--color-text);
+    --popover: var(--color-white);
+    --popover-foreground: var(--color-text);
+    --primary: var(--color-gradient-medium);
+    --primary-foreground: var(--color-white);
+    --secondary: var(--color-gradient-light);
+    --secondary-foreground: var(--color-white);
+    --warning-foreground: var(--color-white);
+    --alert-foreground: var(--color-white);
+    --success-foreground: var(--color-white);
+    --muted: color-mix(in oklch, var(--color-grey) 10%, #fff);
+    --muted-foreground: var(--color-disabled);
+    --accent: var(--color-disabled-light);
+    --accent-foreground: var(--color-black);
+    --destructive: var(--color-alert);
+    --border: var(--color-border);
+    --input: var(--color-white);
+    --ring: var(--color-black);
+    --chart-1: oklch(0.646 0.222 41.116);
+    --chart-2: oklch(0.6 0.118 184.704);
+    --chart-3: oklch(0.398 0.07 227.392);
+    --chart-4: oklch(0.828 0.189 84.429);
+    --chart-5: oklch(0.769 0.188 70.08);
+    --sidebar: var(--color-white);
+    --sidebar-foreground: var(--color-black);
+    --sidebar-primary: var(--color-black);
+    --sidebar-primary-foreground: var(--color-white);
+    --sidebar-accent: var(--color-disabled-light);
+    --sidebar-accent-foreground: var(--color-black);
+    --sidebar-border: var(--color-border);
+    --sidebar-ring: var(--color-black);
+  }
+
+  /* TODO: Add dark mode variables */
+}
+
+@theme inline {
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-alert-foreground: var(--alert-foreground);
+  --color-success-foreground: var(--success-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}

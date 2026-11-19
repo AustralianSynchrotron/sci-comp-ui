@@ -1,0 +1,6 @@
+@theme static {
+  --color-gradient: var(--color-user);
+  --color-gradient-light: var(--color-user-light);
+  --color-gradient-medium: var(--color-user-medium);
+  --color-gradient-dark: var(--color-user-dark);
+}

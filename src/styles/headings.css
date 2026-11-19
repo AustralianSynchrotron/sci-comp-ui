@@ -1,0 +1,43 @@
+@utility heading-1 {
+  @apply font-poppins font-bold;
+  @apply text-[32px] leading-[calc(46/32)];
+  @apply xl:text-[36px] xl:leading-[calc(50/36)];
+}
+
+@utility heading-2 {
+  @apply font-poppins font-bold;
+  @apply text-[28px] leading-[calc(40/28)];
+  @apply xl:text-[30px] xl:leading-[calc(42/30)];
+}
+
+@utility heading-3 {
+  @apply font-poppins font-bold;
+  @apply text-[18px] leading-[calc(28/18)];
+  @apply xl:text-[24px] xl:leading-[calc(34/24)];
+}
+
+@utility heading-4 {
+  @apply font-poppins font-bold;
+  @apply text-[16px] leading-[calc(24/16)];
+  @apply xl:text-[18px] xl:leading-[calc(26/18)];
+}
+
+@utility heading-5 {
+  @apply font-poppins font-bold;
+  @apply text-[14px] leading-[calc(22/14)];
+  @apply xl:text-[16px] xl:leading-[calc(22/16)];
+}
+
+@utility heading-gradient {
+  @apply text-gradient-medium;
+
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-image: linear-gradient(
+    to right,
+    var(--color-gradient-dark) 0%,
+    var(--color-gradient-medium) 50%,
+    var(--color-gradient-light) 100%
+  );
+  background-clip: text;
+}
