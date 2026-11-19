@@ -23,10 +23,14 @@ function ButtonVariantsDemo() {
       <div className="flex flex-wrap gap-4">
         <h5>Active State</h5>
         <Button variant="default">Default</Button>
-        <Button variant="white">White</Button>
+        <Button variant="outline">Outline</Button>
         <Button variant="warning">Warning</Button>
         <Button variant="alert">Alert</Button>
         <Button variant="success">Success</Button>
+        <Button variant="ghost">Ghost</Button>
+        <Button variant="link">
+          <span>Link</span>
+        </Button>
       </div>
 
       <div className="flex flex-wrap gap-4">
@@ -34,8 +38,8 @@ function ButtonVariantsDemo() {
         <Button variant="default" disabled>
           Default
         </Button>
-        <Button variant="white" disabled>
-          White
+        <Button variant="outline" disabled>
+          Outline
         </Button>
         <Button variant="warning" disabled>
           Warning
@@ -46,6 +50,12 @@ function ButtonVariantsDemo() {
         <Button variant="success" disabled>
           Success
         </Button>
+        <Button variant="ghost" disabled>
+          Ghost
+        </Button>
+        <Button variant="link" disabled>
+          Link
+        </Button>
       </div>
 
       <div className="flex flex-wrap gap-4">
@@ -53,8 +63,8 @@ function ButtonVariantsDemo() {
         <Button variant="default" readOnly>
           Default
         </Button>
-        <Button variant="white" readOnly>
-          White
+        <Button variant="outline" readOnly>
+          Outline
         </Button>
         <Button variant="warning" readOnly>
           Warning
@@ -65,6 +75,12 @@ function ButtonVariantsDemo() {
         <Button variant="success" readOnly>
           Success
         </Button>
+        <Button variant="ghost" readOnly>
+          Ghost
+        </Button>
+        <Button variant="link" readOnly>
+          Link
+        </Button>
       </div>
 
       <div className="flex flex-wrap gap-4">
@@ -72,8 +88,8 @@ function ButtonVariantsDemo() {
         <Button variant="default" loading>
           Default
         </Button>
-        <Button variant="white" loading>
-          White
+        <Button variant="outline" loading>
+          Outline
         </Button>
         <Button variant="warning" loading>
           Warning
@@ -84,6 +100,12 @@ function ButtonVariantsDemo() {
         <Button variant="success" loading>
           Success
         </Button>
+        <Button variant="ghost" loading>
+          Ghost
+        </Button>
+        <Button variant="link" loading>
+          Link
+        </Button>
       </div>
     </div>
   );
@@ -92,6 +114,45 @@ function ButtonVariantsDemo() {
 
 // This gets replaced at build time with the actual source code
 const buttonVariantsSource = __SOURCE__;
+
+/* DEMO_START */
+function ButtonTextLinkVariantDemo() {
+  return (
+    <div className="flex flex-col gap-4">
+      <div className="flex flex-wrap gap-4">
+        <h5>Active State</h5>
+        <Button variant="link">
+          <span>Link</span>
+        </Button>
+      </div>
+
+      <div className="flex flex-wrap gap-4">
+        <h5>Disabled State</h5>
+        <Button variant="link" disabled>
+          Default
+        </Button>
+      </div>
+
+      <div className="flex flex-wrap gap-4">
+        <h5>Read-only State</h5>
+        <Button variant="link" readOnly>
+          Default
+        </Button>
+      </div>
+
+      <div className="flex flex-wrap gap-4">
+        <h5>Loading State</h5>
+        <Button variant="link" loading>
+          Default
+        </Button>
+      </div>
+    </div>
+  );
+}
+/* DEMO_END */
+
+// This gets replaced at build time with the actual source code
+const buttonTextLinkVariantSource = __SOURCE__;
 
 /* DEMO_START */
 function ButtonSizesDemo() {
@@ -391,6 +452,22 @@ function ButtonPage() {
               <DemoContainer
                 demo={<ButtonVariantsDemo />}
                 source={buttonVariantsSource}
+              />
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Text Link Variant</CardTitle>
+              <CardDescription>
+                When you semantically need a button, but want to style it like a
+                text link.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <DemoContainer
+                demo={<ButtonTextLinkVariantDemo />}
+                source={buttonTextLinkVariantSource}
               />
             </CardContent>
           </Card>

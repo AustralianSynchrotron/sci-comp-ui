@@ -11,10 +11,12 @@ const buttonVariants = cva(styles.root, {
   variants: {
     variant: {
       default: styles.colorDefault,
-      white: styles.colorWhite,
+      outline: styles.colorOutline,
       warning: styles.colorWarning,
       alert: styles.colorAlert,
       success: styles.colorSuccess,
+      ghost: styles.colorGhost,
+      link: styles.link,
     },
     size: {
       default: styles.sizeDefault,
@@ -100,7 +102,11 @@ const Button = React.forwardRef<
         ) : (
           icon
         )}
-        {children}
+        {variant == "link" ? (
+          <span className={styles.linkText}>{children}</span>
+        ) : (
+          children
+        )}
       </Comp>
     );
   }

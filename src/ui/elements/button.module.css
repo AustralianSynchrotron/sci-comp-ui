@@ -1,6 +1,6 @@
 @reference "../../styles/globals.css";
 
-.root {
+.root:not(.link) {
   @apply relative inline-flex h-auto w-auto shrink-0 justify-center align-middle;
   @apply font-sans leading-none font-normal tracking-normal uppercase;
   @apply shadow-(--shadow-button) transition-[color,background,background-color,box-shadow] duration-(--duration-default) ease-in-out;
@@ -16,7 +16,8 @@
 }
 
 .readOnly {
-  &.root {
+  &.root,
+  &.link {
     @apply pointer-events-none opacity-45;
   }
 }
@@ -72,7 +73,7 @@
   }
 }
 
-.root:not(.iconOnly):disabled {
+.root:not(.iconOnly):not(.link):disabled {
   @apply cursor-default text-disabled-medium;
   background: color-mix(in oklch, var(--color-grey) 10%, #fff);
 
@@ -92,7 +93,7 @@
   @apply bg-size-[300%_1px] bg-position-[100%];
 }
 
-.colorWhite:not(.iconOnly) {
+.colorOutline:not(.iconOnly) {
   @apply bg-white text-gradient-medium;
   background: linear-gradient(
     to left,
@@ -112,6 +113,20 @@
 
   svg:not(.loadingIcon) {
     @apply fill-gradient-medium text-gradient-medium;
+  }
+}
+
+.colorGhost:not(.iconOnly) {
+  @apply bg-transparent text-text shadow-none;
+  background: linear-gradient(
+    to left,
+    transparent 33%,
+    var(--color-disabled-light) 66%
+  );
+  @apply bg-size-[300%_1px] bg-position-[99%];
+
+  svg:not(.loadingIcon) {
+    @apply fill-text text-text;
   }
 }
 
@@ -258,5 +273,41 @@
     svg.loadingIcon {
       @apply stroke-success-dark;
     }
+  }
+}
+
+.link {
+  @apply relative inline-flex shrink-0 p-0 align-baseline text-gradient;
+
+  &:not(:disabled):not(.readOnly):is(:focus-visible, :hover) .linkText::after {
+    @apply w-full;
+  }
+
+  svg:not(.loadingIcon) {
+    @apply fill-gradient text-gradient;
+  }
+
+  svg.loadingIcon {
+    @apply stroke-gradient;
+  }
+
+  &:disabled {
+    @apply pointer-events-none cursor-not-allowed bg-transparent text-disabled-medium select-none;
+
+    svg:not(.loadingIcon) {
+      @apply fill-disabled-medium text-disabled-medium;
+    }
+
+    svg.loadingIcon {
+      @apply stroke-disabled-medium;
+    }
+  }
+}
+
+.linkText {
+  @apply relative inline-block;
+
+  &::after {
+    @apply absolute bottom-[-2px] left-0 block h-px w-[0%] bg-gradient transition-[width] duration-(--duration-short) ease-out content-[''];
   }
 }
