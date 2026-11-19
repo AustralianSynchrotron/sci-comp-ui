@@ -340,7 +340,7 @@ function TypographyPage() {
           { title: "Typography" },
         ]}
         pageHeading="Typography"
-        pageSubheading="Typography utility classes for consistent text styling. Do remember, this styles do change according to breakpoints. So do note what breakpoint your browser is currently when viewing before deciding which to use."
+        pageSubheading="Responsive typography utility classes for consistent text styling. Unlike default TailwindCSS text size utility classes, these classes do change size according to breakpoints. So remember to check what breakpoint your browser is currently when viewing before deciding which to use."
       />
       <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
         <div className="space-y-6">

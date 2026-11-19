@@ -21,6 +21,9 @@ These colours may need to be tweaked if they look a bit crazy with some shadcn/u
     --primary-foreground: var(--color-white);
     --secondary: var(--color-gradient-light);
     --secondary-foreground: var(--color-white);
+    --warning-foreground: var(--color-white);
+    --alert-foreground: var(--color-white);
+    --success-foreground: var(--color-white);
     --muted: color-mix(in oklch, var(--color-grey) 10%, #fff);
     --muted-foreground: var(--color-disabled);
     --accent: var(--color-disabled-light);
@@ -57,6 +60,9 @@ These colours may need to be tweaked if they look a bit crazy with some shadcn/u
   --color-primary-foreground: var(--primary-foreground);
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-alert-foreground: var(--alert-foreground);
+  --color-success-foreground: var(--success-foreground);
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
   --color-accent: var(--accent);
