@@ -28,9 +28,7 @@ function ButtonVariantsDemo() {
         <Button variant="alert">Alert</Button>
         <Button variant="success">Success</Button>
         <Button variant="ghost">Ghost</Button>
-        <Button variant="link">
-          <span>Link</span>
-        </Button>
+        <Button variant="link">Link</Button>
       </div>
 
       <div className="flex flex-wrap gap-4">
