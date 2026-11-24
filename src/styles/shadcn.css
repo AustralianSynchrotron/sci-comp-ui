@@ -19,7 +19,7 @@ These colours may need to be tweaked if they look a bit crazy with some shadcn/u
     --popover-foreground: var(--color-text);
     --primary: var(--color-gradient-medium);
     --primary-foreground: var(--color-white);
-    --secondary: var(--color-gradient-light);
+    --secondary: var(--color-gradient-dark);
     --secondary-foreground: var(--color-white);
     --warning-foreground: var(--color-white);
     --alert-foreground: var(--color-white);
