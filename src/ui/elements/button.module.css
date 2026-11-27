@@ -1,0 +1,313 @@
+@reference "../../styles/globals.css";
+
+.root:not(.link) {
+  @apply relative inline-flex h-auto w-auto shrink-0 justify-center align-middle;
+  @apply font-sans leading-none font-normal tracking-normal uppercase;
+  @apply shadow-(--shadow-button) transition-[color,background,background-color,box-shadow] duration-(--duration-default) ease-in-out;
+
+  &:enabled:global(.isActive),
+  &:enabled:is(:focus-visible, :hover) {
+    @apply cursor-pointer bg-position-[0%] shadow-(--shadow-button-focus);
+  }
+
+  svg:not(.loadingIcon) {
+    @apply transition-colors duration-(--duration-default) ease-in-out;
+  }
+}
+
+.readOnly {
+  &.root,
+  &.link {
+    @apply pointer-events-none opacity-45;
+  }
+}
+
+.sizeDefault {
+  @apply text-[16px] xl:text-[18px];
+  @apply px-3 py-2;
+
+  svg {
+    @apply h-[14px] w-[14px];
+    @apply xl:h-[18px] xl:w-[18px];
+  }
+}
+
+.sizeSmall {
+  @apply text-[14px] xl:text-[16px];
+  @apply px-2 py-1;
+
+  svg {
+    @apply h-3 w-3;
+    @apply xl:h-[14px] xl:w-[14px];
+  }
+
+  &.iconStart > svg:not(.loadingIcon) {
+    @apply mr-2;
+  }
+}
+
+.sizeLarge {
+  @apply text-[18px] xl:text-[24px];
+  @apply px-3 py-2;
+
+  svg {
+    @apply h-4 w-4;
+    @apply xl:h-6 xl:w-6;
+  }
+}
+
+.loadingIconWrap {
+  @apply mr-2 block shrink-0 origin-center;
+}
+
+.iconStart svg:not(.loadingIcon) {
+  @apply mr-3;
+}
+
+.iconEnd {
+  @apply flex-row-reverse;
+
+  svg:not(.loadingIcon),
+  .loadingIconWrap {
+    @apply ml-3;
+  }
+}
+
+.root:not(.iconOnly):not(.link):disabled {
+  @apply cursor-default text-disabled-medium;
+  background: color-mix(in oklch, var(--color-grey) 10%, #fff);
+
+  svg {
+    @apply fill-disabled-medium text-disabled-medium;
+  }
+}
+
+.colorDefault:not(.iconOnly) {
+  @apply bg-gradient-medium text-white [&>svg:not(.loadingIcon)]:fill-white;
+
+  background: linear-gradient(
+    to left,
+    var(--color-gradient-medium) 33%,
+    var(--color-gradient-light) 66%
+  );
+  @apply bg-size-[300%_1px] bg-position-[100%];
+}
+
+.colorOutline:not(.iconOnly) {
+  @apply bg-white text-gradient-medium;
+  background: linear-gradient(
+    to left,
+    var(--color-white) 33%,
+    var(--color-gradient-light) 66%
+  );
+  @apply bg-size-[300%_1px] bg-position-[99%];
+
+  &:enabled:global(.isActive),
+  &:enabled:is(:focus-visible, :hover) {
+    @apply text-white;
+
+    svg:not(.loadingIcon) {
+      @apply fill-white text-white;
+    }
+  }
+
+  svg:not(.loadingIcon) {
+    @apply fill-gradient-medium text-gradient-medium;
+  }
+}
+
+.colorGhost:not(.iconOnly) {
+  @apply bg-transparent text-text shadow-none;
+  background: linear-gradient(
+    to left,
+    transparent 33%,
+    var(--color-disabled-light) 66%
+  );
+  @apply bg-size-[300%_1px] bg-position-[99%];
+
+  svg:not(.loadingIcon) {
+    @apply fill-text text-text;
+  }
+}
+
+.colorWarning:not(.iconOnly) {
+  @apply bg-gradient-medium text-white [&>svg:not(.loadingIcon)]:fill-white;
+
+  background: linear-gradient(
+    to left,
+    var(--color-warning-dark) 33%,
+    var(--color-warning-medium) 66%
+  );
+  @apply bg-size-[300%_1px] bg-position-[100%];
+}
+
+.colorAlert:not(.iconOnly) {
+  @apply bg-gradient-medium text-white [&>svg:not(.loadingIcon)]:fill-white;
+
+  background: linear-gradient(
+    to left,
+    var(--color-alert-dark) 33%,
+    var(--color-alert-medium) 66%
+  );
+  @apply bg-size-[300%_1px] bg-position-[100%];
+}
+
+.colorSuccess:not(.iconOnly) {
+  @apply bg-gradient-medium text-white [&>svg:not(.loadingIcon)]:fill-white;
+
+  background: linear-gradient(
+    to left,
+    var(--color-success-dark) 33%,
+    var(--color-success-medium) 66%
+  );
+  @apply bg-size-[300%_1px] bg-position-[100%];
+}
+
+.iconOnly {
+  @apply bg-transparent p-0 shadow-none;
+
+  &:enabled:global(.isActive),
+  &:enabled:is(:focus-visible, :hover) {
+    @apply shadow-none;
+  }
+
+  &:enabled:global(.isActive) > svg:not(.loadingIcon),
+  &:enabled:is(:focus-visible, :hover) > svg:not(.loadingIcon) {
+    @apply fill-gradient-light text-gradient-light;
+  }
+
+  svg:not(.loadingIcon),
+  .loadingIconWrap {
+    @apply mx-0;
+  }
+
+  &.sizeDefault svg {
+    @apply h-6 w-6;
+  }
+
+  &.sizeSmall svg {
+    @apply h-4 w-4;
+  }
+
+  &.sizeLarge svg {
+    @apply h-8 w-8;
+  }
+
+  &.iconStart.sizeSmall svg:not(.loadingIcon),
+  &.iconStart.sizeSmall .loadingIconWrap {
+    @apply mr-0;
+  }
+
+  &.iconEnd.sizeSmall svg:not(.loadingIcon),
+  &.iconEnd.sizeSmall .loadingIconWrap {
+    @apply ml-0;
+  }
+
+  &:disabled {
+    @apply cursor-default;
+
+    svg:not(.loadingIcon) {
+      @apply fill-disabled-medium text-disabled-medium;
+    }
+
+    svg.loadingIcon {
+      @apply stroke-disabled-medium;
+    }
+  }
+
+  &.colorDefault:not(:disabled) {
+    svg:not(.loadingIcon) {
+      @apply fill-gradient-medium text-gradient-medium;
+    }
+
+    &:enabled:global(.isActive) > svg:not(.loadingIcon),
+    &:enabled:is(:focus-visible, :hover) > svg:not(.loadingIcon) {
+      @apply fill-gradient-light text-gradient-light;
+    }
+
+    svg.loadingIcon {
+      @apply stroke-gradient-medium;
+    }
+  }
+
+  &.colorWarning:not(:disabled) {
+    svg:not(.loadingIcon) {
+      @apply fill-warning-dark text-warning-dark;
+    }
+
+    &:enabled:global(.isActive) > svg:not(.loadingIcon),
+    &:enabled:is(:focus-visible, :hover) > svg:not(.loadingIcon) {
+      @apply fill-warning text-warning;
+    }
+
+    svg.loadingIcon {
+      @apply stroke-warning-dark;
+    }
+  }
+
+  &.colorAlert:not(:disabled) {
+    svg:not(.loadingIcon) {
+      @apply fill-alert-dark text-alert-dark;
+    }
+
+    &:enabled:global(.isActive) > svg:not(.loadingIcon),
+    &:enabled:is(:focus-visible, :hover) > svg:not(.loadingIcon) {
+      @apply fill-alert text-alert;
+    }
+
+    svg.loadingIcon {
+      @apply stroke-alert-dark;
+    }
+  }
+
+  &.colorSuccess:not(:disabled) {
+    svg:not(.loadingIcon) {
+      @apply fill-success-dark text-success-dark;
+    }
+
+    &:enabled:global(.isActive) > svg:not(.loadingIcon),
+    &:enabled:is(:focus-visible, :hover) > svg:not(.loadingIcon) {
+      @apply fill-success text-success;
+    }
+
+    svg.loadingIcon {
+      @apply stroke-success-dark;
+    }
+  }
+}
+
+.link {
+  @apply relative inline-flex shrink-0 p-0 align-baseline text-gradient;
+
+  &:not(:disabled):not(.readOnly):is(:focus-visible, :hover) .linkText::after {
+    @apply w-full;
+  }
+
+  svg:not(.loadingIcon) {
+    @apply fill-gradient text-gradient;
+  }
+
+  svg.loadingIcon {
+    @apply stroke-gradient;
+  }
+
+  &:disabled {
+    @apply pointer-events-none cursor-not-allowed bg-transparent text-disabled-medium select-none;
+
+    svg:not(.loadingIcon) {
+      @apply fill-disabled-medium text-disabled-medium;
+    }
+
+    svg.loadingIcon {
+      @apply stroke-disabled-medium;
+    }
+  }
+}
+
+.linkText {
+  @apply relative inline-block;
+
+  &::after {
+    @apply absolute bottom-[-2px] left-0 block h-px w-[0%] bg-gradient transition-[width] duration-(--duration-short) ease-out content-[''];
+  }
+}

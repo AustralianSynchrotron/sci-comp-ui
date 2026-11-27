@@ -9,7 +9,7 @@ import {
   Trash2,
 } from "lucide-react";
 
-import { Button } from "../../elements/button";
+import { Button } from "../../elements/button2";
 import {
   DropdownMenu,
   DropdownMenuContent,

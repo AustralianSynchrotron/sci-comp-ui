@@ -4,7 +4,7 @@ import { Check, PlusCircle } from "lucide-react";
 
 import { cn } from "../../../lib/utils";
 import { Badge } from "../../elements/badge";
-import { Button } from "../../elements/button";
+import { Button } from "../../elements/button2";
 import {
   Command,
   CommandEmpty,

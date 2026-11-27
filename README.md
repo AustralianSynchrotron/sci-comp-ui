@@ -1,33 +1,122 @@
 # Scientific Computing UI Component Library
 
+## Usage
+
+Import the components you want with:
+
+```js
+import { StepColumns, Button } from "@australiansynchrotron/sci-comp-ui";
+```
+
+See `src/ui/index.ts` for the full list of available components.
+
+> #### Shadcn/ui Components
+>
+> So we don't have to style/create every component, and for use as convenient placeholders before customisation, we also export components from shadcn/ui.
+>
+> These can be imported from `@australiansynchrotron/sci-comp-ui/shadcn` subpath; see `src/shadcn.ts` for the full list of available components.
+>
+> ```js
+> import { Button, Card, cn } from "@australiansynchrotron/sci-comp-ui/shadcn";
+> ```
+>
+> Most are unaltered copies, so use the [shadcn/ui docs](https://ui.shadcn.com/docs/components). As we copied them at particular version though, official docs may show newer props or variants that ours don't have yet. Any component we've customised/extended have their own page on our docs site.
+
+The class utility function `cn` is available from both.
+
+### Styles
+
+If you only need the export components, you can import the compiled stylesheet included with this package into your consumer UI's main `index.css` (or equivalent) file using:
+
+```js
+import "@australiansynchrotron/sci-comp-ui/styles";
+```
+
+This file includes all TailwindCSS classes and theme variables used by all components in this library.
+
+However, it won't include any classes or variables that aren't already used by any exported components.
+
+> For example, although `src/styles/theme.css` defines `--color-dev`, and [TailwindCSS has the utility class](https://tailwindcss.com/docs/theme#theme-variable-namespaces) `bg-<colour>`, if the specific class `bg-dev` has not been used by any exported components, it will not be available for use in your consumer UI.
+>
+> This is because TailwindCSS will tree shake upon build,generating and compiling only used classes and variables.
+
+#### Accessing Full Theme
+
+To have access to all style variables and TailwindCSS utility classes, you must reimport the theme and utility files into your consumer UI's main `index.css` (or equivalent) file.
+
+You can use this template:
+
+```css
+/* Tailwind Base */
+
+/* TODO: The following 4 lines is a workaround fix for this current tailwindcss v4 import issue: https://github.com/tailwindlabs/tailwindcss/discussions/18406
+
+We have to manually import utilities, because the current default "@import 'tailwindcss'" allows "preflight.css" to take precedence over component layer styles.
+
+This causes the styles precedence to become:
+Other base layer -> Components layer -> Preflight base layer -> Utilities layer
+When it should be:
+All base layer -> Components layer -> Utilities layer
+
+Keep an eye on that ticket, and we can hopefully replace the following 4 lines with "@import 'tailwindcss'" again when it's fixed. */
+@layer theme, base, components, utilities;
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/preflight.css" layer(base);
+@import "tailwindcss/utilities.css";
+
+/* Custom Font Faces Here */
+/* @import '@path/to/your/custom-font-file.css; */
+
+/* Sci Comp UI Base Themes Here */
+@import "@australiansynchrotron/sci-comp-ui/styles";
+@import "@australiansynchrotron/sci-comp-ui/theme/theme.css" layer(base);
+
+/* Select User or Admin Theme Here */
+@import "@australiansynchrotron/sci-comp-ui/theme/user.css" layer(base);
+/* @import '@australiansynchrotron/sci-comp-ui/theme/admin.css' layer(base); */
+
+/* Custom Themes Here */
+/* @import '@path/to/your/theme.css' layer(base); */
+
+/* Sci Comp UI Base Utilities Here */
+@import "@australiansynchrotron/sci-comp-ui/theme/headings.css";
+@import "@australiansynchrotron/sci-comp-ui/theme/type.css";
+@import "@australiansynchrotron/sci-comp-ui/theme/layout.css";
+@import "@australiansynchrotron/sci-comp-ui/theme/inputs.css";
+@import "@australiansynchrotron/sci-comp-ui/theme/mixins.css";
+
+/* Custom Utilities Here */
+/* @import '@path/to/your/utilities.css'; */
+
+/* Source to Consumer UI Files */
+@source "./src/**/*.{js,ts,jsx,tsx}";
+@source "../../../packages/monorepo-ui-library/lib/**/*.{js,ts,jsx,tsx}";
+
+/* Additional Custom Global Styles Here */
+@layer components {
+  #root {
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+}
+```
+
+#### Overwriting Theme Variables
+
+If you want to overwrite certain theme variables (not just extending), you can refer to `src/styles/admin.css` as a template for your custom `'@path/to/your/theme.css'`.
+
+<!-- Either add the shadui/ui required CSS variables into your consumer UI's main `index.css` file, or  -->
+
+## Development
+
 To run the component demo/docs page (spins up page at `main.tsx`), install the dev dependencies, and run dev:
 
 ```bash
 npm i
 npm run dev:docs
 ```
-
-## Usage
-
-Either add the Radix-UI required CSS variables into your consumer UI's main `index.css` file, or import the ones included with this package with:
-
-```js
-import "@australiansynchrotron/sci-comp-ui/styles";
-```
-
-Import the components you want:
-
-```js
-import { StepColumns } from "@australiansynchrotron/sci-comp-ui";
-```
-
-Components from shadcn/ui (Button, Card, Dialog, Form, Select, Sidebar, Tooltip, …) come from the `/shadcn` subpath; see `src/shadcn.ts` for the full list. `cn` is available from both. Most are unaltered copies, so use the [shadcn/ui docs](https://ui.shadcn.com/docs/components). We copied them at a point in time, though, so those docs may show newer props or variants that ours don't have yet. Any we've customised have their own page on our docs site.
-
-```js
-import { Button, Card, cn } from "@australiansynchrotron/sci-comp-ui/shadcn";
-```
-
-## Development
 
 #### Code Formatting
 
@@ -227,4 +316,4 @@ Note the override applies to this repo only — npm honours `overrides` from the
 
 ## TODOs
 
-- Add vitest for components (for custom ones, not necessary for radix-ui ones)
+- Add vitest for components (for custom ones, not necessary for shadui/ui ones)

@@ -13,6 +13,9 @@ declare module "@tanstack/react-router" {
 
 import "./styles/globals.css";
 
+// Styles specifically to make documentation pages look consistently nicer, this file is not exported as part of the library
+import "./styles/docs.css";
+
 export default function DocsApp() {
   return <RouterProvider router={router} />;
 }

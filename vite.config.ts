@@ -6,6 +6,7 @@ import tailwindcss from "@tailwindcss/vite";
 import dts from "vite-plugin-dts";
 import { packageVersionPlugin } from "./src/vite-plugins/package-version-plugin";
 import { embedSourcePlugin } from "./src/vite-plugins/embed-source-plugin";
+import { viteStaticCopy } from "vite-plugin-static-copy";
 
 export default defineConfig(({ command, mode }) => {
   const isGitHubPages = mode === "github-pages";
@@ -48,6 +49,16 @@ export default defineConfig(({ command, mode }) => {
         exclude: ["src/**/*.stories.*", "src/**/*.test.*", "src/docs/**/*"],
         insertTypesEntry: true,
         tsconfigPath: "./tsconfig.lib.json",
+      }),
+      viteStaticCopy({
+        structured: false,
+        targets: [
+          {
+            src: "src/styles/*.css",
+            dest: "theme",
+            rename: { stripBase: true },
+          },
+        ],
       })
     );
   }

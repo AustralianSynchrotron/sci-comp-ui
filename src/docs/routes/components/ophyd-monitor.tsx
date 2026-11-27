@@ -9,7 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from "../../../ui/layout/card";
-import { Button } from "../../../ui/elements/button";
+import { Button } from "../../../ui/elements/button2";
 import { Badge } from "../../../ui/elements/badge";
 import { DemoContainer } from "../../components/demo-container";
 import { toast } from "sonner";

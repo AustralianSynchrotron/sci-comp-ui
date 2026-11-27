@@ -5,47 +5,52 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { Loader2Icon } from "lucide-react";
 import { cn } from "../../lib/utils";
 
-const buttonVariants = cva(
-  "inline-flex shrink-0 items-center justify-center gap-2 rounded-md text-sm font-medium whitespace-nowrap transition-all outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
-  {
-    variants: {
-      variant: {
-        default:
-          "bg-primary text-primary-foreground shadow-xs hover:bg-primary/90",
-        success:
-          "bg-success text-success-foreground shadow-xs hover:bg-success/80",
-        warning:
-          "bg-warning text-warning-foreground shadow-xs hover:bg-warning/80",
-        destructive:
-          "bg-destructive text-destructive-foreground shadow-xs hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:bg-destructive/60 dark:focus-visible:ring-destructive/40",
-        outline:
-          "border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50",
-        secondary:
-          "bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80",
-        ghost:
-          "hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50",
-        link: "text-primary underline-offset-4 hover:underline",
-      },
-      size: {
-        default: "h-9 px-4 py-2 has-[>svg]:px-3",
-        sm: "h-8 gap-1.5 rounded-md px-3 has-[>svg]:px-2.5",
-        lg: "h-10 rounded-md px-6 has-[>svg]:px-4",
-        icon: "size-9",
-      },
+import styles from "./button.module.css";
+
+const buttonVariants = cva(styles.root, {
+  variants: {
+    variant: {
+      default: styles.colorDefault,
+      outline: styles.colorOutline,
+      warning: styles.colorWarning,
+      alert: styles.colorAlert,
+      success: styles.colorSuccess,
+      ghost: styles.colorGhost,
+      link: styles.link,
     },
-    defaultVariants: {
-      variant: "default",
-      size: "default",
+    size: {
+      default: styles.sizeDefault,
+      sm: styles.sizeSmall,
+      lg: styles.sizeLarge,
     },
-  }
-);
+    rounded: {
+      default: "rounded-sm",
+      xs: "rounded-xs",
+      md: "rounded-md",
+    },
+    iconPosition: {
+      start: styles.iconStart,
+      end: styles.iconEnd,
+    },
+  },
+  defaultVariants: {
+    variant: "default",
+    size: "default",
+    rounded: "default",
+    iconPosition: "start",
+  },
+});
 
 const Button = React.forwardRef<
   HTMLButtonElement,
   React.ComponentProps<"button"> &
     VariantProps<typeof buttonVariants> & {
       asChild?: boolean;
+      isActive?: boolean; // Only for if it's needed to manually enforce active state style
+      readOnly?: boolean;
       loading?: boolean;
+      icon?: React.ReactNode;
+      iconOnly?: boolean;
     }
 >(
   (
@@ -53,8 +58,14 @@ const Button = React.forwardRef<
       className,
       variant,
       size,
-      asChild = false,
+      isActive,
+      readOnly = false,
       loading = false,
+      rounded,
+      iconPosition,
+      asChild = false,
+      icon,
+      iconOnly,
       children,
       ...props
     },
@@ -64,14 +75,38 @@ const Button = React.forwardRef<
 
     return (
       <Comp
-        data-slot="button"
-        className={cn(buttonVariants({ variant, size, className }))}
-        disabled={loading || props.disabled}
+        className={cn(
+          buttonVariants({
+            variant,
+            size,
+            rounded,
+            iconPosition,
+            className,
+          }),
+          icon != null && children == null && iconOnly ? styles.iconOnly : "",
+          isActive ? "isActive" : "",
+          readOnly ? styles.readOnly : ""
+        )}
         ref={ref}
         {...props}
       >
-        {loading && <Loader2Icon className="size-3 animate-spin" />}
-        {children}
+        {loading ? (
+          <div className={styles.loadingIconWrap}>
+            <Loader2Icon
+              className={cn(
+                styles.loadingIcon,
+                "block shrink-0 origin-center animate-spin"
+              )}
+            />
+          </div>
+        ) : (
+          icon
+        )}
+        {variant == "link" ? (
+          <span className={styles.linkText}>{children}</span>
+        ) : (
+          children
+        )}
       </Comp>
     );
   }

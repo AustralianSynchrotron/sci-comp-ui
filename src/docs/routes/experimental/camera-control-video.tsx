@@ -4,7 +4,6 @@ import { createFileRoute } from "@tanstack/react-router";
 import { PageHeader } from "@/docs/components/page-header";
 import { DemoContainer } from "@/docs/components/demo-container";
 
-import { TypographyH1 } from "@/ui/elements/typography";
 import {
   Card,
   CardContent,
@@ -38,16 +37,16 @@ function CameraControlVideoDemo() {
           showIntensity={true}
         />
       </VideoProvider>
-      <TypographyH1>
+      <p className="type-large">
         {mousePos
           ? `Cursor: x=${Math.round(mousePos.x)}, y=${Math.round(mousePos.y)}, intensity=${mousePos.intensity}`
           : "Move mouse over image"}
-      </TypographyH1>
-      <TypographyH1>
+      </p>
+      <p className="type-large">
         {clickPos
           ? `Cursor: x=${Math.round(clickPos.x)}, y=${Math.round(clickPos.y)}, intensity=${clickPos.intensity}`
           : "Click on the image"}
-      </TypographyH1>
+      </p>
     </div>
   );
 }

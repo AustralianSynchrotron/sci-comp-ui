@@ -10,7 +10,7 @@ import {
 } from "@/ui/layout/card";
 import { DemoContainer } from "@/docs/components/demo-container";
 import { Badge } from "@/ui/elements/badge";
-import { Button } from "@/ui/elements/button";
+import { Button } from "@/ui/elements/button2";
 import { useState } from "react";
 
 export const Route = createFileRoute("/experimental/file-browser")({

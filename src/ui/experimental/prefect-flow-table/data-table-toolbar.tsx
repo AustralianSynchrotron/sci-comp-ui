@@ -1,7 +1,7 @@
 import type { Table } from "@tanstack/react-table";
 import { X, Plus } from "lucide-react";
 
-import { Button } from "../../elements/button";
+import { Button } from "../../elements/button2";
 import { Input } from "../../elements/input";
 import { DataTableViewOptions } from "./data-table-view-options";
 
