@@ -43,7 +43,7 @@ function PaletteSupportDemo() {
         <p className="m-2 bg-black p-3 text-white">Black #1a1a1a</p>
         <p className="m-2 bg-grey p-3 text-white">Grey (ANSTO Grey)</p>
         <p className="m-2 bg-grey/1 p-3 text-text">Background (Grey 1%)</p>
-        <p className="m-2 bg-text p-3 text-white">Text #484848</p>
+        <p className="m-2 bg-text p-3 text-white">Text #212121</p>
         <p className="m-2 bg-dev p-3 text-white">Dev #ff3366</p>
       </div>
 

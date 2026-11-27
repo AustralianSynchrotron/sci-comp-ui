@@ -22,7 +22,7 @@
   --color-white: oklch(1 0 0);
   --color-black: oklch(0.2178 0 0);
   --color-grey: var(--color-ansto-grey);
-  --color-text: oklch(0.4017 0 0);
+  --color-text: oklch(0.2478 0 0);
   --color-dev: oklch(0.6565 0.2349 13.34);
   --color-background: color-mix(in oklch, var(--color-grey) 1%, #fff);
 
