@@ -30,7 +30,7 @@ These colours may need to be tweaked if they look a bit crazy with some shadcn/u
     --accent-foreground: var(--color-black);
     --destructive: var(--color-alert);
     --border: var(--color-border);
-    --input: var(--color-white);
+    --input: var(--color-disabled-light);
     --ring: var(--color-black);
     --chart-1: oklch(0.646 0.222 41.116);
     --chart-2: oklch(0.6 0.118 184.704);
