@@ -16,7 +16,7 @@ Keep an eye on that ticket, and we can hopefully remove lines 14~19, and just re
 @import "tailwindcss/theme.css" layer(theme);
 @import "tailwindcss/preflight.css" layer(base);
 
-@import "tailwindcss/utilities.css";
+@import "tailwindcss/utilities.css" layer(utilities);
 @import "tw-animate-css";
 
 /* User or Admin Theme Variables */
