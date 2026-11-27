@@ -63,7 +63,7 @@
   --color-success-dark: oklch(0.4062 0.1328 152.26);
 
   /* UTILITY SUPPORT PALETTE */
-  --color-primary: var(---color-gradient-medium);
+  --color-primary: var(--color-gradient-medium);
   --color-secondary: var(--color-gradient-light);
   --color-border: color-mix(in oklch, var(--color-gradient-medium) 20%, #fff);
 
