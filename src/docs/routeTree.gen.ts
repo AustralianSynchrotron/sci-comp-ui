@@ -37,6 +37,7 @@ import { Route as ElementsBadgeRouteImport } from './routes/elements/badge'
 import { Route as DocsZodPydanticAnalogyRouteImport } from './routes/docs/zod-pydantic-analogy'
 import { Route as DocsMuiMigrationRouteImport } from './routes/docs/mui-migration'
 import { Route as DocsGettingStartedRouteImport } from './routes/docs/getting-started'
+import { Route as DocsDesignPrinciplesRouteImport } from './routes/docs/design-principles'
 import { Route as DocsComponentCreationRouteImport } from './routes/docs/component-creation'
 import { Route as ComponentsPeriodicTableRouteImport } from './routes/components/periodic-table'
 import { Route as ComponentsOphydMonitorRouteImport } from './routes/components/ophyd-monitor'
@@ -192,6 +193,11 @@ const DocsGettingStartedRoute = DocsGettingStartedRouteImport.update({
   path: '/docs/getting-started',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DocsDesignPrinciplesRoute = DocsDesignPrinciplesRouteImport.update({
+  id: '/docs/design-principles',
+  path: '/docs/design-principles',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DocsComponentCreationRoute = DocsComponentCreationRouteImport.update({
   id: '/docs/component-creation',
   path: '/docs/component-creation',
@@ -250,6 +256,7 @@ export interface FileRoutesByFullPath {
   '/components/ophyd-monitor': typeof ComponentsOphydMonitorRoute
   '/components/periodic-table': typeof ComponentsPeriodicTableRoute
   '/docs/component-creation': typeof DocsComponentCreationRoute
+  '/docs/design-principles': typeof DocsDesignPrinciplesRoute
   '/docs/getting-started': typeof DocsGettingStartedRoute
   '/docs/mui-migration': typeof DocsMuiMigrationRoute
   '/docs/zod-pydantic-analogy': typeof DocsZodPydanticAnalogyRoute
@@ -289,6 +296,7 @@ export interface FileRoutesByTo {
   '/components/ophyd-monitor': typeof ComponentsOphydMonitorRoute
   '/components/periodic-table': typeof ComponentsPeriodicTableRoute
   '/docs/component-creation': typeof DocsComponentCreationRoute
+  '/docs/design-principles': typeof DocsDesignPrinciplesRoute
   '/docs/getting-started': typeof DocsGettingStartedRoute
   '/docs/mui-migration': typeof DocsMuiMigrationRoute
   '/docs/zod-pydantic-analogy': typeof DocsZodPydanticAnalogyRoute
@@ -329,6 +337,7 @@ export interface FileRoutesById {
   '/components/ophyd-monitor': typeof ComponentsOphydMonitorRoute
   '/components/periodic-table': typeof ComponentsPeriodicTableRoute
   '/docs/component-creation': typeof DocsComponentCreationRoute
+  '/docs/design-principles': typeof DocsDesignPrinciplesRoute
   '/docs/getting-started': typeof DocsGettingStartedRoute
   '/docs/mui-migration': typeof DocsMuiMigrationRoute
   '/docs/zod-pydantic-analogy': typeof DocsZodPydanticAnalogyRoute
@@ -370,6 +379,7 @@ export interface FileRouteTypes {
     | '/components/ophyd-monitor'
     | '/components/periodic-table'
     | '/docs/component-creation'
+    | '/docs/design-principles'
     | '/docs/getting-started'
     | '/docs/mui-migration'
     | '/docs/zod-pydantic-analogy'
@@ -409,6 +419,7 @@ export interface FileRouteTypes {
     | '/components/ophyd-monitor'
     | '/components/periodic-table'
     | '/docs/component-creation'
+    | '/docs/design-principles'
     | '/docs/getting-started'
     | '/docs/mui-migration'
     | '/docs/zod-pydantic-analogy'
@@ -448,6 +459,7 @@ export interface FileRouteTypes {
     | '/components/ophyd-monitor'
     | '/components/periodic-table'
     | '/docs/component-creation'
+    | '/docs/design-principles'
     | '/docs/getting-started'
     | '/docs/mui-migration'
     | '/docs/zod-pydantic-analogy'
@@ -488,6 +500,7 @@ export interface RootRouteChildren {
   ComponentsOphydMonitorRoute: typeof ComponentsOphydMonitorRoute
   ComponentsPeriodicTableRoute: typeof ComponentsPeriodicTableRoute
   DocsComponentCreationRoute: typeof DocsComponentCreationRoute
+  DocsDesignPrinciplesRoute: typeof DocsDesignPrinciplesRoute
   DocsGettingStartedRoute: typeof DocsGettingStartedRoute
   DocsMuiMigrationRoute: typeof DocsMuiMigrationRoute
   DocsZodPydanticAnalogyRoute: typeof DocsZodPydanticAnalogyRoute
@@ -715,6 +728,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DocsGettingStartedRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/docs/design-principles': {
+      id: '/docs/design-principles'
+      path: '/docs/design-principles'
+      fullPath: '/docs/design-principles'
+      preLoaderRoute: typeof DocsDesignPrinciplesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/docs/component-creation': {
       id: '/docs/component-creation'
       path: '/docs/component-creation'
@@ -792,6 +812,7 @@ const rootRouteChildren: RootRouteChildren = {
   ComponentsOphydMonitorRoute: ComponentsOphydMonitorRoute,
   ComponentsPeriodicTableRoute: ComponentsPeriodicTableRoute,
   DocsComponentCreationRoute: DocsComponentCreationRoute,
+  DocsDesignPrinciplesRoute: DocsDesignPrinciplesRoute,
   DocsGettingStartedRoute: DocsGettingStartedRoute,
   DocsMuiMigrationRoute: DocsMuiMigrationRoute,
   DocsZodPydanticAnalogyRoute: DocsZodPydanticAnalogyRoute,

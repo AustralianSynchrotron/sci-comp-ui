@@ -62,6 +62,10 @@ const data: { navMain: NavItem[] } = {
           title: "Zod & Pydantic Analogy",
           url: "/docs/zod-pydantic-analogy",
         },
+        {
+          title: "Design Principles",
+          url: "/docs/design-principles",
+        },
       ],
     },
     {
